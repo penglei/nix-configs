@@ -1,0 +1,29 @@
+# Rime dictionary
+# encoding: utf-8
+
+---
+name: pinyin_dicts         # 词库名
+version: "2021.02.07"
+sort: by_weight                 # by_weight（按词频高低排序）或 original（保持原码表中的顺序）
+use_preset_vocabulary: false    # true 或 false，选择是否导入预设词汇表【八股文】 (essay.txt)
+
+#这些词典比较小，适合测试全新的Deploy(即把DATA目录中的build目录删掉重新部署)
+#import_tables:
+#  - dicts_cn/pinyin_simp_mini
+#  - dicts_cn/luna_pinyin.chengyusuyu
+#  - dicts_cn/luna_pinyin.sijixingzhenquhuadimingciku
+#  - dicts_cn/luna_pinyin.jisuanjicihuidaquan
+#  - dicts_cn/luna_pinyin.wangluoliuxingxinci
+#  - dicts_cn/luna_pinyin.kaifadashenzhuanyongciku
+#  - dicts_cn/luna_pinyin.zhongguolishicihuidaquan
+#  - dicts_cn/luna_pinyin.my-symbols
+## - luna_pinyin.kaomoji
+
+##---------##
+import_tables:
+  - dicts_cn/8105    # 字表
+  - dicts_cn/base    # 基础词库
+  - dicts_cn/sogou   # 搜狗流行词，与 main 没有重复
+  - dicts_cn/ext     # 扩展词库，与 main sogou 没有重复
+  - dicts_cn/tencent # 腾讯词向量，与 main sogou ext 没有重复，大词库，部署时间较长。
+  - dicts_cn/others  # 一些杂项

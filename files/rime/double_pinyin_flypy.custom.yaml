@@ -1,0 +1,72 @@
+patch:
+  schema/name: 小鹤双拼
+  switches:
+    - name: ascii_mode
+      reset: 0
+      states: [ 汉, 英 ]
+    - name: show_emoji
+      reset: 1
+      states: [ "🚫", "😄" ]
+     #states: [ "🚫", "🈶️️" ]
+     #states: [ "🈚️️", "🈶️️" ]
+
+    #https://github.com/rime/home/wiki/CustomizationGuide
+    - name: full_shape
+      states: [ 半角, 全角 ]
+
+    ##https://github.com/rime/librime/issues/212
+    #- name: ascii_punct
+    #  states: [ 。，, ．， ]
+  engine/translators:
+    - punct_translator
+    - lua_translator@lua_custom_phrase
+    - script_translator
+    - lua_translator@date_time_week
+  engine/filters:
+    - simplifier
+    - simplifier@emoji_conversion
+    - uniquifier
+    #- lua_filter@single_char_first
+  engine/processors/@before 0: lua_processor@select_boundry_character
+
+  translator/dictionary: pinyin_dicts #自定义词典
+  ##清空转换规则，使shift+return上屏input code(与return上屏一样)。
+  ##关闭之后shift+return上屏拼音，return上屏input code
+  #translator/preedit_format: {}
+
+  emoji_conversion:
+    opencc_config: emoji.json
+    option_name: show_emoji
+    tips: all
+
+  lua_custom_phrase:
+    user_dict: "custom_phrase"
+
+  # 自定义符号上屏
+  punctuator:
+    # __include: punctuation:/     # 从应用目录引入预设的 punctuation.yaml
+    import_preset: symbols         # 从引入预设的 symbols.yaml，配置目录没有则从应用目录查找
+
+    ## 也可以直接在这里配置
+    # half_shape:
+    # full_shape
+    # symbols:
+
+  recognizer/patterns/punct: "^/([0-9]0?|[A-Za-z]+)$"
+  
+
+  ## 双拼使用自定义词典 custom_phrase.txt
+  ## 新版中一直在提示 "custom_phrase made a futile translation"， 可能影响性能 。
+  #custom_phrase:
+  #  dictionary: ""
+  #  user_dict: custom_phrase
+  #  db_class: stabledb
+  #  enable_completion: false
+  #  enable_sentence: false
+  #  initial_quality: 1
+
+# Rx: BlindingDark/rime-easy-en:customize:schema=double_pinyin_flypy
+  # __include: easy_en:/patch
+  # easy_en/enable_sentence: false
+# Rx: lotem/rime-octagram-data:customize:schema=luna_pinyin,model=hans
+  __include: grammar:/hans

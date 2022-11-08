@@ -1,0 +1,7 @@
+Match Host "192.168.66.*" User penglei
+  RemoteForward /run/user/penglei/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+  #gpg 命令无法配置使用别的路径
+  #RemoteForward /home/penglei/.gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+
+Match Host "192.168.65.*" User penglei
+  RemoteForward /run/user/penglei/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra

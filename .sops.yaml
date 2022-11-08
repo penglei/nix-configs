@@ -1,0 +1,33 @@
+##How to generate age key from host key?
+#❯ nix shell nixpkgs#ssh-to-age
+#❯ ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub
+
+keys:
+- &main 354E6EB6E69FCDA3BCA1B3B7B346D48376F25ECB # gpg (support yubikey)
+- &macos age1z8kh9pcvz3qapexfn64cmxurxvll98r3gu3n6dh4h63052p8dfjs5d9u64
+- &recovery age153uqe6cwr5rfqr79y5al4lr8udzahad30snqwhj65kqg4yrh6ygqg364pr # important recovery key
+- &ganger age1pzvxzyje0ytuw46p2hdfe6u9dxnddfy6vmvl5jn2yrkc7d342fqs50z2jt
+- &hk-alpha age1lrqtrvnahhdfu6pq00ncp5fk0vsm05duvkxk78d7nf6eezy7jayqlpxmvj #ssh host key
+- &sv-alpha age1df6sr7f9y78dlp5gzd0asa538v7t39w90kqevue6pza3lhqxmqrs2373eq #ssh host key
+- &sg-alpha age1ae2dhtv5pryg54q478sll79wyp6rxqakan5ack6fxyylyyqandqq4v79q0 #ssh host key
+- &router age15qecyeuqlwzm3vnw09zp0rdyhg3ehxnswmr5cymyettmvmqswf5sk2la8k #ssh host key
+#- &utm-vm age18dj4cksrurn7qfetmqr70psz68fgaruf02xam3yl2veje8rr654q5rtrep #ssh host key
+creation_rules:
+- path_regex: secrets/secrets.yaml$
+  key_groups:
+  - pgp:
+    - *main
+    age:
+    - *macos
+    - *recovery
+    - *ganger
+    - *router
+    - *sg-alpha
+    - *hk-alpha
+    - *sv-alpha
+- path_regex: secrets/[^/]+\.yaml$
+  key_groups:
+  - pgp:
+    - *main
+    age:
+    - *recovery

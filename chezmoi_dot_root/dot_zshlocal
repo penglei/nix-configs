@@ -1,0 +1,10 @@
+export PATH=$HOME/.local/bin:$HOME/Library/Python/3.9/bin:$PATH
+path+=$HOME/go/bin
+path+=$HOME/.cargo/bin
+path+=$HOME/.dotnet/tools
+export DOTNET_ROOT=/opt/dotnet-sdk/current
+path+=/opt/dotnet-sdk/current
+path+=/opt/go/current/bin
+
+alias cs=csharprepl
+

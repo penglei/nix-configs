@@ -1,0 +1,8 @@
+---
+name: english
+version: "1"
+import_tables:
+  #- dicts_en/en      # 精简词库
+  - dicts_en/easy_en # 英文主词库
+  - dicts_en/en_ext  # 补充
+...

@@ -1,0 +1,40 @@
+[font.offset]
+#y = -1
+[font.normal]
+# "JetBrainsMono Nerd Font Mono" # "MonaspiceNe Nerd Font" # "Cascadia Mono NF" # "Hack Nerd Font Mono" # "FiraCode Nerd Font Mono"
+family = "MonaspiceNe Nerd Font"
+# style = "Light"
+
+[colors.search.matches]
+# Allowed values are CellForeground/CellBackground, which reference the
+# affected cell, or hexadecimal colors like #ff00ff.
+foreground = "#ffffff"
+background = "#ff00ff"
+[colors.search.focused_match]
+foreground = "#6e4962"
+background = "#86d3ce"
+
+[terminal.shell]
+#program: ~/.local/bin/myprintenv # It will see that SSH_AUTH_SOCK is set.
+
+#program: /bin/zsh
+#args: ["-c", "unset SSH_AUTH_SOCK;exec -a -zsh /bin/zsh"]
+
+program = "/usr/bin/login"
+args = ["-flp", "penglei", "/bin/zsh", "-c", "exec -a -zsh /bin/zsh"]
+#args: ["-flp", "penglei", "/bin/zsh", "-c", "exec /bin/zsh --login"] #另一个等价的写法
+#args: ["-flp", "penglei", "/bin/zsh", "-c", "exec -a -🐶🐶- /bin/zsh"]
+#这里的shell初始化相当有技巧性:
+##第一个zsh不是login shell，并且是non-interactive，所以什么配置都不会加载；
+##子进程启动第二个zsh是login shell，并且是interactive(没有-c)；
+
+# // Exec the shell with argv[0] prepended by '-' so it becomes a login shell.
+# // `login` normally does this itself, but `-l` disables this.
+# let exec = format!("exec -a -{} {}", shell_name, shell);
+# // -f: Bypasses authentication for the already-logged-in user.
+# // -l: Skips changing directory to $HOME and prepending '-' to argv[0].
+# // -p: Preserves the environment.
+#args: ["-fp", "penglei", "/bin/zsh" ]  #每个window都是HOME目录
+#-f: 已经认证过了，不需要再输入密码
+#-l: 不是登录shell(login程序默认是登录shell)，即不用加载profile了；登录shell的工作目录是HOME目录
+#-p: 不要丢弃之前的环境变量；

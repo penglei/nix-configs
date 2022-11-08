@@ -1,0 +1,50 @@
+
+Host cloud-dev
+    Hostname 9.135.73.231
+    Port 36000
+    User ubuntu
+    RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+
+Host nix-cloud-dev
+    Hostname 21.6.255.111
+    Port 36000
+    User ubuntu
+    RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+
+Host khaos-automaton
+    Hostname 9.134.52.172
+    Port 36000
+    User ubuntu
+    RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+
+
+Host team-khaos
+    Hostname 9.134.191.144
+    Port 36000
+    User ubuntu
+
+Host team-khaos-arm64
+    Hostname 9.135.90.233
+    Port 36000
+    User khaos
+
+Host jumper
+    Hostname csig.mnet2.com
+    ControlMaster auto
+    ControlPath ~/.ssh/.tencent-mnet/%r@%h:%p
+    ServerAliveInterval 10
+    HostKeyAlgorithms = +ssh-rsa
+    PubkeyAcceptedAlgorithms = +ssh-rsa
+    User lespeng
+    Port 36000
+
+# Host tc-relay
+#     Hostname 9.139.216.182
+#     User root
+#     Port 36000
+#     ControlMaster auto
+#     ControlPath ~/.ssh/.tencent-mnet/%r@%h:%p
+#     #do-sync-to is copy of netcat
+#     ProxyCommand ssh jumper /data/home/lespeng/do-sync-to %h %p
+#     StrictHostKeyChecking no
+

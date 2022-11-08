@@ -1,0 +1,5 @@
+
+exec /usr/bin/login -flp penglei /bin/zsh -c 'unset PATH;exec -a -zsh /bin/zsh'
+
+#通过exec -c 清理所有环境变量，但是可能会把一些terminal自身env被清理，如TERM=xterm-color，TMPDIR，导致使用shell时出现异常。
+#exec -c /usr/bin/login -flp penglei /bin/zsh -c 'exec -a -zsh /bin/zsh'

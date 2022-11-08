@@ -1,0 +1,3 @@
+penglei ALL=(root) NOPASSWD: /usr/bin/su -
+penglei ALL=(root) NOPASSWD: /nix/var/nix/profiles/per-user/penglei/profile/bin/yabai --load-sa
+penglei ALL=(root) NOPASSWD: /nix/var/nix/profiles/per-user/penglei/profile/bin/yabai --uninstall-sa

@@ -1,0 +1,11 @@
+Host 192.168.1.245
+  User root
+  HostKeyAlgorithms = +ssh-rsa
+  PubkeyAcceptedAlgorithms = +ssh-rsa
+
+Host router.ops
+  User root
+  Hostname 192.168.1.245
+  HostKeyAlgorithms = +ssh-rsa
+  PubkeyAcceptedAlgorithms = +ssh-rsa
+

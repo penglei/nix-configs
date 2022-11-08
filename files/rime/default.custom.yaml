@@ -1,0 +1,55 @@
+patch:
+  schema_list:
+  - schema: double_pinyin_flypy # 小鹤双拼
+  - schema: numbers
+  #- schema: pinyin_simp
+  #- schema: easy_en
+
+  menu/page_size: 9 # 候选词个数
+  style/font_face: "Heiti SC Light"
+
+  switcher/caption: 〔IME Setting〕
+  switcher/hotkeys: [Control+grave] #ignore [ F4, Control+Shift+grave ]
+
+  # 若 caps 切换大小写无效, 打开 Mac 系统偏好设置 > 键盘 > 输入法 > 取消勾选[使用大写锁定键切换“美国”输入模式]
+  ascii_composer/good_old_caps_lock: true # 若为 true， Caps 只切换大小写
+  ascii_composer/switch_key: #why named commit_code ? 因为rime输入法的code是英文字母
+    Caps_Lock: commit_code
+    Shift_L: commit_code
+    Shift_R: noop
+    Control_L: noop # 左 Control，屏蔽该切换键
+    Control_R: noop
+
+  recognizer/patterns:
+    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
+    uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
+    url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
+
+  key_binder/bindings:
+
+  #squirrel-0.16.1,rime-1.8.4以前，shift 作为switch_key经常误触发
+  #比如 「shift+英文字母」输入大写字母时可能会导致switching，
+  #因此，采用 「shift+space」来toggle ascii_mode。
+  #但是这个版本更新后，这个问题好像被修复了，反而「shift+space」的方案
+  #在一些app(如alacritty,kitty)下导致「空格」上屏，故不再采用该方案。
+  #- { when: always, accept: Shift+space, toggle: ascii_mode }
+
+  #移动光标(用以调整inputs)
+  - {when: composing, accept: Shift+Tab, send: Shift+Left} # "Shift+Tab" 键向左选拼音分词
+  - {when: composing, accept: Control+a, send: Home}
+  - {when: composing, accept: Control+e, send: End}
+
+  #当前候选区 选词
+  - {when: composing, accept: Tab, send: Right}
+  #- { when: composing, accept: Control+b, send: Left }  #容易与Cocoa 的Text System emacs风格的binding 混淆
+  #- { when: composing, accept: Control+f, send: Right }
+
+  #候选 翻页
+  - {when: composing, accept: Control+p, send: Up}
+  - {when: composing, accept: Control+n, send: Down}
+  - {when: has_menu, accept: minus, send: Page_Up}
+  - {when: has_menu, accept: equal, send: Page_Down,}
+
+  #其它系统默认快捷键
+  ## Shift+Backspace: 从输入区删除一个单词，配合 Shift+Tab 非常好用
+  ## Shift+Delete: 从候选区删除当前词，降低其优先级(注意不是backspace)

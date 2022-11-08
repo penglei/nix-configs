@@ -1,0 +1,24 @@
+#mpv #config in yabairc directly(to stick defaultly)
+Raycast
+Snipaste
+Finder Preferences
+Alfred Preferences
+Archive Utility
+Calculator
+Calendar
+DeepL
+Digital Color Meter
+Disk Utility
+Font Book
+Hyperkey
+Key Codes
+KeyCastr
+Koodo Reader
+Python
+Reminders
+System Information
+System Preferences
+UTM
+iOA
+tart
+企业微信·会议

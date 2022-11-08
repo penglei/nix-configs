@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+data="$1"
+
+if [[ -z "$data" ]]; then
+  data="$(cat)"
+fi
+
+osascript \
+  -e 'use framework "Foundation"' \
+  -e "on run argv" \
+  -e "set type to current application's NSPasteboardTypeString" \
+  -e "set pb to current application's NSPasteboard's generalPasteboard()" \
+  -e "pb's clearContents()" \
+  -e "pb's setString:\"\" forType:\"org.nspasteboard.ConcealedType\"" \
+  -e "pb's setString:(item 1 of argv) forType:type" \
+  -e "end run" \
+  "$data" >/dev/null

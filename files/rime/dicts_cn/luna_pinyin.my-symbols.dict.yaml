@@ -1,0 +1,471 @@
+# Rime dictionary
+# encoding: utf-8
+#
+# build contenxt
+#
+# Python 3 required
+# wget https://github.com/unicode-org/cldr-json/raw/main/cldr-json/cldr-annotations-modern/annotations/zh/annotations.json -O /tmp/emoji.json
+# pip install pypinyin
+# 
+# python -c '
+# import re
+# import json
+# from pypinyin import lazy_pinyin, load_phrases_dict
+# 
+# raw = json.loads(open("/tmp/emoji.json", "r").read())
+# 
+# for emoji, desc in raw["annotations"]["annotations"].items():
+#     aliases = desc["default"]
+#     for alias in aliases:
+#         pinyins = lazy_pinyin(alias)
+#         if len(pinyins) == 1 and len(pinyins[0]) == 1:
+#             continue
+#         print("%s\t%s\t1" % (emoji, " ".join(pinyins)))
+# ' > luna_pinyin.emoji.cldr.dict.new.yaml
+
+---
+name: luna_pinyin.math.unicode
+version: "2022.05.17"
+sort: by_weight
+use_preset_vocabulary: true
+...
+
+©️	fu hao
+©️	ban quan
+©️	ban quan fu hao
+®️	zhu ce biao ji
+®️	zhu ce
+®️	zhu ce shang biao
+®️	fu hao
+〰️	bo lang
+〰️	bo lang xian
+〰️	bo lang xing po zhe hao
+〰️	fu hao
+§	shuang S
+§	duan luo
+§	bu fen
+§	zhang jie
+§	zhang jie fu hao
+¶	duan luo
+¶	duan luo biao ji
+¶	duan luo fu hao
+@	@  fu hao
+@	dan jia ji hao
+*	xing hao
+*	xing xing
+*	tong pei fu
+/	qing xie
+/	hua diao
+/	xie gang
+/	xie xian fu hao
+/	duan xie xian
+\	fan xiang xie xian
+\	fan xie gang
+&	yu hao
+&	he
+&	deng
+%	bai fen hao
+%	bai fen bi
+‰	qian fen hao
+‰	qian fen bi
+†	jian
+†	jian hao
+†	shi zi jia
+‡	jian
+‡	jian hao
+‡	shuang
+‡	shuang jian hao
+•	yuan dian
+•	xiang mu fu hao
+‧	dian
+‧	po zhe hao
+‧	lian zi fu
+‧	lian zi fu dian
+′	jiao fen fu hao
+″	jiao miao fu hao
+‴	san pie
+‸	tuo zi fu
+※	can kao biao ji
+⁂	xing qun
+`	chen zhong
+`	yu diao
+´	jian rui
+´	yu diao
+^	ren zi xing biao ji
+^	mao zi
+^	mi
+^	yi yang yin
+^	zhi zhen
+^	an wei yi huo fu hao
+^	kong zhi
+^	xie zi
+^	bu zi fu
+^	zhong yin
+¨	yuan yin bian yin
+°	du
+°	du shu
+°	shi jiao
+°	biao zhun jiu jing du
+℗	lu yin
+℗	lu yin ban quan
+℗	ban quan
+℗	yin pin
+←	xiang zuo de jian tou
+←	zuo
+←	jian tou
+↚	dai shan chu xian de xiang zuo jian tou
+→	you
+→	xiang you de jian tou
+→	jian tou
+↛	dai shan chu xian de xiang you jian tou
+↑	shang
+↑	xiang shang de jian tou
+↑	jian tou
+↓	xia
+↓	xiang xia de jian tou
+↓	jian tou
+↜	xiang zuo bo lang jian tou
+↝	xiang you bo lang jian tou
+↞	xiang zuo shuang tou jian tou
+↟	xiang shang shuang tou jian tou
+↠	xiang you shuang tou jian tou
+↡	xiang xia shuang tou jian tou
+↢	dai wei de xiang zuo jian tou
+↣	dai wei de xiang you jian tou
+↤	wei bu dai gang de xiang zuo jian tou
+↥	wei bu dai gang de xiang shang jian tou
+↦	wei bu dai gang de xiang you jian tou
+↧	wei bu dai gang de xiang xia jian tou
+↨	dai di bian de shang xia jian tou
+↫	wei bu dai huan de xiang zuo jian tou
+↬	wei bu dai huan de xiang you jian tou
+↭	zuo you bo lang jian tou
+↯	xiang xia ju chi xing jian tou
+↰	tou chao zuo de xiang shang jian tou
+↱	tou chao you de xiang shang jian tou
+↲	tou chao zuo de xiang xia jian tou
+↳	tou chao you de xiang xia jian tou
+↴	jiao chao xia de xiang you jian tou
+↵	jiao chao zuo de xiang xia jian tou
+↶	ni shi zhen shang ban yuan jian tou
+↷	shun shi zhen shang ban yuan jian tou
+↸	zhi xiang zhang gang de xi bei jian tou
+↹	shang mian shi tou dai gang de xiang zuo jian tou ， xia mian shi tou dai gang de xiang you jian tou
+↺	ni shi zhen kai kou yuan jian tou
+↻	shun shi zhen kai kou yuan jian tou
+↼	dao gou zai shang de xiang zuo yu cha
+↽	dao gou zai xia de xiang zuo yu cha
+↾	dao gou zai you de xiang shang yu cha
+↿	dao gou zai zuo de xiang shang yu cha
+⇀	dao gou zai shang de xiang you yu cha
+⇁	dao gou zai xia de xiang you yu cha
+⇂	dao gou zai you de xiang xia yu cha
+⇃	dao gou zai zuo de xiang xia yu cha
+⇄	shang mian shi xiang you jian tou ， xia mian shi xiang zuo jian tou
+⇅	shang
+⇅	xia
+⇅	zuo shang you xia liang ge jian tou
+⇅	jian tou
+⇆	shang zuo xia you liang ge jian tou
+⇆	you
+⇆	zuo
+⇆	jian tou
+⇇	liang ge xiang zuo jian tou
+⇈	liang ge xiang shang jian tou
+⇉	liang ge xiang you jian tou
+⇊	liang ge xiang xia jian tou
+⇋	shang mian shi xiang zuo yu cha ， xia mian shi xiang you yu cha
+⇌	shang mian shi xiang you yu cha ， xia mian shi xiang zuo yu cha
+⇐	xiang zuo shuang jian tou
+⇍	dai shan chu xian de xiang zuo shuang jian tou
+⇑	xiang shang shuang jian tou
+⇒	xiang you shuang jian tou
+⇏	dai shan chu xian de xiang you shuang jian tou
+⇓	xiang xia shuang jian tou
+⇔	zuo you shuang jian tou
+⇎	dai shan chu xian de zuo you shuang jian tou
+⇖	xi bei shuang jian tou
+⇗	dong bei shuang jian tou
+⇘	dong nan shuang jian tou
+⇙	xi nan shuang jian tou
+⇚	xiang zuo san jian tou
+⇛	xiang you san jian tou
+⇜	xiang zuo qu xian jian tou
+⇝	xiang you qu xian jian tou
+⇞	dai shuang shan chu xian de xiang shang jian tou
+⇟	dai shuang shan chu xian de xiang xia jian tou
+⇠	xiang zuo xu xian jian tou
+⇡	xiang shang xu xian jian tou
+⇢	xiang you xu xian jian tou
+⇣	xiang xia xu xian jian tou
+⇤	tou dai gang de xiang zuo jian tou
+⇥	tou dai gang de xiang you jian tou
+⇦	xiang zuo kong xin jian tou
+⇧	xiang shang kong xin jian tou
+⇨	xiang you kong xin jian tou
+⇩	xiang xia kong xin jian tou
+⇪	wei bu dai gang de xiang shang kong xin jian tou
+⇵	zuo bian shi xiang xia jian tou ， you bian shi xiang shang jian tou
+∀	quan cheng liang ci
+∂	pian wei fen
+∃	cun zai liang ci
+∅	kong ji
+∆	san jiao
+∆	zeng liang
+∇	dao san jiao
+∇	xiang liang wei fen
+∈	yuan su
+∈	bao han
+∈	cheng yuan
+∈	shi ... de yuan su
+∈	ji he
+∉	bu shu yu
+∋	bao han wei cheng yuan
+∎	zheng ming wan bi
+∏	N yuan cheng ji
+∑	N yuan qiu he
++	jia
++	jia hao
++	xiang jia
+±	zheng fu
+÷	shang shu
+÷	chu yi
+÷	chu hao
+÷	chu shang
+÷	chu fa
+×	cheng yi
+×	cheng hao
+×	cheng fa
+×	cheng ji
+×	ji shu
+<	xiao yu
+<	biao ji
+<	qi shi biao ji
+≮	bu xiao yu
+=	xiang deng
+=	deng yu
+=	deng hao
+≠	bu xiang deng
+≠	bu deng
+≠	bu deng yu
+>	da yu
+>	biao ji
+>	jie shu biao ji
+≯	bu da yu
+¬	fou
+¬	fei
+|	gan
+|	shu tiao
+|	shu xian
+|	guan xian
+|	xian
+|	xian tiao
+|	xie fei er shu xian
+~	bo lang hao
+−	jian
+−	jian qu
+−	jian hao
+⁻	shang biao
+⁻	shang biao jian hao
+⁻	jian hao
+∓	jian huo jia
+∕	chu hao xie xian
+⁄	fen shu xie xian
+∗	xing hao yun suan fu
+∘	huan yun suan fu
+∙	xiang mu fu hao yun suan fu
+√	bu jin gen
+√	ping fang gen
+√	kai ping fang
+√	kai gen
+√	gen hao
+∝	cheng bi li
+∞	wu qiong da
+∞	wu qiong da fu hao
+∟	zhi jiao
+∠	jiao
+∣	zheng chu
+∥	ping xing
+∧	luo ji yu
+∩	jiao ji
+∩	ji
+∩	ji he
+∪	bing ji
+∪	ji
+∪	ji he
+∫	ji fen
+∬	er chong ji fen
+∮	qu xian ji fen
+∴	suo yi
+∵	yin wei
+∶	bi lv
+∷	bi li
+∼	bo lang hao yun suan fu
+∽	fan zhuan bo lang hao
+∾	dao zhi tang dao s
+≃	jian jin xiang deng
+≅	jin si xiang deng
+≈	da gai
+≈	yue deng yu
+≈	jin si zhi
+≌	quan deng
+≒	yue deng yu huo jin si yu
+≖	huan deng yu
+≡	san xian
+≡	xiang tong
+≡	deng yu
+≡	deng tong
+≡	deng tong yu
+≣	yan ge deng jia yu
+≤	bu deng shi
+≤	xiao yu
+≤	xiao yu deng yu
+≤	xiang deng
+≤	deng yu
+≥	bu deng
+≥	da yu
+≥	da yu deng yu
+≥	xiang deng
+≥	deng yu
+≦	xiao yu huo deng yu
+≧	da yu huo deng yu
+≪	yuan xiao yu
+≫	yuan da yu
+≬	jie yu
+≳	da yu huo deng jia yu
+≺	xian yu
+≻	hou yu
+⊁	bu hou yu
+⊂	zi ji
+⊂	shi ... de zi ji
+⊂	ji he
+⊃	chao ji
+⊆	zi ji huo deng yu
+⊇	chao ji huo deng yu
+⊕	dai yuan quan jia hao
+⊖	dai yuan quan jian hao
+⊗	dai yuan quan cheng hao
+⊘	dai yuan quan chu hao xie xian
+⊙	dai yuan quan dian yun suan fu
+⊚	dai yuan quan huan yun suan fu
+⊛	dai yuan quan xing hao yun suan fu
+⊞	dai fang kuang jia hao
+⊟	dai fang kuang jian hao
+⊥	shang ding zi
+⊮	bu qiang zhi
+⊰	guan xi shang xian yu
+⊱	guan xi shang hou yu
+⋭	bu shu yu zheng gui zi qun huo deng yu
+⊶	yuan
+⊹	e mi gong e ju zhen
+⊿	zhi jiao san jiao xing
+⋁	N yuan luo ji huo
+⋂	N yuan jiao ji
+⋃	N yuan bing ji
+⋅	dian yun suan fu
+⋆	xing yun suan fu
+⋈	zi ran lian jie
+⋒	shuang jiao ji
+⋘	ji xiao yu
+⋙	ji da yu
+⋮	chui zhi sheng lve hao
+⋯	zhong xian shui ping sheng lve hao
+⋰	you shang dui jiao xian sheng lve hao
+⋱	you xia dui jiao xian sheng lve hao
+■	shi xin fang xing
+□	kong xin fang xing
+▢	dai yuan jiao de kong xin fang xing
+▣	bao han shi xin fang xing de kong xin fang xing
+▤	dai shui ping tian chong fu de fang xing
+▥	dai chui zhi tian chong fu de fang xing
+▦	dai zhi jiao jiao cha tian chong fu de fang xing
+▧	dai zuo shang dao you xia tian chong fu de fang xing
+▨	dai you shang dao zuo xia tian chong fu de fang xing
+▩	dai dui jiao xian jiao cha tian chong fu de fang xing
+▬	shi xin ju xing
+▭	kong xin ju xing
+▮	shi xin chui zhi ju xing
+▰	shi xin ping xing si bian xing
+▲	san jiao
+▲	shang
+▲	tian chong
+▲	shi xin
+▲	shi xin xiang shang san jiao
+▲	shi xin xiang shang jian tou
+▲	jian tou
+△	kong xin xiang shang san jiao
+▴	shi xin xiang shang xiao xing san jiao
+▵	kong xin xiang shang xiao xing san jiao
+▷	kong xin xiang you san jiao
+▸	shi xin xiang you xiao xing san jiao
+▹	kong xin xiang you xiao xing san jiao
+►	shi xin xiang you zhi zhen
+▻	kong xin xiang you zhi zhen
+▼	san jiao
+▼	xia
+▼	tian chong
+▼	shi xin
+▼	shi xin xiang xia san jiao
+▼	shi xin xiang xia jian tou
+▼	jian tou
+▽	kong xin xiang xia san jiao
+▾	shi xin xiang xia xiao xing san jiao
+▿	kong xin xiang xia xiao xing san jiao
+◁	kong xin xiang zuo san jiao
+◂	shi xin xiang zuo xiao xing san jiao
+◃	kong xin xiang zuo xiao xing san jiao
+◄	shi xin xiang zuo zhi zhen
+◅	kong xin xiang zuo zhi zhen
+◆	shi xin ling xing
+◇	kong xin ling xing
+◈	bao han shi xin ling xing de kong xin ling xing
+◉	bao han shi xin yuan quan de kong xin yuan quan
+◊	pu ke
+◊	fang kuai
+◊	ling xing
+◊	zuan shi
+○	yuan
+○	huan xing
+○	kong xin yuan
+◌	xu xian yuan quan
+◍	dai chui zhi tian chong fu de yuan quan
+◎	tong xin yuan
+●	yuan
+●	shi xin yuan
+◐	zuo ban shi xin de yuan quan
+◑	you ban shi xin de yuan quan
+◒	xia ban shi xin de yuan quan
+◓	shang ban shi xin de yuan quan
+◔	you shang xiang xian shi xin de yuan quan
+◕	chu zuo shang xiang xian wai jun shi xin de yuan quan
+◖	zuo ban shi xin yuan quan
+◗	you ban shi xin yuan quan
+◘	fan bai xiang mu fu hao
+◙	bao han kong xin yuan quan de shi xin fang xing
+◜	zuo shang xiang xian yuan hu
+◝	you shang xiang xian yuan hu
+◞	you xia xiang xian yuan hu
+◟	zuo xia xiang xian yuan hu
+◠	shang ban yuan quan
+◡	xia ban yuan quan
+◢	shi xin you xia san jiao
+◣	shi xin zuo xia san jiao
+◤	shi xin zuo shang san jiao
+◥	shi xin you shang san jiao
+◦	kong xin xiang mu fu hao
+◯	yuan
+◯	da kong xin yuan
+◯	huan xing
+◳	you shang xiang xian kong xin fang xing
+◷	you shang xiang xian kong xin yuan quan
+◿	you xia san jiao
+⨧	dai xia biao er de jia hao
+⨯	xiang liang cha cheng
+⨼	nei ji
+⩣	dai shuang di xian de luo ji huo
+⩽	xiao yu huo qing xie deng yu
+⪍	xiao yu huo xiang si
+⪚	shuang xian deng yu huo da yu
+⪺	hou yu huo bu yue deng yu
+♭	jiang hao
+♯	sheng hao

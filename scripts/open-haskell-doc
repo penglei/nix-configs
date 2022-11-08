@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+doc_url="$1"
+
+url_path=$(echo -n "$doc_url"|awk -F '#' '{printf "%s", $1}')
+url_anchor=$(echo -n "$doc_url" | awk -F '#' '{printf "%s", $2}')
+
+if [[ $url_anchor =~ "%" ]]; then
+  encodedanchor="$url_anchor"
+else
+  encodedanchor=$(echo -n $url_anchor| xxd -p | tr -d '\n' | tr '[:lower:]' '[:upper:]' | sed 's/\(..\)/%\1/g')
+fi
+
+url_to_open="${url_path}#${encodedanchor}"
+
+exec open -n -a "Google Chrome" --args "$url_to_open"
