@@ -94,7 +94,7 @@
       netnewswire
       rectangle
       preview_open
-      isabelle_app
+      # isabelle_app
       koodo-reader
       #adobe-reader
       #bitwarden-desktop
