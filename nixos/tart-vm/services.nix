@@ -1,5 +1,4 @@
-# List services that you want to enable:
-{ config, pkgs, lib, ... }:
+# { config, pkgs, lib, ... }:
 
 {
   # Enable the OpenSSH daemon.

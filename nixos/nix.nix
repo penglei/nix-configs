@@ -4,7 +4,7 @@
   nixpkgs.config.allowUnfree = true;
 
   nix = {
-    package = pkgs.nixUnstable; # or versioned attributes like nix_2_4
+    package = pkgs.nixVersions.git; # or versioned attributes like nix_2_4
     registry.nixpkgs.flake = nixpkgs;
 
     gc.automatic = true;

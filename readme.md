@@ -1,49 +1,47 @@
-= my nixos/home-manager flake configurations 
+# my nixos/home-manager flake configurations 
 
 * darwin: home-manager only, I don't employ nix-darwin.
 * aarch64, x86_64 vm(cloud and local): nixos with embeded home-manager.
 * legacy linux distribution like ubuntu: home-manager only.
 
-== home-manager tips
+## home-manager tips
 
 ```
 home-manager news --flake .
 ```
 
-== bootstrap tips
+## bootstrap tips
 
 
 The newly installed NixOS does not come with vim by default,
 I'm not used to the nano editor. Use the following command to temporarily use vim:
 
-----
-nix --extra-experimental-features nix-command --extra-experimental-features flakes shell nixpkgs#vim
-----
+```
+$ nix --extra-experimental-features nix-command --extra-experimental-features flakes shell nixpkgs#vim
+```
 
-----
-: make pin-registry
-: nix shell nixpkgs#git nixpkgs#home-manager
-: home-manager switch --flake .
-: #or
-: nix run nixpkgs#home-manager switch -- --flake .
+```
+$ make pin-registry
+$ nix shell nixpkgs#git nixpkgs#home-manager
+$ home-manager switch --flake .
+$ #or
+$ nix run nixpkgs#home-manager switch -- --flake .
 
-: sudo nixos-rebuild switch --flake .#tart-vm
-----
+$ sudo nixos-rebuild switch --flake .#tart-vm
+```
 
-== installation
+## install
 
-=== new disk install
+### new disk installation
 
-=== in-place installation by copytoram
+### in-place installation by copytoram
+
+### lustrate installation
 
 
-=== lustrate installation
-
-first, install nix, then install nixos from the flake:
-
-----
+```
 $ bash <(curl -L https://nixos.org/nix/install) --daemon
-$ e2label /dev/vda1 nixos
+$ sudo e2label /dev/vda1 nixos
 $ mkdir ~/.config/nix
 $ cat <<EOF >~/.config/nix/nix.conf
 experimental-features = nix-command flakes
@@ -51,20 +49,25 @@ keep-outputs = true
 keep-derivations = true
 max-jobs = auto
 EOF
-$ nix profile install --profile /nix/var/nix/profiles/system github:penglei/nix-configs#nixosConfigurations.slim.config.system.build.toplevel
-$ sudo chown -R 0:0 /nix
-$ sudo touch /etc/NIXOS
-$ sudo touch /etc/NIXOS_LUSTRATE
-$ echo etc/nixos | sudo tee -a /etc/NIXOS_LUSTRATE
+```
+
+root 用户执行
+
+```
+$ nix profile install --profile /nix/var/nix/profiles/system github:penglei/nix-configs#nixosConfigurations.tart-vm.config.system.build.toplevel
+$ chown -R 0:0 /nix
+$ touch /etc/NIXOS
+$ touch /etc/NIXOS_LUSTRATE
+$ echo etc/nixos | tee -a /etc/NIXOS_LUSTRATE
 etc/nixos
-$ sudo mv -v /boot /boot.bak
+$ mv -v /boot /boot.bak
 renamed '/boot' -> '/boot.bak'
-$ sudo /nix/var/nix/profiles/system/bin/switch-to-configuration boot
+$ /nix/var/nix/profiles/system/bin/switch-to-configuration boot
 $ shutdown -r now
 $ nix-collect-garbage
-----
+```
 
-== references
+## references
 
 .shell expansion
 
@@ -94,15 +97,15 @@ $ nix-collect-garbage
 
 * https://www.nerdfonts.com/cheat-sheet
 
-== yabai
+## yabai
 
-----
+```
 # launchctl load -F ~/Library/LaunchAgents/org.nix-community.home.yabai.plist
 # launchctl unload -F ~/Library/LaunchAgents/org.nix-community.home.yabai.plist
 # launchctl kickstart -k gui/$(id -u)/org.nix-community.home.yabai
-----
+```
 
-=== rime/squirrel
+### rime/squirrel
 
 based on: github.com/iDvel/rime-ice
 
@@ -115,18 +118,18 @@ log location:
 
 force deploy (nix home-manager links rime config):
 
-----
+```
 rm -rf ~/Library/Rime/build
 
 # Press Ctrl+Option(left)+` to re-deploy
 
-----
+```
 
 *Shift+space* as switcher key: https://github.com/rime/squirrel/issues/113
 
 *installation.yaml should be writable after upgrading squirrel.*
 
-=== launchctl
+### launchctl
 
 launchctl bootout gui/$UID ./org.sketchybar.plist
 

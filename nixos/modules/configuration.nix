@@ -7,7 +7,7 @@ in {
   time.timeZone = "Asia/Shanghai";
 
   #No need on a server
-  sound.enable = false;
+  # sound.enable = false;
   fonts.fontconfig.enable = lib.mkDefault false;
 
   # Select internationalisation properties.
