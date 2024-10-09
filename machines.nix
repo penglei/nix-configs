@@ -1,6 +1,6 @@
 { system, profiles, nixpkgs, pkgOverlays, ... }:
 
-rec {
+{
   slim = profiles.nixos-creator {
     inherit system;
     nixpkgs = nixpkgs; # nixpkgsForNixOS
@@ -18,6 +18,17 @@ rec {
     username = "penglei";
     modules = [ ./nixos/basic ];
   };
+
+  ganger = profiles.nixos-creator {
+    inherit system;
+    nixpkgs = nixpkgs; # nixpkgsForNixOS
+    overlays = pkgOverlays;
+    hostname = "ganger";
+    username = "penglei";
+    modules = [ ./nixos/ganger ];
+    hm-modules = profiles.hm.slim.modules;
+  };
+
   utm-vm = profiles.nixos-creator {
     inherit system;
     nixpkgs = nixpkgs; # nixpkgsForNixOS

@@ -2,10 +2,14 @@
 
 {
   imports = [
-    #只能配置一个
-    ./efi.nix
-    #./grub.nix
-  ] ++ [
+
+    # boot loader
+    {
+      boot.loader.systemd-boot.enable = true;
+      boot.loader.efi.efiSysMountPoint = "/boot/efi";
+      boot.loader.efi.canTouchEfiVariables = true;
+    }
+
     ../nix.nix
     ../modules/configuration.nix
     ../modules/programs.nix
@@ -33,21 +37,36 @@
       };
 
       fileSystems."/boot/efi" = {
-        device = "/dev/disk/by-uuid/D72B-3811";
+        device = "/dev/disk/by-label/boot";
         fsType = "vfat";
         options = [ "fmask=0077" "dmask=0077" ];
       };
 
-      #fileSystems."/boot" = {
-      #  device = "/dev/disk/by-label/boot";
-      #  fsType = "vfat";
-      #};
     })
   ];
 
   boot.kernelParams = [ "console=ttyS0,115200" "console=tty1" ];
 
   networking.useDHCP = lib.mkDefault true;
+  networking.iproute2 = {
+    enable = true;
+    rttablesExtraConfig = ''
+      200 lan1
+    '';
+  };
+
+  systemd.network.networks = let networkConfig = { DHCP = "yes"; };
+  in {
+    "10-default" = {
+      enable = true;
+      name = "en*";
+      inherit networkConfig;
+      dhcpV4Config.RouteMetric = 1024; # Better be explicit
+    };
+  };
+
+  networking.useNetworkd = true;
+
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 
   # This value determines the NixOS release from which the default
