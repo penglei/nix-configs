@@ -45,6 +45,15 @@ rec {
     modules = [ ./nixos/router-dev ];
     hm-modules = profiles.hm.slim.modules;
   };
+  installer = profiles.nixos-creator {
+    inherit system;
+    nixpkgs = nixpkgs; # nixpkgsForNixOS
+    overlays = pkgOverlays;
+    hostname = "installer";
+    username = "penglei";
+    modules = [ ./nixos/installer ];
+    hm-modules = profiles.hm.slim.modules;
+  };
 
   hk-alpha = profiles.nixos-creator {
     inherit system;

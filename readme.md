@@ -12,7 +12,6 @@ home-manager news --flake .
 
 ## bootstrap tips
 
-
 The newly installed NixOS does not come with vim by default,
 I'm not used to the nano editor. Use the following command to temporarily use vim:
 
@@ -41,9 +40,7 @@ $ sudo nixos-rebuild switch --flake .#tart-vm
 
 ```
 $ bash <(curl -L https://nixos.org/nix/install) --daemon
-$ sudo e2label /dev/vda1 nixos
-$ mkdir ~/.config/nix
-$ cat <<EOF >~/.config/nix/nix.conf
+# cat <<EOF >>/etc/nix/nix.conf
 experimental-features = nix-command flakes
 keep-outputs = true
 keep-derivations = true
@@ -53,19 +50,45 @@ EOF
 
 root 用户执行
 
-```
-$ nix profile install --profile /nix/var/nix/profiles/system github:penglei/nix-configs#nixosConfigurations.tart-vm.config.system.build.toplevel
-$ chown -R 0:0 /nix
-$ touch /etc/NIXOS
-$ touch /etc/NIXOS_LUSTRATE
-$ echo etc/nixos | tee -a /etc/NIXOS_LUSTRATE
-etc/nixos
-$ mv -v /boot /boot.bak
-renamed '/boot' -> '/boot.bak'
-$ /nix/var/nix/profiles/system/bin/switch-to-configuration boot
-$ shutdown -r now
-$ nix-collect-garbage
-```
+1. 准备环境
+
+    ```
+    # e2label /dev/vda1 nixos
+    # chown -R 0:0 /nix
+    # touch /etc/NIXOS
+    # touch /etc/NIXOS_LUSTRATE
+    # echo etc/nixos | tee -a /etc/NIXOS_LUSTRATE
+    etc/nixos
+    # mv -v /boot /boot.bak
+    renamed '/boot' -> '/boot.bak'
+    ```
+
+    磁盘打label之后可能需要重启(也许是重启systemd-udevd)才能在 `/dev/disk/by-labels/`
+
+2. 生成system profile
+
+    ```
+    # nix profile install --profile /nix/var/nix/profiles/system github:penglei/nix-configs#nixosConfigurations.installer.config.system.build.toplevel
+    ```
+
+    多次执行命令会提醒profile中已经存在该package。使用执行如下命令进行删除：
+
+    ```
+    # nix profile remove toplevel --profile /nix/var/nix/profiles/system
+    ```
+
+
+    ```
+    # /nix/var/nix/profiles/system/bin/switch-to-configuration boot
+    # shutdown -r now
+    # nix-collect-garbage
+    ```
+
+    可以 clone 仓库到本地执行profile installing
+
+    ```
+    # nix profile install --profile /nix/var/nix/profiles/system .#nixosConfigurations.installer.config.system.build.toplevel
+    ```
 
 ## references
 
