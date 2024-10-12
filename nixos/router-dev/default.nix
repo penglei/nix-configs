@@ -5,8 +5,6 @@
 
   boot.kernelParams = [ "console=ttyS0,115200" "console=tty1" ];
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

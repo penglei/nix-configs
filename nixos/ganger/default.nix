@@ -22,8 +22,12 @@
     ({ hostname, ... }: { networking = { hostName = hostname; }; })
 
     #hardwares
-    ({
+    {
+      #These modules ared loaded in boot stage-1, which are required
+      #to recognize block device that contains rootfs for stage-2.
+      #Run `nixos-generate-config` to determine the required modules.
       boot.initrd.availableKernelModules = [ "ahci" "megaraid_sas" ];
+
       boot.kernelModules = [ "kvm-intel" ];
       boot.extraModulePackages = [ ];
 
@@ -32,7 +36,7 @@
         fsType = "ext4";
       };
 
-    })
+    }
   ];
 
   boot.kernelParams = [ "console=ttyS0,115200" "console=tty1" ];
@@ -43,7 +47,6 @@
   # networking.interfaces.eno3.useDHCP = lib.mkDefault true;
   # networking.interfaces.eno4.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
   hardware.cpu.intel.updateMicrocode =
     lib.mkDefault config.hardware.enableRedistributableFirmware;

@@ -17,7 +17,7 @@ in {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "docker" ];
     openssh.authorizedKeys.keys = [ default_ssh_auth_key ];
     shell = pkgs.zsh;
   };

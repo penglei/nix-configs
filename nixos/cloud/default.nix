@@ -44,7 +44,5 @@
       Group = "root";
     };
   };
-  networking.nameservers =
-    lib.mkForce [ ]; # override dnscrypt-proxy2 module settings
 
 }

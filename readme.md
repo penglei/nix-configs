@@ -29,31 +29,6 @@ $ nix run nixpkgs#home-manager switch -- --flake .
 $ sudo nixos-rebuild switch --flake .#tart-vm
 ```
 
-## install
-
-### new disk installation
-### in-place installation by copytoram
-
-### 基于flake 采用 lustrate 方式安装nixos
-
-0. 安装nix
-
-    使用普通用户执行安装
-
-    ```
-    $ bash <(curl -L https://nixos.org/nix/install) --daemon
-    ```
-
-    配置全局nix (使用root用户)
-
-    ```
-    # cat <<EOF >>/etc/nix/nix.conf
-    experimental-features = nix-command flakes
-    keep-outputs = true
-    keep-derivations = true
-    max-jobs = auto
-    EOF
-    ```
 
 1. 准备环境
 
@@ -68,6 +43,7 @@ $ sudo nixos-rebuild switch --flake .#tart-vm
     * vfat(fat16) 类型的分区使用 `dosfslabel` ，一般使用efi启动的系统都会有这样的分区
 
         ```
+        # apt install dosfstools
         # dosfslabel /dev/nvme0n1p1 boot
         ```
 
@@ -99,11 +75,21 @@ $ sudo nixos-rebuild switch --flake .#tart-vm
     # nix profile remove toplevel --profile /nix/var/nix/profiles/system
     ```
 
-    配置文件系统
+    清理干净boot(可选)。忽略 /boot/efi挂载的文件系统不可删除的问题。
+
+    ```
+    root@nixos-installer:/boot# findmnt /boot/efi
+    TARGET    SOURCE         FSTYPE OPTIONS
+    /boot/efi /dev/nvme0n1p1 vfat   rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro
+    root@nixos-installer:/boot# cp -R /boot /boot.bak
+    root@nixos-installer:/boot# rm -rf *
+    rm: cannot remove 'efi': Device or resource busy
+    ```
 
 
     ```
-    # /nix/var/nix/profiles/system/bin/switch-to-configuration boot
+    # mkdir -p /run/current-system/sw/bin
+    # NIXOS_INSTALL_BOOTLOADER=1 /nix/var/nix/profiles/system/bin/switch-to-configuration boot
     # shutdown -r now
     # nix-collect-garbage
     ```
