@@ -19,9 +19,6 @@
       extra-experimental-features = [ "ca-derivations" ];
       trusted-users = [ "@wheel" username ];
       allowed-users = trusted-users;
-
-      #substituters = [];
-      #trusted-public-keys = [];
     };
   };
 }

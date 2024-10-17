@@ -35,7 +35,7 @@
     overlays = pkgOverlays;
     hostname = "utm-vm";
     username = "penglei";
-    modules = [ ./nixos/utm-vm/all.nix ];
+    modules = [ ./nixos/utm-vm ];
   };
 
   tart-vm = profiles.nixos-creator {
@@ -44,7 +44,7 @@
     overlays = pkgOverlays;
     hostname = "tart-vm";
     username = "penglei";
-    modules = [ ./nixos/tart-vm/all.nix ];
+    modules = [ ./nixos/tart-vm ];
   };
 
   router-dev = profiles.nixos-creator {

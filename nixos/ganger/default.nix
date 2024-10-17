@@ -5,41 +5,28 @@
     ../nix.nix
     ../modules/configuration.nix
     ../modules/programs.nix
-
-    {
-      boot.loader.grub.enable = true;
-      boot.loader.grub.device = "/dev/sda";
-    }
-
-    #openssh
-    {
-      services.openssh.enable = true;
-      services.openssh.settings.PasswordAuthentication = false;
-      services.openssh.settings.PermitRootLogin = "yes";
-    }
-
-    #hostname
-    ({ hostname, ... }: { networking = { hostName = hostname; }; })
-
-    #hardwares
-    {
-      #These modules ared loaded in boot stage-1, which are required
-      #to recognize block device that contains rootfs for stage-2.
-      #Run `nixos-generate-config` to determine the required modules.
-      boot.initrd.availableKernelModules = [ "ahci" "megaraid_sas" ];
-
-      boot.kernelModules = [ "kvm-intel" ];
-      boot.extraModulePackages = [ ];
-
-      fileSystems."/" = {
-        device = "/dev/disk/by-label/nixos";
-        fsType = "ext4";
-      };
-
-    }
+    ../modules/openssh.nix
+    ../modules/pam.nix
   ];
 
-  boot.kernelParams = [ "console=ttyS0,115200" "console=tty1" ];
+  #These modules ared loaded in boot stage-1, which are required
+  #to recognize block device that contains rootfs for stage-2.
+  #Run `nixos-generate-config` to determine the required modules.
+  boot.initrd.availableKernelModules = [ "ahci" "megaraid_sas" ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
+
+  boot.loader = {
+    grub = {
+      enable = true;
+      device = "/dev/sda";
+    };
+  };
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos";
+    fsType = "ext4";
+  };
 
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.eno1.useDHCP = lib.mkDefault true;

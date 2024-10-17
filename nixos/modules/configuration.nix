@@ -1,13 +1,14 @@
-{ config, pkgs, lib, username, ... }:
+{ pkgs, lib, username, hostname, ... }:
 
 let default_ssh_auth_key = (import ../../config.nix).ssh.authorized_key;
 in {
 
   # Set your time zone.
-  time.timeZone = "Asia/Shanghai";
+  time.timeZone = lib.mkDefault "Asia/Shanghai";
+
+  networking.hostName = hostname;
 
   #No need on a server
-  # sound.enable = false;
   fonts.fontconfig.enable = lib.mkDefault false;
 
   # Select internationalisation properties.
@@ -21,7 +22,7 @@ in {
     openssh.authorizedKeys.keys = [ default_ssh_auth_key ];
     shell = pkgs.zsh;
   };
-  programs.zsh.enable = true; # by: users.users.*.shell = zsh
+  programs.zsh.enable = true;
 
   users.users.root = {
     openssh.authorizedKeys.keys = [ default_ssh_auth_key ];
@@ -39,5 +40,7 @@ in {
       }];
     }];
   };
+
+  boot.kernelParams = [ "console=ttyS0,115200" "console=tty1" ];
 }
 

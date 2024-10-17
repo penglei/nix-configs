@@ -1,11 +1,27 @@
-{ lib, config, ... }:
+{ ... }:
 
 {
-  imports = [ ./all.nix ./grub.nix ];
+  imports = [
+    ../nix.nix
+    ../modules/configuration.nix
+    ../modules/programs.nix
+    ../modules/openssh.nix
+    ../modules/pam.nix
+  ];
 
-  boot.kernelParams = [ "console=ttyS0,115200" "console=tty1" ];
+  #CAUTION: These modules ared loaded in boot stage-1, which are required
+  #  to recognize block device that contains rootfs for stage-2.
+  #  Run `nixos-generate-config` to determine the required modules.
+  boot.initrd.availableKernelModules = [ ];
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  #TODO boot loader
+
+  #TOTO network
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos";
+    fsType = "ext4";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

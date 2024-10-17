@@ -1,16 +1,21 @@
+{ lib, pkgs, ... }:
+
 {
+  imports = [
+    ../nix.nix
+    ../modules/configuration.nix
+    ../modules/programs.nix
+    ../modules/pam.nix
+  ];
 
   boot.initrd.availableKernelModules =
     [ "nvme" "virtio_pci" "xhci_pci" "usbhid" "virtiofs" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  boot.loader.timeout = 1;
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
@@ -27,5 +32,8 @@
     fsType = "virtiofs";
   };
 
-  swapDevices = [ ];
+  networking = { useDHCP = lib.mkDefault true; };
+  environment.systemPackages = with pkgs; [ htop ];
+  services.timesyncd.enable = false;
+  system.stateVersion = "23.11";
 }
