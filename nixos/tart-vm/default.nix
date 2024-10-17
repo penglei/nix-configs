@@ -6,6 +6,7 @@
     ../modules/configuration.nix
     ../modules/programs.nix
     ../modules/pam.nix
+    ../modules/openssh.nix
   ];
 
   boot.initrd.availableKernelModules =
@@ -17,19 +18,14 @@
     efi.canTouchEfiVariables = true;
   };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/nixos";
-    fsType = "btrfs";
-  };
-
   fileSystems."/boot" = {
-    device = "/dev/disk/by-label/boot";
+    device = "/dev/disk/by-partlabel/disk-main-esp";
     fsType = "vfat";
+    options = [ "fmask=0077" "dmask=0077" ];
   };
-
-  fileSystems."/run/data" = {
-    device = "com.apple.virtio-fs.automount";
-    fsType = "virtiofs";
+  fileSystems."/" = {
+    device = "/dev/disk/by-partlabel/disk-main-root";
+    fsType = "ext4";
   };
 
   networking = { useDHCP = lib.mkDefault true; };
