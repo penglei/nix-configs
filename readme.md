@@ -26,78 +26,8 @@ $ home-manager switch --flake .
 $ #or
 $ nix run nixpkgs#home-manager switch -- --flake .
 
-$ sudo nixos-rebuild switch --flake .#tart-vm
+$ sudo nixos-rebuild switch --flake .#NAME
 ```
-
-
-1. 准备环境
-
-    给主分区打label，这样才能更加通用
-
-    * 传统 ext2/3/4 类型的分区使用 `e2label` 修改label
-
-        ```
-        # e2label /dev/vda1 nixos
-        ```
-
-    * vfat(fat16) 类型的分区使用 `dosfslabel` ，一般使用efi启动的系统都会有这样的分区
-
-        ```
-        # apt install dosfstools
-        # dosfslabel /dev/nvme0n1p1 boot
-        ```
-
-    * btrfs 使用 `btrfs filesystem label <device/mountpoint> <label>`
-
-
-    ```
-    # chown -R 0:0 /nix
-    # touch /etc/NIXOS
-    # echo etc/nixos | tee -a /etc/NIXOS_LUSTRATE
-    etc/nixos
-    # mv -v /boot /boot.bak
-    renamed '/boot' -> '/boot.bak'
-    ```
-
-    磁盘打label之后可能需要重启(也许是重启systemd-udevd)才能在 `/dev/disk/by-labels/`
-
-2. 生成system profile
-
-    ```
-    # nix profile install --profile /nix/var/nix/profiles/system github:penglei/nix-configs#nixosConfigurations.installer.config.system.build.toplevel
-    # nix profile wipe-history --profile /nix/var/nix/profiles/system
-    ```
-
-    多次执行命令会提醒profile中已经存在该package。使用执行如下命令进行删除：
-
-    ```
-    # nix profile remove toplevel --profile /nix/var/nix/profiles/system
-    ```
-
-    清理干净boot(可选)。忽略 /boot/efi挂载的文件系统不可删除的问题。
-
-    ```
-    root@nixos-installer:/boot# findmnt /boot/efi
-    TARGET    SOURCE         FSTYPE OPTIONS
-    /boot/efi /dev/nvme0n1p1 vfat   rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro
-    root@nixos-installer:/boot# cp -R /boot /boot.bak
-    root@nixos-installer:/boot# rm -rf *
-    rm: cannot remove 'efi': Device or resource busy
-    ```
-
-
-    ```
-    # mkdir -p /run/current-system/sw/bin
-    # NIXOS_INSTALL_BOOTLOADER=1 /nix/var/nix/profiles/system/bin/switch-to-configuration boot
-    # shutdown -r now
-    # nix-collect-garbage
-    ```
-
-    可以 clone 仓库到本地执行profile installing
-
-    ```
-    # nix profile install --profile /nix/var/nix/profiles/system .#nixosConfigurations.installer.config.system.build.toplevel
-    ```
 
 ## references
 
@@ -109,7 +39,6 @@ $ sudo nixos-rebuild switch --flake .#tart-vm
 * https://zsh.sourceforge.io/Doc/Release/Expansion.html#Parameter-Expansion
 * https://stackoverflow.com/questions/3435355/remove-entry-from-array
 * https://unix.stackexchange.com/questions/411304/how-do-i-check-whether-a-zsh-array-contains-a-given-value
-
 
 .macOS NSUserDefaults
 

@@ -4,6 +4,12 @@ let
   #configFile = config.sops.templates.ssserver.path;
   configFile = config.sops.secrets."ssserver.json".path;
 in {
+
+  sops.secrets."ssserver.json" = {
+    sopsFile = ../../secrets/server.yaml;
+    restartUnits = [ "ssserver.service" ];
+    templates.ssserver.content = builtins.toJSON { "server_port" = 8388; };
+  };
   systemd.services.ssserver = {
     description = "ssserver daemon";
     after = [ "network.target" ];

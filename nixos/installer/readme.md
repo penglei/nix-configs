@@ -1,8 +1,8 @@
 ## 可能出现的错误
 
-1. 没有正确配置文件系统
+1. 没有正确配置文件系统和内核模块
 
-    需要使用nixos-generate-config生成配置
+    需要使用nixos-generate-config生成配置，检查里面必要的内核模块。
 
     ```
     # nix shell nixpkgs#nixos-install-tools
@@ -97,6 +97,10 @@ Created EFI boot entry "Linux Boot Manager".
 
 ```
 
+
+显示efi 启动配置
+
+
 ```
 [root@installer:~]# bootctl | cat
 systemd-boot not installed in ESP.
@@ -155,6 +159,27 @@ Default Boot Loader Entry:
       options: init=/nix/store/slnvcqgff4vmpk9qhk2p8yfqspf2d407-nixos-system-installer-24.11.20240917.658e722/init console=ttyS0,115200 console=tty1 loglevel=4
 ```
 
+3. 禁用debian的kexec重启模式
+
+/etc/default/kexec
+```
+
+# Defaults for kexec initscript
+# sourced by /etc/init.d/kexec and /etc/init.d/kexec-load
+
+# Load a kexec kernel (true/false)
+LOAD_KEXEC=false
+
+# Kernel and initrd image
+KERNEL_IMAGE="/vmlinuz"
+INITRD="/initrd.img"
+
+# If empty, use current /proc/cmdline
+APPEND=""
+
+# Load the default kernel from grub config (true/false)
+USE_GRUB_CONFIG=false
+```
 
 ## systemd boot loader 源码
 
