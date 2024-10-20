@@ -1,9 +1,14 @@
+##How to generate age key from host key?
+#❯ nix shell nixpkgs#ssh-to-age
+#❯ ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub
+
 keys:
   - &main 354E6EB6E69FCDA3BCA1B3B7B346D48376F25ECB # gpg (support yubikey)
   - &recovery age153uqe6cwr5rfqr79y5al4lr8udzahad30snqwhj65kqg4yrh6ygqg364pr # important recovery key
-  - &utm-vm age18sjryxz9rpzwerapr387hk0yumhscklp2nd5pmw8cj5qnpjek92qyq8c8z #ssh host key
   - &sg-alpha age1ae2dhtv5pryg54q478sll79wyp6rxqakan5ack6fxyylyyqandqq4v79q0 #ssh host key
   - &hk-alpha age1lrqtrvnahhdfu6pq00ncp5fk0vsm05duvkxk78d7nf6eezy7jayqlpxmvj #ssh host key
+  - &sv-alpha age1df6sr7f9y78dlp5gzd0asa538v7t39w90kqevue6pza3lhqxmqrs2373eq #ssh host key
+  # - &utm-vm age18sjryxz9rpzwerapr387hk0yumhscklp2nd5pmw8cj5qnpjek92qyq8c8z #ssh host key
 creation_rules:
   - path_regex: secrets/server.yaml$
     key_groups:
@@ -12,11 +17,11 @@ creation_rules:
         age:
           - *sg-alpha
           - *hk-alpha
-          - *utm-vm
+          - *sv-alpha
   - path_regex: secrets/[^/]+\.yaml$
     key_groups:
       - pgp:
           - *main
         age:
           - *recovery
-          - *utm-vm
+          # - *utm-vm

@@ -4,6 +4,10 @@
 * aarch64, x86_64 vm(cloud and local): nixos with embeded home-manager.
 * legacy linux distribution like ubuntu: home-manager only.
 
+## update secrets
+
+    make sops-update
+
 ## home-manager tips
 
 ```
