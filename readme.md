@@ -53,7 +53,6 @@ $ sudo nixos-rebuild switch --flake .#tart-vm
     ```
     # chown -R 0:0 /nix
     # touch /etc/NIXOS
-    # touch /etc/NIXOS_LUSTRATE
     # echo etc/nixos | tee -a /etc/NIXOS_LUSTRATE
     etc/nixos
     # mv -v /boot /boot.bak

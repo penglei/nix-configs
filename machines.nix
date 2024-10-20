@@ -1,6 +1,14 @@
 { system, profiles, nixpkgs, pkgOverlays, ... }:
 
-{
+let
+  cloudconfig = {
+    inherit system nixpkgs;
+    overlays = pkgOverlays;
+    username = "penglei";
+    modules = [ ./nixos/cloud ];
+    hm-modules = profiles.hm.slim.modules;
+  };
+in {
   slim = profiles.nixos-creator {
     inherit system;
     nixpkgs = nixpkgs; # nixpkgsForNixOS
@@ -84,4 +92,6 @@
     modules = [ ./nixos/cloud ];
     hm-modules = profiles.hm.slim.modules;
   };
+
+  sv-alpha = profiles.nixos-creator (cloudconfig // { hostname = "sv-alpha"; });
 }
