@@ -17,14 +17,23 @@
   boot.extraModulePackages = [ ];
 
   boot.loader = {
-    grub = {
-      enable = true;
-      device = "/dev/sda";
-    };
+    timeout = 1;
+
+    # grub.enable = true;
+    # grub.device = "/dev/sda";
+
+    systemd-boot.enable = true;
+    efi.efiSysMountPoint = "/boot";
+    efi.canTouchEfiVariables = true;
   };
 
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-partlabel/disk-main-esp";
+    fsType = "vfat";
+    options = [ "fmask=0077" "dmask=0077" ];
+  };
   fileSystems."/" = {
-    device = "/dev/disk/by-label/nixos";
+    device = "/dev/disk/by-partlabel/disk-main-root";
     fsType = "ext4";
   };
 

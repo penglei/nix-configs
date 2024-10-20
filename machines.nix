@@ -67,8 +67,7 @@
   };
 
   hk-alpha = profiles.nixos-creator {
-    inherit system;
-    nixpkgs = nixpkgs; # nixpkgsForNixOS
+    inherit system nixpkgs;
     overlays = pkgOverlays;
     hostname = "hk-alpha";
     username = "penglei";
