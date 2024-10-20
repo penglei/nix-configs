@@ -79,7 +79,11 @@ in {
     overlays = pkgOverlays;
     hostname = "hk-alpha";
     username = "penglei";
-    modules = [ ./nixos/cloud ];
+    modules = [
+      ./nixos/cloud
+
+      ./nixos/modules/ssserver.nix
+    ];
     hm-modules = profiles.hm.slim.modules;
   };
 
@@ -89,7 +93,11 @@ in {
     overlays = pkgOverlays;
     hostname = "sg-alpha";
     username = "penglei";
-    modules = [ ./nixos/cloud ];
+    modules = [
+      ./nixos/cloud
+
+      ./nixos/modules/dnscrypt-proxy-server.nix
+    ];
     hm-modules = profiles.hm.slim.modules;
   };
 

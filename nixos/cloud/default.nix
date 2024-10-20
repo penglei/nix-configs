@@ -9,8 +9,6 @@
     ../modules/openssh.nix
     ../modules/pam.nix
     ../modules/sops.nix
-    ../modules/ssserver.nix
-    ../modules/dnscrypt-proxy-server.nix
   ];
 
   boot.initrd.availableKernelModules =
