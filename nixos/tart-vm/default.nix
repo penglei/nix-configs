@@ -7,6 +7,7 @@
     ../modules/programs.nix
     ../modules/pam.nix
     ../modules/openssh.nix
+    ../modules/sing-box-client.nix
   ];
 
   boot.initrd.availableKernelModules =
