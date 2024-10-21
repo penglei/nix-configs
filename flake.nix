@@ -24,15 +24,12 @@
   };
 
   outputs = { self, nixpkgs, nixpkgsForNixOS, flake-utils, home-manager
-    , sops-nix, nil-language-server, ... }@inputs:
+    , sops-nix, nil-language-server, ... }:
     let
       inherit (nixpkgs) lib;
 
-      #systems = [ "aarch64-darwin" "x86_64-darwin" "aarch64-linux" "x86_64-linux" ]
-      systems = map (x: "${x.arch}-${x.os}") (lib.cartesianProduct {
-        os = [ "darwin" "linux" ];
-        arch = [ "aarch64" "x86_64" ];
-      });
+      systems =
+        [ "aarch64-darwin" "x86_64-darwin" "aarch64-linux" "x86_64-linux" ];
       eachSystem = f: (flake-utils.lib.eachSystem systems f);
 
     in eachSystem (system:
@@ -81,8 +78,13 @@
 
         ## nixos linux only
         packages.nixosConfigurations = import ./machines.nix {
-          inherit system profiles nixpkgs pkgOverlays;
+          inherit system pkgOverlays;
+          nixpkgs = nixpkgsForNixOS;
+          profiles = import ./profiles.nix {
+            inherit self system home-manager sops-nix;
+            pkgs = nixpkgsForNixOS.legacyPackages.${system}.appendOverlays
+              pkgOverlays;
+          };
         };
-        #packages.darwin-rootkit = ./
       }); # each system
 }
