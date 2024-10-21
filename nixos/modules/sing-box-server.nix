@@ -4,48 +4,30 @@ let
   cfg = {
     inbounds = [
       {
-        type = "mixed";
+        type = "shadowtls";
         listen = "::";
-        listen_port = 10000;
+        listen_port = 443;
+        detour = "shadowsocks-in";
+        version = 3;
+        users = [{ password = passwordstub; }];
+        handshake = {
+          server = config.sops.placeholder."sing-box.shadowtls.server_name";
+          server_port = 443;
+        };
+        strict_mode = true;
       }
 
-      {
-        type = "socks";
-        listen = "0.0.0.0";
-        listen_port = 18283;
-        sniff = true;
-        sniff_override_destination = true;
-        domain_strategy = "ipv4_only"; # work with chinadns-ng
-      }
-    ];
-
-    outbounds = [
       {
         type = "shadowsocks";
-        detour = "shadowtls-out";
+        tag = "shadowsocks-in";
+        listen = "127.0.0.1";
         method = "2022-blake3-aes-128-gcm";
         password = passwordstub;
         multiplex = { enabled = true; };
       }
-
-      {
-        type = "shadowtls";
-        tag = "shadowtls-out";
-        server = config.sops.placeholder."sing-box.server.address";
-        server_port = 443;
-        version = 3;
-        password = passwordstub;
-        tls = {
-          enabled = true;
-          server_name =
-            config.sops.placeholder."sing-box.shadowtls.server_name";
-          utls = {
-            enabled = true;
-            fingerprint = "chrome";
-          };
-        };
-      }
     ];
+
+    outbounds = [{ type = "direct"; }];
   };
 
   ## Not recommanded: sensitive data is stored in /nix/store, which everyone can read.
@@ -62,7 +44,7 @@ in {
   };
 
   systemd.services.sing-box = {
-    description = "sing-box client daemon";
+    description = "sing-box server daemon";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
     path = [ pkgs.sing-box ];
@@ -70,3 +52,4 @@ in {
     serviceConfig = { WorkingDirectory = "/tmp"; };
   };
 }
+

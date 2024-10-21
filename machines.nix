@@ -10,8 +10,7 @@ let
   };
 in {
   slim = profiles.nixos-creator {
-    inherit system;
-    nixpkgs = nixpkgs; # nixpkgsForNixOS
+    inherit system nixpkgs;
     overlays = pkgOverlays;
     hostname = "nixos";
     username = "penglei";
@@ -19,8 +18,7 @@ in {
     hm-modules = profiles.hm.slim.modules;
   };
   basic = profiles.nixos-creator {
-    inherit system;
-    nixpkgs = nixpkgs; # nixpkgsForNixOS
+    inherit system nixpkgs;
     overlays = pkgOverlays;
     hostname = "nixos";
     username = "penglei";
@@ -28,8 +26,7 @@ in {
   };
 
   ganger = profiles.nixos-creator {
-    inherit system;
-    nixpkgs = nixpkgs; # nixpkgsForNixOS
+    inherit system nixpkgs;
     overlays = pkgOverlays;
     hostname = "ganger";
     username = "penglei";
@@ -38,8 +35,7 @@ in {
   };
 
   utm-vm = profiles.nixos-creator {
-    inherit system;
-    nixpkgs = nixpkgs; # nixpkgsForNixOS
+    inherit system nixpkgs;
     overlays = pkgOverlays;
     hostname = "utm-vm";
     username = "penglei";
@@ -47,8 +43,7 @@ in {
   };
 
   tart-vm = profiles.nixos-creator {
-    inherit system;
-    nixpkgs = nixpkgs; # nixpkgsForNixOS
+    inherit system nixpkgs;
     overlays = pkgOverlays;
     hostname = "tart-vm";
     username = "penglei";
@@ -56,8 +51,7 @@ in {
   };
 
   router-dev = profiles.nixos-creator {
-    inherit system;
-    nixpkgs = nixpkgs; # nixpkgsForNixOS
+    inherit system nixpkgs;
     overlays = pkgOverlays;
     hostname = "router-dev";
     username = "penglei";
@@ -65,8 +59,7 @@ in {
     hm-modules = profiles.hm.slim.modules;
   };
   installer = profiles.nixos-creator {
-    inherit system;
-    nixpkgs = nixpkgs; # nixpkgsForNixOS
+    inherit system nixpkgs;
     overlays = pkgOverlays;
     hostname = "installer";
     username = "penglei";
@@ -88,8 +81,7 @@ in {
   };
 
   sg-alpha = profiles.nixos-creator {
-    inherit system;
-    nixpkgs = nixpkgs; # nixpkgsForNixOS
+    inherit system nixpkgs;
     overlays = pkgOverlays;
     hostname = "sg-alpha";
     username = "penglei";

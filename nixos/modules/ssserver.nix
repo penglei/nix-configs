@@ -1,8 +1,8 @@
 { pkgs, config, ... }:
 
 let
-  configFile = config.sops.secrets."ssserver/config.json".path;
-  generatedConfigFile = config.sops.templates."ssserver/config.json".path;
+  configFilePath = config.sops.secrets."ssserver/config.json".path;
+  generatedConfigFilePath = config.sops.templates."ssserver/config.json".path;
   configTemplate = ''
     {
       "server": "0.0.0.0",
@@ -36,8 +36,8 @@ in {
     wantedBy = [ "multi-user.target" ];
     path = [ pkgs.shadowsocks-rust pkgs.v2ray-plugin ];
     script = ''
-      echo "sops template example file: ${generatedConfigFile} "
-      exec ssserver -c ${configFile}
+      echo "sops template example file: ${generatedConfigFilePath} "
+      exec ssserver -c ${configFilePath}
     '';
     serviceConfig = { WorkingDirectory = "/tmp"; };
   };
