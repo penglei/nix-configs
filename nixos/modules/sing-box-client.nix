@@ -1,6 +1,5 @@
 { pkgs, config, lib, ... }:
 let
-  base64 = import ../../utils/base64.nix lib;
   cfg = {
     inbounds = [{
       type = "socks";
@@ -19,7 +18,7 @@ let
         tag = "ss";
         detour = "shadowtls-out";
         method = "2022-blake3-aes-128-gcm";
-        password = base64.encode config.sops.placeholder."secret.main.password";
+        password = config.sops.placeholder."secret.main.password";
       }
 
       {
@@ -28,7 +27,7 @@ let
         server = config.sops.placeholder."sing-box.server.address";
         server_port = 443;
         version = 3;
-        password = base64.encode config.sops.placeholder."secret.main.password";
+        password = config.sops.placeholder."secret.main.password";
         tls = {
           enabled = true;
           server_name =
@@ -44,7 +43,7 @@ let
 
   ## Not recommanded: sensitive data is stored in /nix/store, which everyone can read.
   # configFile = pkgs.writeText "config.json" (builtins.toJSON cfg); 
-  configFile = config.sops.templates."config.json".path;
+  configFile = config.sops.templates."sing-box-client/config.json".path;
 
 in {
 
@@ -53,7 +52,7 @@ in {
     "sing-box.server.address"
     "sing-box.shadowtls.server_name"
   ];
-  sops.templates."config.json" = {
+  sops.templates."sing-box-client/config.json" = {
     content = builtins.toJSON cfg;
     mode = "0400";
   };
@@ -63,7 +62,7 @@ in {
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
     path = [ pkgs.sing-box ];
-    script = "exec sing-box -c ${configFile}";
+    script = "exec sing-box run -c ${configFile}";
     serviceConfig = { WorkingDirectory = "/tmp"; };
   };
 }

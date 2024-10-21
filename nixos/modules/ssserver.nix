@@ -1,8 +1,8 @@
 { pkgs, config, ... }:
 
 let
-  configFile = config.sops.secrets."ssserver.json".path;
-  generatedConfigFile = config.sops.templates."ss-server-config.json".path;
+  configFile = config.sops.secrets."ssserver/config.json".path;
+  generatedConfigFile = config.sops.templates."ssserver/config.json".path;
   configTemplate = ''
     {
       "server": "0.0.0.0",
@@ -13,18 +13,22 @@ let
     }
   '';
 in {
-  sops.templates."ss-server-config.json" = {
+  sops.templates."ssserver/config.json" = {
     content = configTemplate;
     mode = "0400";
   };
 
   sops.secrets = let sfile = ../../secrets/server.yaml;
   in {
-    "ssserver.json" = {
+    "ssserver/config.json" = {
       sopsFile = sfile;
       restartUnits = [ "ssserver.service" ];
+      key = "ssserver.json";
     };
-    "ss-password" = { sopsFile = sfile; };
+    "ss-password" = {
+      sopsFile = sfile;
+      key = "secret.main.password";
+    };
   };
   systemd.services.ssserver = {
     description = "ssserver daemon";
