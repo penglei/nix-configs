@@ -7,5 +7,7 @@
     pstree
     file
     curl
+    gnumake
+    nixVersions.latest
   ]; # merge syntatics
 }
