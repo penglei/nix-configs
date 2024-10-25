@@ -81,14 +81,15 @@ log location:
 * $TMPDIR/rime.squirrel.INFO
 * $TMPDIR/rime.squirrel.ERROR
 
-force deploy (nix home-manager links rime config):
+force deploy :
 
-```
-rm -rf ~/Library/Rime/build
+* run home-manager to link rime configuration again
+* clean cache
+  ```
+  rm -rf ~/Library/Rime/build
+  ```
+* Do squirrel Deploy (click in menu)
 
-# Press Ctrl+Option(left)+` to re-deploy
-
-```
 
 *Shift+space* as switcher key: https://github.com/rime/squirrel/issues/113
 
