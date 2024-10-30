@@ -18,15 +18,15 @@
 
   #需要先手动创建足够的namespace(多次执行 yabai -m space --create)
 
-  ${yabai} -m space 1 --label work   #work
-  ${yabai} -m space 2 --label term   #alacritty
-  ${yabai} -m space 3 --label editor #jetbrains, vscode...
+  ${yabai} -m space 1 --label work      #work
+  ${yabai} -m space 2 --label term      #alacritty
+  ${yabai} -m space 3 --label editor    #jetbrains, vscode,...
   ${yabai} -m space 4 --label misc
-  ${yabai} -m space 5 --label social #telegram,wechat...
-  ${yabai} -m space 6 --label email
-  ${yabai} -m space 7 --label relax
-  ${yabai} -m space 8 --label viewer #chrome,safari,koodo,logseq..
-  ${yabai} -m space 9 --label listener
+  ${yabai} -m space 6 --label viewer    #skim, koodo, second terminal, ...
+  ${yabai} -m space 5 --label task      #AFFiNE, logseq,...
+  ${yabai} -m space 7 --label web       #chrome,safari
+  ${yabai} -m space 8 --label social    #telegram,wechat,...
+  ${yabai} -m space 9 --label relax     #QQ音乐,...
   ${yabai} -m space 10 --label adhoc
 
   # apps unmanaged (ignore)
@@ -34,17 +34,17 @@
 
   ${yabai} -m rule --add app="^(Snipaste)$" sticky=on layer=above manage=off
   ${yabai} -m rule --add title="^(Finder Preferences)$" layer=above manage=off
-
-  ${yabai} -m rule --add app="^(Safari|Notes|Google Chrome|Firefox)$" space=viewer
-  ${yabai} -m rule --add app="^(Telegram|WeChat)$" space=viewer
-  ${yabai} -m rule --add app="^WeChat$" manage=off
-  ${yabai} -m rule --add app="^(WeCom)$" space=work
-  ${yabai} -m rule --add app="^(QQ音乐|迅雷)$" space=misc
-  ${yabai} -m rule --add app="^(kitty)$" space=term
-  ${yabai} -m rule --add app="^Microsoft Outlook$" space=email
-  ${yabai} -m rule --add app="^TencentMeeting$" space=work
-
   ${yabai} -m rule --add app="^mpv$" manage=off sticky=on layer=above opacity=1.0 grid=8:8:6:0:2:2
+
+  ${yabai} -m rule --add app="^TencentMeeting$" space=work
+  ${yabai} -m rule --add app="^WeCom$" space=work
+  ${yabai} -m rule --add app="^kitty$" space=term
+  ${yabai} -m rule --add app="^AFFiNE|Logseq|Notes$" space=task
+  ${yabai} -m rule --add app="^(Skim|Koodo Reader|EuDic)$" space=viewer
+  ${yabai} -m rule --add app="^(Google Chrome|Safari|Firefox)$" space=web
+  ${yabai} -m rule --add app="^(Telegram|WeChat)$" space=social
+  ${yabai} -m rule --add app="^(QQ音乐|迅雷)$" space=relax
+  ${yabai} -m rule --add app="^(iOA)$" space=adhoc
 
   ${yabai} -m config focus_follows_mouse off #autoraise, off
   echo -n off >$HOME/.yabai.config.focus_follows_mouse
