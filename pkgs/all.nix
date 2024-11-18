@@ -1,12 +1,12 @@
 final: prev:
 let pkgs = final;
 in with pkgs; {
-  apple_sdk_extend.frameworks = let
-    apple_sdk_maker = callPackage ./darwin/framework.nix {
-      inherit buildPackages;
-      inherit (darwin.apple_sdk) MacOSX-SDK;
-    };
-  in { MediaRemote = apple_sdk_maker.privateFramework "MediaRemote" { }; };
+  # apple_sdk_extend.frameworks = let
+  #   apple_sdk_maker = callPackage ./darwin/framework.nix {
+  #     inherit buildPackages;
+  #     inherit (darwin.apple_sdk) MacOSX-SDK;
+  #   };
+  # in { MediaRemote = apple_sdk_maker.privateFramework "MediaRemote" { }; };
 
   createscript = callPackage ./createscript.nix { };
 
@@ -48,11 +48,11 @@ in with pkgs; {
     inherit (darwin.apple_sdk.frameworks) Carbon Cocoa ScriptingBridge SkyLight;
   };
 
-  sketchybar = callPackage ./darwin/sketchybar.nix {
-    inherit (darwin.apple_sdk.frameworks)
-      Carbon Cocoa CoreWLAN DisplayServices SkyLight;
-    inherit (apple_sdk_extend.frameworks) MediaRemote;
-  };
+  # sketchybar = callPackage ./darwin/sketchybar.nix {
+  #   inherit (darwin.apple_sdk.frameworks)
+  #     Carbon Cocoa CoreWLAN DisplayServices SkyLight;
+  #   inherit (apple_sdk_extend.frameworks) MediaRemote;
+  # };
   screenfetch = callPackage ./screenfetch { };
   presentation = callPackage ./darwin/presentation.nix { };
   adobe-reader = callPackage ./darwin/adobe-reader.nix { };

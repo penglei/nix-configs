@@ -101,7 +101,7 @@
       #rar #NIXPKGS_ALLOW_UNFREE=1 nix profile install nixpkgs#rar --impure
       p7zip
       libarchive # for decompress .pkg installer
-      duti # set default applications in alfred
+      #duti # set default applications in alfred
       #chez-racket
       alttab
       shiori # web bookmarks

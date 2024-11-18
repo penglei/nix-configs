@@ -1,3 +1,4 @@
+# deprecated
 { lib, stdenv, MacOSX-SDK, buildPackages }:
 let
   mkDepsRewrites = deps:
