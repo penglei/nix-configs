@@ -27,7 +27,7 @@ background = "#ff00ff"
 foreground = "#6e4962"
 background = "#86d3ce"
 
-[shell]
+[terminal.shell]
 #program: /Users/penglei/.local/bin/myprintenv # we will see SSH_AUTH_SOCK is set
 #program: /bin/zsh
 #args: ["-c", "unset SSH_AUTH_SOCK;exec -a -zsh /bin/zsh"]

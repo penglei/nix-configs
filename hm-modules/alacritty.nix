@@ -54,7 +54,7 @@ in {
   programs.alacritty = {
     enable = true;
     settings = {
-      import = [ userlocalconfigfile ];
+      general.import = [ userlocalconfigfile ];
       window = {
         option_as_alt = "OnlyLeft";
         decorations = "buttonless";

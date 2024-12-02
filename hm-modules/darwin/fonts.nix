@@ -3,25 +3,31 @@
     fontconfig
 
     #{--coding font
-    (nerdfonts.override {
-      fonts = [
-        #prefer ** (<most width>, <ligatures>)
-        "FiraCode"
+    # (nerdfonts.override {
+    #   fonts = [
+    #     #prefer ** (<most width>, <ligatures>)
+    #     "FiraCode"
 
-        #prefer ** (<most narrow>, <ligatures>)
-        "JetBrainsMono"
+    #     #prefer ** (<most narrow>, <ligatures>)
+    #     "JetBrainsMono"
 
-        #prefer *** (<narrow>, <no-ligatures>)
-        "DejaVuSansMono"
+    #     #prefer *** (<narrow>, <no-ligatures>)
+    #     "DejaVuSansMono"
 
-        #prefer *** (<narrow>, <no-ligatures>)
-        #derived from DejaVuSansMono
-        "Hack"
+    #     #prefer *** (<narrow>, <no-ligatures>)
+    #     #derived from DejaVuSansMono
+    #     "Hack"
 
-        "DroidSansMono"
-        "Monoid"
-      ];
-    })
+    #     "DroidSansMono"
+    #     "Monoid"
+    #   ];
+    # })
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.dejavu-sans-mono
+    nerd-fonts.hack
+    nerd-fonts.monoid
 
     #^custom Hack
     #some symbols not exist which are needed by neovim NvChad(😣).
