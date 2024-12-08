@@ -2,12 +2,12 @@
 
 stdenvNoCC.mkDerivation rec {
   pname = "koodo-reader";
-  version = "1.6.0";
+  version = "1.7.2";
 
   src = fetchurl {
     url =
-      "https://github.com/troyeguo/koodo-reader/releases/download/v${version}/Koodo-Reader-${version}-arm64.dmg";
-    sha256 = "sha256-94IqXWnusGfntfWxX7vqwQpF4Yos5MAEwNsjpVJI+AI=";
+      "https://github.com/koodo-reader/koodo-reader/releases/download/v${version}/Koodo-Reader-${version}-arm64.dmg";
+    sha256 = "";
   };
 
   sourceRoot = "Koodo Reader.app";
