@@ -35,7 +35,7 @@ in with pkgs; {
 
   mongosh = callPackage ./mongosh { };
 
-  koodo-reader = callPackage ./darwin/koodo-reader.nix { };
+  # koodo-reader = callPackage ./darwin/koodo-reader.nix { };
 
   alacritty-custom = callPackage ./alacritty {
     inherit (darwin.apple_sdk.frameworks)

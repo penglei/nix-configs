@@ -29,17 +29,18 @@ background = "#86d3ce"
 
 [terminal.shell]
 #program: /Users/penglei/.local/bin/myprintenv # we will see SSH_AUTH_SOCK is set
+
 #program: /bin/zsh
 #args: ["-c", "unset SSH_AUTH_SOCK;exec -a -zsh /bin/zsh"]
 
 program = "/usr/bin/login"
 args = ["-flp", "penglei", "/bin/zsh", "-c", "exec -a -zsh /bin/zsh"]
-#args: ["-flp", penglei, "/bin/zsh", "-c", "echo $SSH_AUTH_SOCK;exec -a -zsh /bin/zsh"]
 #args: ["-flp", "penglei", "/bin/zsh", "-c", "exec /bin/zsh --login"] #另一个等价的写法
-#args: ["-flp", "penglei", "/bin/zsh", "-c", "exec -a -haha /bin/zsh"]
 #args: ["-flp", "penglei", "/bin/zsh", "-c", "exec -a -🐶🐶- /bin/zsh"]
-##这里相当有技巧性: 第一个zsh不是login shell，并且是non-interactive，所以什么配置都不会加载；
-##第二个是login shell并且是interactive(没要-c)
+#这里相当有技巧性:
+##第一个zsh进程不是login shell，并且是non-interactive，所以什么配置都不会加载；
+##第二个zsh进程是login shell，并且是interactive(没有-c)
+
 # // Exec the shell with argv[0] prepended by '-' so it becomes a login shell.
 # // `login` normally does this itself, but `-l` disables this.
 # let exec = format!("exec -a -{} {}", shell_name, shell);

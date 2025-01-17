@@ -1,6 +1,6 @@
 
 
-{ lib, fetchzip, stdenvNoCC, undmg }:
+{ lib, fetchzip, stdenvNoCC }:
 
 stdenvNoCC.mkDerivation rec {
   pname = "isabelle-app";

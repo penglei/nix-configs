@@ -1,55 +1,18 @@
 { pkgs, lib, config, ... }:
 
 let
-  fontoffsetbase = {
-    x = 0;
-    y = -1; # line spacing delta
-  };
-  fontcfgstyle = {
-    firacode = {
-      family = "FiraCode Nerd Font Mono";
-      style = "Light";
-      offset = fontoffsetbase // { y = -1; };
-    };
-  };
-  #font:
-  #  normal:
-  #    family: FiraCode Nerd Font Mono
-  #
-  #family: FiraCode Nerd Font
-  #family: FiraCode Nerd Font Mono
-  #style: Light
-  ##
-  #family: JetBrainsMono Nerd Font
-  #family: JetBrainsMono Nerd Font Mono
-  #style: Light
-  ##
-  #family: Hack Nerd Font
-  #family: Hack Nerd Font Mono #(↑ 没区别)
-  ##
-  #family: DejaVuSansMono Nerd Font
-  #family: DejaVuSansMono Nerd Font Mono #(↑ 没区别)
-  ##
-  #family: SFMono Nerd Font
-  #style: Light
-
   ##FiraCode, JetBrains的行高类似，都比较高
   ##Hack, DejaVu,SF的行高类似，都稍微矮一点
   ##命令行里面感觉行高一点看起来舒服些
 
-  font = fontcfgstyle.firacode;
-
   userlocalconfigfile =
-    "${config.xdg.configHome}/alacritty/userlocal.toml"; # "~/.config/alacritty/userlocal.toml";
+    "${config.xdg.configHome}/alacritty/userlocal.toml"; # "~/.config/alacritty/userlocal.yaml";
+
 in {
-  #home.activation.writerMutableAllcrittyConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-  #  touch ${userlocalconfigfile}
-  #  ${pkgs.yq-go}/bin/yq -i '.font.normal.family = "${font.family}"' ${userlocalconfigfile}
-  #  if [[ -n "${font.style}" ]]; then
-  #    ${pkgs.yq-go}/bin/yq -i '.font.normal.style = "${font.style}"' ${userlocalconfigfile}
-  #  fi
-  #  ${pkgs.yq-go}/bin/yq -i '.font.offset.y = ${toString(font.offset.y)}' ${userlocalconfigfile}
-  #'';
+
+  home.file.".config/alacritty/userlocal.toml" = {
+    source = ../files/dotfiles/.config/alacritty/userlocal.toml;
+  };
 
   programs.alacritty = {
     enable = true;

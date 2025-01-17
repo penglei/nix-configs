@@ -7,6 +7,7 @@ in {
   home.activation.SetupAuthorizedSSHKeys =
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
 
+      mkdir -p $HOME/.ssh
       $DRY_RUN_CMD  echo -n "${key}" > $HOME/.ssh/authorized_keys
 
     '';

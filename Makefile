@@ -9,5 +9,8 @@ sops-update:
 	sops updatekeys secrets/basic.yaml 
 	sops updatekeys secrets/server.yaml
 
+secret-update:
+	./scripts/edit-backup.sh
+
 switch:
 	sudo nixos-rebuild switch --flake .
