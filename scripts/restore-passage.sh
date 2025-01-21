@@ -19,8 +19,8 @@ datafile="recovery.enc"
 workdir=local-extraction-for-restore-passage
 mkdir -p "$workdir"
 
-echo "Enter pin to show superkey:"
 if [ -f "$data_base_dir/store/superkey.age" ]; then
+	echo "Enter pin to show superkey:"
 	passage superkey
 fi
 
@@ -31,7 +31,7 @@ if [[ -f "$datafile" ]]; then
 	tar -zxf x.tgz                #extract recovery directory
 	rm x.tgz
 	mkdir -p "$data_base_dir/store"
-	cp -R recovery/passage/* "$data_base_dir/store"
+	cp -R recovery/passage/* "$data_base_dir/"
 	popd >/dev/null
 else
 	mkdir -p "$workdir/recovery"

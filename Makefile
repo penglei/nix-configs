@@ -16,8 +16,8 @@ restore-passage:
 	./scripts/restore-passage.sh
 
 switch:
-	if [[ $(uname) == "Darwin" ]]; then \
-		sudo nixos-rebuild switch --flake . \
+	if [[ "$$(uname)" == "Darwin" ]]; then \
+		home-manager switch --flake .; \
 	else \
-		home-manager switch --flake . \
+		sudo nixos-rebuild switch --flake .; \
 	fi
