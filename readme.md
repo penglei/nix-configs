@@ -8,8 +8,8 @@
 
 ## Routine maintenance operations
 
-* Update sops keys: `make sops-update`
-* Edit encrypted information(files, ..): `make secret-update`
+* Update sops keys: `make update-sops`
+* Edit encrypted information(files, ..): `make edit-backup`
 * Make global flake registry consistent with this flake repo: `make pin-registry`
 
 

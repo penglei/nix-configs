@@ -30,9 +30,10 @@ rec {
     } # The compatibility between zsh-vi-mode and autopairs plugins is not good.
       ];
     darwin.modules = base.modules ++ [
-      ./hm-modules/alacritty.nix
       sops-nix.homeManagerModule
+      ./hm-modules/alacritty.nix
       ./hm-modules/darwin/sops.nix
+      ./hm-modules/darwin/passage.nix
       ./hm-modules/darwin/settings.nix
       ./hm-modules/darwin/keybindings.nix
       ./hm-modules/darwin/app-aliases.nix
