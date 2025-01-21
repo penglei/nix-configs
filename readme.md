@@ -62,7 +62,7 @@ done
 unset i
 ```
 
-#### sudo setting
+#### config sudo
 
 Add the following content to `/etc/sudoers.d/user`
 
@@ -80,6 +80,20 @@ _pam\_smartcard module has enabled by default, we needn't do anything more._
 
 2. **Modifer Keys**: Caps Lock -> Control
 
+#### more initialization actions
+
+1. restore passage
+1. import gpg public key
+
+    Copy private key to `~/.gnupg/private-keys-v1.d`, then restart gpg-agent
+
+    ```
+    ❯ gpgconf --kill gpg-agent
+    ❯ gpgconf --launch gpg-agent
+    ```
+
+1. clone [neovim config](https://github.com/penglei/nvim.config.git)
+1. copy zsh command history
 
 ### Linux(NixOS)
 

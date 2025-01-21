@@ -4,6 +4,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR/../secrets"
+PROJECT_DIR=$(cd "$SCRIPT_DIR" && pwd)
 
 #prepare(backup destination)
 data_base_dir="$HOME/.passage"
@@ -24,7 +25,7 @@ if [ -f "$data_base_dir/store/superkey.age" ]; then
 	passage superkey
 fi
 
-#restore from encrypted file
+#restore passage store from encrypted file
 if [[ -f "$datafile" ]]; then
 	pushd "$workdir" >/dev/null
 	age -d ../recovery.enc >x.tgz #need superkey password here
@@ -38,3 +39,6 @@ else
 fi
 
 rm -rf $workdir
+
+#restore gnupg private keys (they are just pointers)
+cp -R "$PROJECT_DIR/files/dotfiles/.gnupg/private-keys-v1.d" "$HOME~/.gnupg/"

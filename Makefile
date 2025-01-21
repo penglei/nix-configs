@@ -12,8 +12,8 @@ update-sops:
 edit-backup:
 	./scripts/edit-backup.sh
 
-restore-passage:
-	./scripts/restore-passage.sh
+restore:
+	./scripts/restore.sh
 
 switch:
 	if [[ "$$(uname)" == "Darwin" ]]; then \
