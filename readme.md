@@ -80,7 +80,7 @@ _pam\_smartcard module has enabled by default, we needn't do anything more._
 
 2. **Modifer Keys**: Caps Lock -> Control
 
-#### more initialization actions
+#### more initialization actions should be done mannually
 
 1. restore passage
 1. import gpg public key
@@ -94,6 +94,8 @@ _pam\_smartcard module has enabled by default, we needn't do anything more._
 
 1. clone [neovim config](https://github.com/penglei/nvim.config.git)
 1. copy zsh command history
+1. ssh adhoc config: `~/.ssh/config.d`
+1. alfred
 
 ### Linux(NixOS)
 
