@@ -43,7 +43,7 @@
   ${yabai} -m rule --add app="^kitty$" space=term
   ${yabai} -m rule --add app="^AFFiNE|Logseq|Notes$" space=task
   ${yabai} -m rule --add app="^(Skim|Koodo Reader|EuDic)$" space=viewer
-  ${yabai} -m rule --add app="^(Google Chrome|Safari|Firefox)$" space=web
+  ${yabai} -m rule --add app="Google Chrome|Safari|Firefox" space=web
   ${yabai} -m rule --add app="^(Telegram|WeChat)$" space=social
   ${yabai} -m rule --add app="^(QQ音乐|迅雷)$" space=relax
   ${yabai} -m rule --add app="^(iOA)$" space=adhoc

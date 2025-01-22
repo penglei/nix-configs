@@ -1,5 +1,5 @@
 default:
-	echo "please provide the target."
+	@echo "please provide the target."
 
 pin-registry:
 	@nix registry pin nixpkgs "github:NixOS/nixpkgs/$$(cat flake.lock|jq -r '.nodes[.nodes.root.inputs.nixpkgs].locked.rev')"
@@ -10,10 +10,10 @@ update-sops:
 	sops updatekeys secrets/server.yaml
 
 edit-backup:
-	./scripts/edit-backup.sh
+	@./scripts/edit-backup.sh
 
 restore:
-	./scripts/restore.sh
+	@./scripts/restore.sh
 
 apply-dotfiles:
 	chezmoi apply
