@@ -78,6 +78,7 @@
       bash
       git-cliff
       gnupg # full with gui
+      chezmoi
       passage
       yubikey-manager
       yubico-piv-tool
