@@ -1,0 +1,12 @@
+{
+  "main function": {
+    "prefix": "main",
+    "body": "func main() {\n\t$0\n}",
+    "description": "Snippet for golang main function"
+  },
+  "license": {
+    "prefix": "lice",
+    "body": "/*\n * Copyright (C) 2023 THL A29 Limited, a Tencent company. All rights reserved.\n *\n * Licensed under the BSD 3-Clause License (the \"License\"); you may not use this\n * file except in compliance with the License. You may obtain a copy of the\n * License at\n *\n * https://opensource.org/licenses/BSD-3-Clause\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT\n * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the\n * License for the specific language governing permissions and limitations under\n * the License.\n */\n\n$0",
+    "description": "khaos license"
+  }
+}
