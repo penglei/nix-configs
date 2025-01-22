@@ -1,0 +1,9 @@
+#zmodload zsh/zprof
+
+fpath+=~/.zfunc
+path+="$HOME/Library/Application Support/edgedb/bin"
+
+function login-argocd() {
+  ssh -t jumper ssh -t khaos ssh -t lespeng@khaos-argocd
+}
+

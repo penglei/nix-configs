@@ -15,6 +15,9 @@ edit-backup:
 restore:
 	./scripts/restore.sh
 
+apply-dotfiles:
+	chezmoi apply
+
 switch:
 	@if [[ "$$(uname)" == "Darwin" ]]; then \
 		home-manager switch --flake .; \
