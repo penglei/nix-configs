@@ -165,8 +165,8 @@ $ sudo nixos-rebuild switch --flake .
 
     log location:
 
-    * $TMPDIR/rime.squirrel.INFO
-    * $TMPDIR/rime.squirrel.ERROR
+    * $TMPDIR/rime.squirrel/Squirrel.INFO
+    * $TMPDIR/rime.squirrel/Squirrel.WARNING
 
     **Force deployment after updating configuration**
 
