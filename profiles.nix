@@ -47,6 +47,7 @@ rec {
       # ./hm-modules/darwin/texlive.nix
       ./hm-modules/darwin/fonts.nix
       ./hm-modules/darwin/chez.nix
+      ./hm-modules/darwin/snipaste.nix
     ];
   };
 

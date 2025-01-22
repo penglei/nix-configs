@@ -104,6 +104,7 @@
       #duti # set default applications in alfred
       #chez-racket
       alttab
+      snipaste
       shiori # web bookmarks
 
       trash-cli

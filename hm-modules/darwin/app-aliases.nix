@@ -10,7 +10,7 @@ in {
   # Home-manager does not link installed applications to the user environment. This means apps will not show up
   # in spotlight, and when launched through the dock they come with a terminal window. This is a workaround.
   # Upstream issue: https://github.com/nix-community/home-manager/issues/1341
-  home.activation.makeDarwinApplicationAlias =
+  home.activation.CreateUserApplicationAlias =
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
 
       echo "[Darwin]---------------------------------------------"
@@ -46,7 +46,10 @@ in {
 
       # Delete the directory link
       echo removing the link file 'Applications/Home Manager Apps'
-      $DRY_RUN_CMD rm $HOME/Applications/Home\ Manager\ Apps
+
+      if [ -d $HOME/Applications/Home\ Manager\ Apps ]; then
+        $DRY_RUN_CMD rm $HOME/Applications/Home\ Manager\ Apps
+      fi
     '';
 }
 
