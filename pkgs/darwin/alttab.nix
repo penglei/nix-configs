@@ -2,12 +2,12 @@
 
 stdenvNoCC.mkDerivation rec {
   pname = "alttab";
-  version = "6.64.0";
+  version = "7.19.1";
 
   src = fetchzip {
     url =
       "https://github.com/lwouis/alt-tab-macos/releases/download/v${version}/AltTab-${version}.zip";
-    sha256 = "sha256-t9FfpA2zk5ycpSLcw1Z+9QpPCc6DA48LerrxSWflYx0=";
+    sha256 = "sha256-yd0wmk98wauzYMJOIMbMLsNVx/rJlhJ3QxiY7lTK0SI=";
     stripRoot = false;
   };
 
