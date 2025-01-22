@@ -1,0 +1,9 @@
+Host hk-alpha
+    Hostname 43.135.87.60
+    #Hostname 43.135.34.39
+
+Host sg-alpha
+    Hostname 43.156.152.201
+
+Host sv-alpha
+    Hostname 49.51.199.248

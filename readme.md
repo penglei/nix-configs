@@ -15,6 +15,9 @@
 
 ## Initliazation
 
+Clone this directory and place it in the home directory (for neovim and chezmoi).
+
+
 ### home-manager(macOS)
 
 First, we should enable nix command and flake features.

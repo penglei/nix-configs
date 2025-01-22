@@ -1,0 +1,4 @@
+Host router
+  User root
+  HostKeyAlgorithms = +ssh-rsa
+  PubkeyAcceptedAlgorithms = +ssh-rsa
