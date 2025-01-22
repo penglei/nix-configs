@@ -81,6 +81,10 @@ _pam\_smartcard module has enabled by default, we needn't do anything more._
 
     *Launchpad & Dock*, *Mission Control*, *Keyboard*, *Services*, **Spotlight**, 
 
+    In **Mission Control**, modify keyboard shortcuts like this:
+    1. `Option + Up`: Mission Control
+    2. `Option + Down`: Application window
+
 2. **Modifer Keys**: Caps Lock -> Control
 
 #### more initialization actions should be done mannually
