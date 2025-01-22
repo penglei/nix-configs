@@ -30,11 +30,13 @@
   ${yabai} -m space 10 --label adhoc
 
   # apps unmanaged (ignore)
-  ${yabai} -m rule --add app="^($(cat $HOME/.yabai.unmanaged.apps | grep '^' | head -c-1 - | tr '\n' '|'))$" manage=off
+  if [ -f $HOME/.yabai.unmanaged.apps ];then
+    ${yabai} -m rule --add app="^($(cat $HOME/.yabai.unmanaged.apps | grep '^' | head -c-1 - | tr '\n' '|'))$" manage=off
+  fi
 
-  ${yabai} -m rule --add app="^(Snipaste)$" sticky=on layer=above manage=off
-  ${yabai} -m rule --add title="^(Finder Preferences)$" layer=above manage=off
-  ${yabai} -m rule --add app="^mpv$" manage=off sticky=on layer=above opacity=1.0 grid=8:8:6:0:2:2
+  ${yabai} -m rule --add app="^(Snipaste)$" sticky=on manage=off
+  ${yabai} -m rule --add title="^(Finder Preferences)$" manage=off
+  ${yabai} -m rule --add app="^mpv$" manage=off sticky=on opacity=1.0 grid=8:8:6:0:2:2
 
   ${yabai} -m rule --add app="^TencentMeeting$" space=work
   ${yabai} -m rule --add app="^WeCom$" space=work

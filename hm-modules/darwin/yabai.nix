@@ -32,6 +32,7 @@ in {
     };
   };
 
-  home.file.".yabairc".text = (import ./rc/yabairc.nix) { inherit yabai; };
+  home.file."${config.xdg.configHome}/yabai/yabairc".text =
+    (import ./rc/yabairc.nix) { inherit yabai; };
 }
 
