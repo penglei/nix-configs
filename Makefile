@@ -16,7 +16,7 @@ restore:
 	./scripts/restore.sh
 
 switch:
-	if [[ "$$(uname)" == "Darwin" ]]; then \
+	@if [[ "$$(uname)" == "Darwin" ]]; then \
 		home-manager switch --flake .; \
 	else \
 		sudo nixos-rebuild switch --flake .; \
