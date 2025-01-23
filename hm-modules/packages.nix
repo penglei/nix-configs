@@ -26,7 +26,7 @@
       #gnupg
       openssh
       openssl # openssl and openssh should be paired, don't use macOS default
-      htop
+      htop bottom
       rsync
       wget
       curl
