@@ -22,6 +22,7 @@ rec {
         ./hm-modules/tig.nix
         ./hm-modules/starship.nix
         ./hm-modules/neovim
+        ./hm-modules/helix.nix
         ./hm-modules/misc.nix
       ];
     };
