@@ -92,6 +92,11 @@
       graphviz
       # presentation
 
+      rio
+
+      yazi # terminal file explorer
+      chafa # converts image data suitable for display in a terminal
+
       netnewswire
       preview_open
       # isabelle_app
