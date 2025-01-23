@@ -28,8 +28,7 @@ in {
       StandardOutPath = "/tmp/skhd.out.log";
     };
   };
-
-  home.file.".skhdrc".text = ''
+  home.file."${config.xdg.configHome}/skhd/skhdrc".text = ''
     #debug
     #alt - x : wmshow yabai tiling::window --close #
 
