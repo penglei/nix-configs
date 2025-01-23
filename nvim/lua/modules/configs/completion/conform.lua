@@ -69,10 +69,14 @@ local function setup_conform()
       python = { "isort", "black" },
       javascript = { "prettierd", "prettier" },
       go = { "goimports", "gofmt" },
-      proto = { "bufprotofmt" },
+      proto = {
+        "buf", -- "buf" is conform builtin config: https://github.com/stevearc/conform.nvim/blob/master/lua/conform/formatters/buf.lua
+        -- "bufprotofmt"
+      },
       bzl = { "buildifier" },
       typst = { "typstyle" },
       nickel = { "nickel" },
+      rust = { "rustfmt" },
     },
     formatters = {
       shfmt = {
@@ -88,7 +92,9 @@ local function setup_conform()
       },
       bufprotofmt = {
         command = "buf",
-        args = { "format", "$FILENAME" },
+        args = { "format", "-w", "$FILENAME" },
+        stdin = false,
+        cwd = require("conform.util").root_file({ "buf.yaml" }), -- required
       },
       -- yamlfmt = { prepend_args = { "-conf", ".yamlfmt.yaml" } },
       yamlfmt = function(bufnr)

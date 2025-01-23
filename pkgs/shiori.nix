@@ -1,28 +1,13 @@
-{ lib, stdenvNoCC, pkgs, fetchurl, bash, ... }:
-
-# pkgs.buildGoModule rec {
-#   pname = "shiori";
-#   version = "1.5.4";
-#   # modRoot = "";
-
-#   src = pkgs.fetchFromGitHub {
-#     owner = "go-shiori";
-#     repo = "shiori";
-#     rev = "v${version}";
-#     sha256 = "sha256-QZTYhRz65VLs3Ytv0k8ptfeQ/36M2VBXFaD9zhQXDh8=";
-#   };
-#   vendorHash = "sha256-8aiaG2ry/XXsosbrLBmwnjbwIhbKMdM6WHae07MG7WI=";
-#   doCheck = false;
-# }
+{ lib, stdenvNoCC, fetchurl, bash, ... }:
 
 stdenvNoCC.mkDerivation rec {
   pname = "shiori";
-  version = "1.7.0";
+  version = "1.7.4";
 
   src = fetchurl {
     url =
       "https://github.com/go-shiori/shiori/releases/download/v${version}/shiori_Darwin_aarch64_${version}.tar.gz";
-    sha256 = "sha256-w5Y1zgd6yAEzQ8TPisikxxv0SoDaKSqRPYSeqmcSwBE=";
+    sha256 = "sha256-4wj0GVJ7256Sljfh0JTpEEt+MunNpF5cXS0WCJniq2I=";
   };
 
   # Work around the "unpacker appears to have produced no directories"

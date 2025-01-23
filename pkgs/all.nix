@@ -75,6 +75,8 @@ in with pkgs; {
   open-haskell-doc = callPackage ./darwin/scripts/open-haskell-doc.nix { };
   concealed-pbcopy = callPackage ./darwin/scripts/concealed-pbcopy.nix { };
 
+  pbls-prebuilt = callPackage ./pbls.nix { };
+
   ### linux
   zsh-vi-mode = callPackage ./zsh-vi-mode.nix { };
   create-ssh-session-gnupg-socketdir =

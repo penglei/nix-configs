@@ -1,10 +1,7 @@
-{ config, lib, pkgs, wayland, ... }:
+{ config, lib, ... }:
 
 {
-  imports = [
-    #./language-server.nix
-    #./plugins.nix
-  ];
+  imports = [ ];
 
   home.sessionVariables = rec {
     EDITOR = "nvim";
@@ -17,11 +14,6 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-
-    ## Clipboard support
-    #extraPackages = lib.mkIf pkgs.stdenvNoCC.isLinux (with pkgs;
-    #  lib.optional wayland wl-clipboard
-    #  ++ lib.optional (!wayland) xclip);
 
     #extraConfig =
     #  let

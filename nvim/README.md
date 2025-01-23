@@ -21,7 +21,8 @@ mason自己设计了一个简单的"包管理器"，它利用各种语言生态�
 
 ### conform
 
-在 conform.lua 的配置中，因为默认开启了prefer lsp，所以可能有些lsp没有format能力却进入了only lsp 逻辑，所以可能需要明确给filetype配置formatters。
+在 conform.lua 的配置中，因为默认开启了prefer lsp，因此有些lsp没有format能力却进入了only lsp 逻辑，
+所以可能需要明确给filetype配置formatters。
 也许 (neoconf)[https://github.com/folke/neoconf.nvim] 可以提供一些帮助。
 
 

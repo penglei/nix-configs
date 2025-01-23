@@ -23,10 +23,10 @@
       automake
       cmake
       ninja
-      #gnupg
       openssh
       openssl # openssl and openssh should be paired, don't use macOS default
-      htop bottom
+      htop
+      bottom
       rsync
       wget
       curl
@@ -90,10 +90,9 @@
       kitty
       utm
       graphviz
-      presentation
-      #jetbrains.pycharm-community
+      # presentation
+
       netnewswire
-      rectangle
       preview_open
       # isabelle_app
       koodo-reader
@@ -110,16 +109,16 @@
 
       trash-cli
 
-      go_1_22
+      # go_1_22
       #gotools #these plugins are managed by neovim ray-x/go.vim plugin.
       nodejs_latest
 
       typos # source code typo checking
 
-      k9s
-      kustomize
       kubectl
-      krew
+      k9s
+      #kustomize
+      #krew
       kubectl-kubectx
       kubectl-kubecm
       kubectl-nodeshell
@@ -127,7 +126,10 @@
       sqlite.out # for neovim telescope plugin
 
       ##editor (lsp, dap, linter, formatter)
-      nixfmt-classic # nixfmt was renamed to nixfmt-classic. The nixfmt attribute may be used for the new RFC 166-style formatter in the future, which is currently available as nixfmt-rfc-style
+
+      #nixfmt was renamed to nixfmt-classic. 
+      #The nixfmt attribute may be used for the new RFC 166-style formatter in the future, which is currently available as nixfmt-rfc-style
+      nixfmt-classic
       nil-language-server
 
       yaml-language-server
@@ -140,6 +142,7 @@
       shfmt
 
       #pbls requirements
+      pbls-prebuilt
       protobuf
       buf # buf contains format tool
 
@@ -152,7 +155,8 @@
       isort
       black
 
-      lua5_1
+      lua
+      #lua5_1
       luarocks
       stylua
       lua-language-server
