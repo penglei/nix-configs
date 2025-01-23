@@ -1,6 +1,6 @@
-# Personal nixos/home-manager flake configuration
+# Personal macOS&Linux configuration
 
-## Usage scenarios
+## Nix flake usage scenarios
 
 * macOS: [home-manager](https://github.com/nix-community/home-manager) only (I don't employ nix-darwin).
 * Linux: NixOS with embeded home-manager.
@@ -43,7 +43,7 @@ run home-manager
 
 #### Replace zsh's env injection method.
 
-In a flake directory, we can configure direnv to automatically initialize the shell using `use flake`.
+In a flake directory, we can employ [direnv](https://github.com/direnv/direnv) to automatically initialize the shell using `use flake`.
 However, subsequently adding packages temporarily with `nix shell ...` does not take effect in this shell.
 The reason is that the path priority in its PATH variable is incorrect, and the fundamental cause is that
 subshells reinitialize by reading configurations (such as zshrc) are not reentrant.
@@ -89,20 +89,24 @@ _pam\_smartcard module has enabled by default, we needn't do anything more._
 
 #### more initialization actions should be done mannually
 
-1. restore passage
-1. import gpg public key
+1. restore passage and gpg keys: `make restore`
 
-    Copy private key to `~/.gnupg/private-keys-v1.d`, then restart gpg-agent
+    After placing the private key in the directory `~/.gnupg/private-keys-v1.d` , manually restart the agent:
 
     ```
     ❯ gpgconf --kill gpg-agent
     ❯ gpgconf --launch gpg-agent
     ```
 
-1. clone [neovim config](https://github.com/penglei/nvim.config.git)
 1. copy zsh command history
-1. ssh adhoc config: `~/.ssh/config.d`
-1. alfred
+
+#### alt-tab
+
+To quit app followed by mouse cursor, recommend enabling all additional control configurations:
+
+<p align="center">
+<img style="width: 50%; text-align: center;" src="./pictures/alt-tab-additional-control.png" />
+</p>
 
 ### Linux(NixOS)
 
