@@ -87,6 +87,9 @@ _pam\_smartcard module has enabled by default, we needn't do anything more._
 
 2. **Modifer Keys**: Caps Lock -> Control
 
+3. **Disable "Automatically rearrange Spaces based on most recent use"** in `Desktop & Dock > Mission Control`
+
+
 #### more initialization actions should be done mannually
 
 1. restore passage and gpg keys: `make restore`

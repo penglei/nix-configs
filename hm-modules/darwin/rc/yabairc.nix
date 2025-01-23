@@ -43,7 +43,7 @@
   ${yabai} -m rule --add app="^kitty$" space=term
   ${yabai} -m rule --add app="^AFFiNE|Logseq|Notes$" space=task
   ${yabai} -m rule --add app="^(Skim|Koodo Reader|EuDic)$" space=viewer
-  ${yabai} -m rule --add app="Google Chrome|Safari|Firefox" space=web
+  ${yabai} -m rule --add app="^(Google Chrome|Safari|Firefox)" space=web
   ${yabai} -m rule --add app="^(Telegram|WeChat)$" space=social
   ${yabai} -m rule --add app="^(QQ音乐|迅雷)$" space=relax
   ${yabai} -m rule --add app="^(iOA)$" space=adhoc
@@ -111,16 +111,13 @@
   #${yabai} -m config external_bar all:0:$(sketchybar --query bar | jq -r '.height')
   ${yabai} -m config external_bar all:0:32
 
-  ## listener can query window and space by:
-  ##   yabai -m query --windows --window
-  ##   yabai -m query --spaces --space
+  #listener can query window and space by:
+  #❯ yabai -m query --windows --window
+  #❯ yabai -m query --spaces --space
   ${yabai} -m signal --add event=window_focused action="sketchybar -m --trigger window_focus &> /dev/null"
   ${yabai} -m signal --add event=window_title_changed action="sketchybar -m --trigger title_change &> /dev/null"
   ${yabai} -m signal --add event=space_changed action="sketchybar -m --trigger space_change &> /dev/null"
   ${yabai} -m signal --add event=window_resized action="sketchybar -m --trigger window_resize &> /dev/null"
 
   echo "yabai configuration loaded.."
-
-  #some references
-  ## https://www.cnblogs.com/kawaihe/p/yabai--mac-de-chuang-kou-ping-pu-guan-li-ruan-jian.html
 ''
