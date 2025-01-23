@@ -41,7 +41,7 @@ run home-manager
 ❯ nix run nixpkgs#home-manager switch -- --flake .
 ```
 
-#### Replace zsh's env injection method.
+#### Replace zsh's env injection
 
 In a flake directory, we can employ [direnv](https://github.com/direnv/direnv) to automatically initialize the shell using `use flake`.
 However, subsequently adding packages temporarily with `nix shell ...` does not take effect in this shell.

@@ -6,7 +6,7 @@
   #  first run `nix shell home-manager#home-manager`,                 #
   #  then run `home-manager switch --flake .#penglei`                 #
   #                                                                   #
-  #   legacy solution.  `nix-shell -p 'home-manager'`                 #
+  #  legacy solution.  `nix-shell -p 'home-manager'`                  #
   # let Home Manager manage itself.                                   #
   programs.home-manager.enable = true;
   #####################################################################
