@@ -15,12 +15,9 @@ edit-backup:
 restore:
 	@./scripts/restore.sh
 
-apply-dotfiles:
-	chezmoi apply
-
-switch:
+apply:
 	@if [[ "$$(uname)" == "Darwin" ]]; then \
-		home-manager switch --flake .; \
+		chezmoi apply; home-manager switch --flake .; \
 	else \
 		sudo nixos-rebuild switch --flake .; \
 	fi

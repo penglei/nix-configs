@@ -32,6 +32,7 @@ rec {
       ];
     darwin.modules = base.modules ++ [
       sops-nix.homeManagerModule
+      ./hm-modules/darwin/shiori.nix
       ./hm-modules/alacritty.nix
       ./hm-modules/rio.nix
       ./hm-modules/darwin/sops.nix
