@@ -29,16 +29,14 @@ in {
     };
   };
   home.file."${config.xdg.configHome}/skhd/skhdrc".text = ''
-    #debug
-    #alt - x : wmshow yabai tiling::window --close #
+    #'hyper' is a special key that is a combination of shift + alt + option + command
 
     #keywords:
     #https://github.com/koekeishiya/skhd/issues/1
-    ##
-    #Remapping Keys in macOS
+    #
+    #Remapping Keys in macOS:
     #https://developer.apple.com/library/archive/technotes/tn2450/
     #https://www.freebsddiary.org/APC/usb_hid_usages.php
-
 
     #open a floating terminal
     #❯ alacritty msg create-window -e /bin/zsh -c "exec -c -a -zsh /bin/zsh";
@@ -118,35 +116,33 @@ in {
     alt - backspace : ${yabai} -m space --focus recent
     alt - left  : ${yabai} -m space --focus $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 1  then 10 else "prev" end')
     alt - right : ${yabai} -m space --focus $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 10 then 1  else "next" end')
-    alt - 1 : ${yabai} -m space --focus  1
-    alt - 2 : ${yabai} -m space --focus  2
-    alt - 3 : ${yabai} -m space --focus  3
-    alt - 4 : ${yabai} -m space --focus  4
-    alt - 5 : ${yabai} -m space --focus  5
-    alt - 6 : ${yabai} -m space --focus  6
-    alt - 7 : ${yabai} -m space --focus  7
-    alt - 8 : ${yabai} -m space --focus  8
-    alt - 9 : ${yabai} -m space --focus  9
-    alt - 0 : ${yabai} -m space --focus  10
+    alt - 1 : ${yabai} -m space --focus 1
+    alt - 2 : ${yabai} -m space --focus 2
+    alt - 3 : ${yabai} -m space --focus 3
+    alt - 4 : ${yabai} -m space --focus 4
+    alt - 5 : ${yabai} -m space --focus 5
+    alt - 6 : ${yabai} -m space --focus 6
+    alt - 7 : ${yabai} -m space --focus 7
+    alt - 8 : ${yabai} -m space --focus 8
+    alt - 9 : ${yabai} -m space --focus 9
+    alt - 0 : ${yabai} -m space --focus 10
 
     #"Command + m" is traditional shortcut for minimize current window
     #I don't think minimizing a window is needed, instead we can move it to a "temporary" space!
     cmd - m : ${yabai} -m window --space adhoc
 
     # send window to space and follow focus
-    alt + shift - backspace : ${yabai}  -m window --space recent && ${yabai} -m space --focus recent
-    alt + shift - left : ${yabai}       -m window --space prev && ${yabai} -m space --focus prev
-    alt + shift - right : ${yabai}      -m window --space next && ${yabai} -m space --focus next
-    alt + shift - 1 : ${yabai} -m window --space  1 && ${yabai} -m space --focus 1
-    alt + shift - 2 : ${yabai} -m window --space  2 && ${yabai} -m space --focus 2
-    alt + shift - 3 : ${yabai} -m window --space  3 && ${yabai} -m space --focus 3
-    alt + shift - 4 : ${yabai} -m window --space  4 && ${yabai} -m space --focus 4
-    alt + shift - 5 : ${yabai} -m window --space  5 && ${yabai} -m space --focus 5
-    alt + shift - 6 : ${yabai} -m window --space  6 && ${yabai} -m space --focus 6
-    alt + shift - 7 : ${yabai} -m window --space  7 && ${yabai} -m space --focus 7
-    alt + shift - 8 : ${yabai} -m window --space  8 && ${yabai} -m space --focus 8
-    alt + shift - 9 : ${yabai} -m window --space  9 && ${yabai} -m space --focus 9
-    alt + shift - 0 : ${yabai} -m window --space 10 && ${yabai} -m space --focus 10
+    alt + shift - backspace : ${yabai}  -m window --space recent
+    alt + shift - 1 : ${yabai} -m window --space  1 --focus
+    alt + shift - 2 : ${yabai} -m window --space  2 --focus
+    alt + shift - 3 : ${yabai} -m window --space  3 --focus
+    alt + shift - 4 : ${yabai} -m window --space  4 --focus
+    alt + shift - 5 : ${yabai} -m window --space  5 --focus
+    alt + shift - 6 : ${yabai} -m window --space  6 --focus
+    alt + shift - 7 : ${yabai} -m window --space  7 --focus
+    alt + shift - 8 : ${yabai} -m window --space  8 --focus
+    alt + shift - 9 : ${yabai} -m window --space  9 --focus
+    alt + shift - 0 : ${yabai} -m window --space 10 --focus
 
     # # focus monitor
     # alt + ctrl - x  : ${yabai} -m display --focus recent
@@ -157,12 +153,9 @@ in {
     # alt + ctrl - 3  : ${yabai} -m display --focus 3
 
     # send window to monitor and follow focus
-    # ctrl + cmd - x  : ${yabai} -m window --display recent && ${yabai} -m display --focus recent
-    # ctrl + cmd - z  : ${yabai} -m window --display prev && ${yabai} -m display --focus prev
-    # ctrl + cmd - c  : ${yabai} -m window --display next && ${yabai} -m display --focus next
-    # ctrl + cmd - 1  : ${yabai} -m window --display 1 && ${yabai} -m display --focus 1
-    # ctrl + cmd - 2  : ${yabai} -m window --display 2 && ${yabai} -m display --focus 2
-    # ctrl + cmd - 3  : ${yabai} -m window --display 3 && ${yabai} -m display --focus 3
+    # ctrl + cmd - x  : ${yabai} -m window --display recent
+    # ctrl + cmd - 1  : ${yabai} -m window --display 1 --focus
+    # ctrl + cmd - 2  : ${yabai} -m window --display 2 --focus
 
     # resize window
     hyper - r : ${yabai} -m space --balance # resize windows defaultly
@@ -187,8 +180,8 @@ in {
     # # mirror tree x-axis
     # alt - x : ${yabai} -m space --mirror x-axis
 
-    # toggle desktop offset
-    alt - a : ${yabai} -m space --toggle padding --toggle gap
+    # # toggle window padding andgap
+    # alt - a : ${yabai} -m space --toggle padding --toggle gap
 
     # # toggle window parent zoom
     # alt - d : ${yabai} -m window --toggle zoom-parent
