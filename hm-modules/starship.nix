@@ -26,7 +26,7 @@ in {
       kubernetes = {
         disabled = false;
         symbol = "☸";
-        format = "[$context(\\($namespace\\))]($style) ";
+        format = "[k:$context(\\($namespace\\))]($style) ";
         style = "blue";
       };
       git_status = {

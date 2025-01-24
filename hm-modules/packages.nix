@@ -54,7 +54,7 @@
       #ghostscript
       hexyl
 
-      fastfetch # neofetch screenfetch
+      fastfetch
       #rar
       #! rar is an unfree software, but we can't set allowunfree at this moment(2022-11-08)
       #! if we enable it, tedious commond `NIXPKGS_ALLOW_UNFREE=1 home-manager switch --impure`

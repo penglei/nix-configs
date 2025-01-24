@@ -37,7 +37,7 @@ in with pkgs; {
 
   # koodo-reader = callPackage ./darwin/koodo-reader.nix { };
 
-  alacritty-custom = callPackage ./alacritty {
+  alacritty-custom = callPackage ./alacritty.nix {
     inherit (darwin.apple_sdk.frameworks)
       AppKit CoreGraphics CoreServices CoreText Foundation OpenGL;
   };
@@ -53,7 +53,6 @@ in with pkgs; {
   #     Carbon Cocoa CoreWLAN DisplayServices SkyLight;
   #   inherit (apple_sdk_extend.frameworks) MediaRemote;
   # };
-  screenfetch = callPackage ./screenfetch { };
   presentation = callPackage ./darwin/presentation.nix { };
   adobe-reader = callPackage ./darwin/adobe-reader.nix { };
   keycastr = callPackage ./darwin/keycastr.nix { };
@@ -76,6 +75,8 @@ in with pkgs; {
   concealed-pbcopy = callPackage ./darwin/scripts/concealed-pbcopy.nix { };
 
   pbls-prebuilt = callPackage ./pbls.nix { };
+
+  yazi-plugins = callPackage ./yazi { };
 
   ### linux
   zsh-vi-mode = callPackage ./zsh-vi-mode.nix { };
