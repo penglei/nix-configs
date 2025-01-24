@@ -96,6 +96,7 @@
       rio
 
       yazi # terminal file explorer
+      unar # yazi lsar plugin requires it
       chafa # converts image data suitable for display in a terminal
 
       netnewswire

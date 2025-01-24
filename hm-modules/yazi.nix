@@ -38,6 +38,16 @@
           run = "git";
         }
       ];
+      plugin.prepend_previewers = [
+        {
+          mime = "application/{,g}zip";
+          run = "lsar";
+        }
+        {
+          mime = "application/x-{tar,bzip*,7z-compressed,xz,rar}";
+          run = "lsar";
+        }
+      ];
     };
 
     keymap.manager.prepend_keymap = [
@@ -83,7 +93,7 @@
     ];
     initLua = ../files/dotfiles/.config/yazi/init.lua;
     plugins = {
-      inherit (pkgs.yazi-plugins) full-border git max-preview bookmarks;
+      inherit (pkgs.yazi-plugins) full-border git max-preview lsar bookmarks;
       "smart-paste" = ../files/dotfiles/.config/yazi/plugins/smart-paste.yazi;
       "arrow" = ../files/dotfiles/.config/yazi/plugins/arrow.yazi;
     };

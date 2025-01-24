@@ -21,5 +21,5 @@ in builtins.listToAttrs (map (pname: {
     '';
 
   };
-}) [ "full-border" "git" "max-preview" ])
+}) [ "full-border" "git" "max-preview" "lsar" ])
 
