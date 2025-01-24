@@ -87,7 +87,7 @@
       skhd
       keycastr
       sketchybar
-      kitty
+      # kitty
       utm
       graphviz
       # presentation

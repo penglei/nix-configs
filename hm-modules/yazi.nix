@@ -4,8 +4,9 @@
 {
   programs.yazi = {
     enable = true;
+    shellWrapperName = "y";
     settings = {
-      manager.ratio = [ 1 2 3 ];
+      manager.ratio = [ 1 2 4 ];
       priview.wrap = "yes";
     };
   };
