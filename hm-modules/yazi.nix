@@ -2,9 +2,10 @@
 
 #docs: https://yazi-rs.github.io/features/
 {
+  home.shellAliases = { "y" = "yazi"; };
   programs.yazi = {
     enable = true;
-    shellWrapperName = "y";
+    shellWrapperName = "yy";
     settings = {
       manager.ratio = [ 1 2 4 ];
       priview.wrap = "yes";
