@@ -77,6 +77,7 @@
     ] ++ lib.optionals stdenvNoCC.isDarwin [
       bash
       git-cliff
+      lazygit
       gnupg # full with gui
       chezmoi
       passage
