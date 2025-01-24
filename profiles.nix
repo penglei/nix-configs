@@ -51,6 +51,8 @@ rec {
       ./hm-modules/darwin/chezscheme.nix
       ./hm-modules/darwin/snipaste.nix
       ./hm-modules/darwin/chezmoi.nix
+      ./hm-modules/bat.nix
+      ./hm-modules/yazi.nix # terminal file explorer
     ];
   };
 
