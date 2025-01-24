@@ -21,6 +21,7 @@ return function()
     [[⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⠓⣷⣿⡅⠄⢸⣿⡗⠇⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄]],
     [[⠂⠄⡁⠂⠄⢄⡁⠂⠄⡁⠂⠄⠡⢈⠐⠠⠈⠄⡁⠂⠌⠠⢁⠂⡐⠠⢈⠌⠠⢁⠂⡐⠠⢄]],
     [[⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄]],
+    [[   ~~~~ HASTE MAKES WASTE ~~~~    ]],
   }
   dashboard.section.header.opts.hl = "AlphaHeader"
 
@@ -59,36 +60,20 @@ return function()
 
   local leader = " "
   dashboard.section.buttons.val = {
-    button("space f c", " Scheme change", leader, nil, {
-      noremap = true,
-      silent = true,
-      nowait = true,
-      callback = function()
-        require("telescope.builtin").colorscheme()
-      end,
-    }),
-    button("space f p", " Project find", leader, nil, {
-      noremap = true,
-      silent = true,
-      nowait = true,
-      callback = function()
-        require("telescope").extensions.projects.projects({})
-      end,
-    }),
-    button("space f f", "󰈞 File find", leader, nil, {
-      noremap = true,
-      silent = true,
-      nowait = true,
-      callback = function()
-        require("telescope.builtin").find_files()
-      end,
-    }),
-    button("space f n", " File new", leader, nil, {
+    button("space n", " File new", leader, nil, {
       noremap = true,
       silent = true,
       nowait = true,
       callback = function()
         vim.api.nvim_command("enew")
+      end,
+    }),
+    button("space f", "󰈞 File find", leader, nil, {
+      noremap = true,
+      silent = true,
+      nowait = true,
+      callback = function()
+        require("telescope.builtin").find_files()
       end,
     }),
     button("space f w", " Word find", leader, nil, {
