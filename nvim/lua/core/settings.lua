@@ -6,9 +6,9 @@ local settings = {}
 settings["load_big_files_faster"] = true
 
 -- Set the colorscheme to use here.
--- Available values are: `catppuccin`, `catppuccin-latte`, `catppucin-mocha`, `catppuccin-frappe`, `catppuccin-macchiato`, `edge`, `nord`.
+-- Available values are: `catppuccin`, `catppuccin-latte`, `catppucin-mocha`, `catppuccin-frappe`, `catppuccin-macchiato`.
 ---@type string
-settings["colorscheme"] = "catppuccin"
+settings["colorscheme"] = "catppuccin-macchiato"
 
 -- Set it to true if your terminal has transparent background.
 ---@type boolean

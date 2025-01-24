@@ -1,23 +1,22 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, ... }:
 
-let
-  ##FiraCode, JetBrains的行高类似，都比较高
-  ##Hack, DejaVu,SF的行高类似，都稍微矮一点
-  ##命令行里面感觉行高一点看起来舒服些
+{
 
-  userlocalconfigfile =
-    "${config.xdg.configHome}/alacritty/userlocal.toml"; # "~/.config/alacritty/userlocal.yaml";
-
-in {
-
-  home.file.".config/alacritty/userlocal.toml" = {
-    source = ../files/dotfiles/.config/alacritty/userlocal.toml;
+  home.file = {
+    ".config/alacritty/themes" = {
+      source = ../files/dotfiles/.config/alacritty/themes;
+    };
+    ".config/alacritty/userlocal.toml" = {
+      source = ../files/dotfiles/.config/alacritty/userlocal.toml;
+    };
   };
-
   programs.alacritty = {
     enable = true;
     settings = {
-      general.import = [ userlocalconfigfile ];
+      general.import = [
+        "~/.config/alacritty/userlocal.toml"
+        "~/.config/alacritty/themes/catppuccin-macchiato.toml"
+      ];
       window = {
         option_as_alt = "OnlyLeft";
         decorations = "buttonless";
