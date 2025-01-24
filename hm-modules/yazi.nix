@@ -90,10 +90,27 @@
         on = [ "b" "d" ];
         run = "plugin bookmarks --args=delete";
       }
+
+      #fg
+      {
+        on = [ "f" "g" ];
+        run = "plugin fg";
+        desc = "find file by content (fuzzy match)";
+      }
+      {
+        on = [ "f" "G" ];
+        run = "plugin fg --args='rg'";
+        desc = "find file by content (ripgrep match)";
+      }
+      {
+        on = [ "f" "f" ];
+        run = "plugin fg --args='fzf'";
+        desc = "find file by filename";
+      }
     ];
     initLua = ../files/dotfiles/.config/yazi/init.lua;
     plugins = {
-      inherit (pkgs.yazi-plugins) full-border git max-preview lsar bookmarks;
+      inherit (pkgs.yazi-plugins) full-border git max-preview lsar bookmarks fg;
       "smart-paste" = ../files/dotfiles/.config/yazi/plugins/smart-paste.yazi;
       "arrow" = ../files/dotfiles/.config/yazi/plugins/arrow.yazi;
     };

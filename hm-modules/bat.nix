@@ -2,7 +2,10 @@
 
   programs.bat = {
     enable = true;
-    config = { theme = "catppuccin"; };
+    config = {
+      theme = "catppuccin";
+      number = true; # only show number, without other decorations.
+    };
 
     themes = {
       catppuccin = {
