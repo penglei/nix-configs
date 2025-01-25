@@ -132,7 +132,7 @@ in {
     cmd - m : ${yabai} -m window --space adhoc
 
     # send window to space and follow focus
-    alt + shift - backspace : ${yabai}  -m window --space recent
+    alt + shift - backspace : ${yabai} -m window --space recent --focus
     alt + shift - 1 : ${yabai} -m window --space  1 --focus
     alt + shift - 2 : ${yabai} -m window --space  2 --focus
     alt + shift - 3 : ${yabai} -m window --space  3 --focus
