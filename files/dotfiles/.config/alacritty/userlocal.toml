@@ -1,22 +1,9 @@
 [font.offset]
-y = -1
+#y = -1
 [font.normal]
-family = "FiraCode Nerd Font Mono" # Hack Nerd Font
-style = "Light"
-
-#family = "Arial Unicode MS"  #这里面的数学符号非常完整
-
-#family = "FiraCode Nerd Font"
-#family = "FiraCode Nerd Font Mono"
-#
-#family = "JetBrainsMono Nerd Font"
-#family = "JetBrainsMono Nerd Font Mono"
-#
-#family = "Hack Nerd Font"
-#family = "Hack Nerd Font Mono" #(↑ 没区别)
-#
-#family = "DejaVuSansMono Nerd Font
-#family = "DejaVuSansMono Nerd Font Mono #(↑ 没区别)
+# "JetBrainsMono Nerd Font Mono" # "MonaspiceNe Nerd Font" # "Cascadia Mono NF" # "Hack Nerd Font Mono" # "FiraCode Nerd Font Mono"
+family = "MonaspiceNe Nerd Font"
+# style = "Light"
 
 [colors.search.matches]
 # Allowed values are CellForeground/CellBackground, which reference the
@@ -28,7 +15,7 @@ foreground = "#6e4962"
 background = "#86d3ce"
 
 [terminal.shell]
-#program: /Users/penglei/.local/bin/myprintenv # we will see SSH_AUTH_SOCK is set
+#program: /Users/penglei/.local/bin/myprintenv # It will see that SSH_AUTH_SOCK is set.
 
 #program: /bin/zsh
 #args: ["-c", "unset SSH_AUTH_SOCK;exec -a -zsh /bin/zsh"]
@@ -37,9 +24,9 @@ program = "/usr/bin/login"
 args = ["-flp", "penglei", "/bin/zsh", "-c", "exec -a -zsh /bin/zsh"]
 #args: ["-flp", "penglei", "/bin/zsh", "-c", "exec /bin/zsh --login"] #另一个等价的写法
 #args: ["-flp", "penglei", "/bin/zsh", "-c", "exec -a -🐶🐶- /bin/zsh"]
-#这里相当有技巧性:
-##第一个zsh进程不是login shell，并且是non-interactive，所以什么配置都不会加载；
-##第二个zsh进程是login shell，并且是interactive(没有-c)
+#这里的shell初始化相当有技巧性:
+##第一个zsh不是login shell，并且是non-interactive，所以什么配置都不会加载；
+##子进程启动第二个zsh是login shell，并且是interactive(没有-c)；
 
 # // Exec the shell with argv[0] prepended by '-' so it becomes a login shell.
 # // `login` normally does this itself, but `-l` disables this.

@@ -11,7 +11,7 @@ in {
       ];
       username = {
         disabled = false;
-        #show_always = true;
+        show_always = true;
         style_user = "white bold";
         style_root = "black bold";
         format = "[ $user]($style) ";
@@ -25,9 +25,14 @@ in {
       };
       kubernetes = {
         disabled = false;
-        symbol = "☸";
-        format = "[k:$context(\\($namespace\\))]($style) ";
+        symbol = "󱃾 "; # ☸
+        format = "([$symbol$context(\\($namespace\\))]($style) )";
         style = "blue";
+        contexts = [{
+          context_pattern = "void";
+          context_alias = "";
+          symbol = "";
+        }];
       };
       git_status = {
         disabled = false;

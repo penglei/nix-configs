@@ -26,11 +26,7 @@
         dynamic_title = true;
       };
       font = {
-        normal = {
-          ##config in userlocal.yml
-          #family = "Hack Nerd Font" # "FiraCode Nerd Font Mono" "DejaVuSansMono Nerd Font Mono" 
-          #style = "Light"; #Light Regular Bold
-        };
+        normal = { }; # configure in userlocal.yml
         size = 18.0;
       };
       keyboard.bindings = [

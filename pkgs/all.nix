@@ -20,10 +20,10 @@ in with pkgs; {
   netnewswire = callPackage ./darwin/netnewswire.nix { };
   rectangle = callPackage ./darwin/rectangle.nix { };
 
-  droidsans_fonts = callPackage ./fonts/droidsans.nix { };
-  hack-nerd-font = callPackage ./fonts/hack.nix { };
-  apple-sfmono-font = callPackage ./fonts/sfmono.nix { };
-  apple-sfmono-nerd-font = callPackage ./fonts/sfmono-nerd.nix { };
+  # droidsans_fonts = callPackage ./fonts/droidsans.nix { };
+  # hack-nerd-font = callPackage ./fonts/hack.nix { }; Some symbols needed by neovim NvChad are missing.
+  # apple-sfmono-font = callPackage ./fonts/sfmono.nix { };
+  # apple-sfmono-nerd-font = callPackage ./fonts/sfmono-nerd.nix { };
 
   preview_open = callPackage ./darwin/preview.nix { };
 

@@ -76,7 +76,7 @@ return function()
         require("telescope.builtin").find_files()
       end,
     }),
-    button("space f w", " Word find", leader, nil, {
+    button("space w", " Word find", leader, nil, {
       noremap = true,
       silent = true,
       nowait = true,

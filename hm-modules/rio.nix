@@ -24,7 +24,7 @@
 
       fonts = {
         size = 18;
-        regular = { family = "FiraCode Nerd Font Mono"; };
+        regular = { family = "MonaspiceNe Nerd Font"; };
       };
 
       cursor.blinking = false;
