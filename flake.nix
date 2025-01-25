@@ -47,7 +47,9 @@
           inherit self pkgs system home-manager sops-nix;
         };
       in {
-        # debug overrided nixpkgs, e.g.: nix build .#nixpkgs.passage
+
+        #for debugging(do git track before building):
+        #❯ nix build .#nixpkgs.passage
         packages.nixpkgs = pkgs;
 
         overlays.default = lib.lists.foldr (a: i: a // i) { } pkgOverlays;

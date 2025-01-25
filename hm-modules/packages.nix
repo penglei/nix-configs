@@ -86,6 +86,8 @@
       age-plugin-yubikey
       yabai
       skhd
+      hyperkey
+      keycodes
       keycastr
       sketchybar
       kitty

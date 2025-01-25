@@ -56,6 +56,9 @@ in with pkgs; {
   presentation = callPackage ./darwin/presentation.nix { };
   adobe-reader = callPackage ./darwin/adobe-reader.nix { };
   keycastr = callPackage ./darwin/keycastr.nix { };
+  keycodes = callPackage ./darwin/keycodes.nix { };
+  hyperkey = callPackage ./darwin/hyperkey.nix { };
+
   alttab = callPackage ./darwin/alttab.nix { };
   snipaste = callPackage ./darwin/snipaste.nix { };
 

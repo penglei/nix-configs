@@ -1,4 +1,4 @@
-{ lib, fetchurl, stdenvNoCC, undmg }:
+{ fetchurl, stdenvNoCC, undmg }:
 
 stdenvNoCC.mkDerivation rec {
   pname = "koodo-reader";
