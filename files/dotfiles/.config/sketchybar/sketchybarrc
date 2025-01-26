@@ -36,9 +36,9 @@ sketchybar --bar height=32        \
 
 sketchybar --default updates=when_shown                    \
                      drawing=on                            \
-                     icon.font="Hack Nerd Font:Bold:17.0"  \
+                     icon.font="MonaspiceNe Nerd Font:Bold:17.0"  \
                      icon.color=0xffffffff                 \
-                     label.font="Hack Nerd Font:Bold:14.0" \
+                     label.font="MonaspiceNe Nerd Font:Bold:14.0" \
                      label.color=0xffffffff                \
                      label.padding_left=4                  \
                      label.padding_right=4                 \
@@ -98,19 +98,19 @@ sketchybar --add item space_separator left                         \
 
 #### yabai status ####
 
-sketchybar -m --add       item            window_opacity left                                                   \
-              --set       window_opacity  script="$PLUGIN_DIR/yabai_windows_opacity.sh" lazy=off                \
-                                          click_script="skhd -k 'alt - o'"                                      \
-                                          background.padding_right=-10                                          \
-              --subscribe window_opacity  opacity_change window_focus space_change \
-              --add       item            space_mode left                                                       \
-              --set       space_mode      script="$PLUGIN_DIR/yabai_space_state.sh" lazy=off                    \
-                                          background.padding_right=-10                                          \
-              --subscribe space_mode      window_focus window_resize space_change space_mode_change \
-              --add       item            window_mode left                                                      \
-              --set       window_mode     script="$PLUGIN_DIR/yabai_window_state.sh" lazy=off                   \
-                                          background.padding_right=-5                                           \
-              --subscribe window_mode     window_focus window_resize space_change
+sketchybar -m --add       item            window_opacity left                                        \
+              --set       window_opacity  script="$PLUGIN_DIR/yabai_windows_opacity.sh" lazy=off     \
+                                          click_script="skhd -k 'cmd + shift + alt - o'"            \
+                                          background.padding_right=-10                               \
+              --subscribe window_opacity  opacity_change window_focus space_change                   \
+              --add       item            space_mode left                                            \
+              --set       space_mode      script="$PLUGIN_DIR/yabai_space_state.sh" lazy=off         \
+                                          background.padding_right=-10                               \
+              --subscribe space_mode      window_focus window_resize space_change space_mode_change
+              #--add       item            window_mode left                                           \
+              #--set       window_mode     script="$PLUGIN_DIR/yabai_window_state.sh" lazy=off        \
+              #                            background.padding_right=-5                                \
+              #--subscribe window_mode     window_focus window_resize space_change
 
 #### Window Title Item ####
 

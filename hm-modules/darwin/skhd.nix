@@ -211,9 +211,9 @@ in {
     lalt - s : ${yabai} -m window --toggle sticky --toggle topmost --toggle float --grid 8:8:3:0:5:6
 
     # # toggle opacity
-    # lalt - o : ${yabai} -m config window_opacity \
-    #           "$(${yabai} -m query --windows | ${jq} -r 'if any(.[]; .opacity < 1) then "off" else "on" end')" \
-    #           && ${sketchybar} -m --trigger opacity_change &> /dev/null
+    cmd + shift + alt - o : ${yabai} -m config window_opacity \
+              "$(${yabai} -m query --windows | ${jq} -r 'if any(.[]; .opacity < 1) then "off" else "on" end')" \
+              && ${sketchybar} -m --trigger opacity_change &> /dev/null
 
     # # toggle picture-in-picture
     # lalt - p : ${yabai} -m window --toggle border --toggle pip
