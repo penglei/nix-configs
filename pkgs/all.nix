@@ -19,6 +19,7 @@ in with pkgs; {
 
   netnewswire = callPackage ./darwin/netnewswire.nix { };
   rectangle = callPackage ./darwin/rectangle.nix { };
+  tart = callPackage ./darwin/tart.nix { };
 
   # droidsans_fonts = callPackage ./fonts/droidsans.nix { };
   # hack-nerd-font = callPackage ./fonts/hack.nix { }; Some symbols needed by neovim NvChad are missing.
@@ -33,20 +34,20 @@ in with pkgs; {
 
   # nix-direnv = callPackage ./nix-direnv { };
 
-  mongosh = callPackage ./mongosh { };
+  # mongosh = callPackage ./mongosh { };
 
   # koodo-reader = callPackage ./darwin/koodo-reader.nix { };
 
-  alacritty-custom = callPackage ./alacritty.nix {
-    inherit (darwin.apple_sdk.frameworks)
-      AppKit CoreGraphics CoreServices CoreText Foundation OpenGL;
-  };
+  # alacritty-custom = callPackage ./alacritty.nix {
+  #   inherit (darwin.apple_sdk.frameworks)
+  #     AppKit CoreGraphics CoreServices CoreText Foundation OpenGL;
+  # };
 
-  bitwarden-desktop = callPackage ./darwin/bitwarden-desktop.nix { };
-  spacelauncher = callPackage ./darwin/spacelauncher.nix { };
-  spacebar = callPackage ./darwin/spacebar.nix {
-    inherit (darwin.apple_sdk.frameworks) Carbon Cocoa ScriptingBridge SkyLight;
-  };
+  #bitwarden-desktop = callPackage ./darwin/bitwarden-desktop.nix { };
+  #spacelauncher = callPackage ./darwin/spacelauncher.nix { };
+  #spacebar = callPackage ./darwin/spacebar.nix {
+  #  inherit (darwin.apple_sdk.frameworks) Carbon Cocoa ScriptingBridge SkyLight;
+  #};
 
   # sketchybar = callPackage ./darwin/sketchybar.nix {
   #   inherit (darwin.apple_sdk.frameworks)

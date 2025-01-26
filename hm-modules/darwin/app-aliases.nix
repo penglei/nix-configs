@@ -7,6 +7,10 @@ let
     pathsToLink = "/Applications";
   };
 in {
+
+  #Not so good: after updating pkgs.tart, you need to refresh the shell to use it.
+  # home.sessionPath = [ "${pkgs.tart}/Applications/tart.app/Contents/MacOS" ];
+
   # Home-manager does not link installed applications to the user environment. This means apps will not show up
   # in spotlight, and when launched through the dock they come with a terminal window. This is a workaround.
   # Upstream issue: https://github.com/nix-community/home-manager/issues/1341
