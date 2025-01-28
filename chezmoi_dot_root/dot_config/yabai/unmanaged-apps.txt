@@ -1,4 +1,6 @@
-mpv
+#mpv #config in yabairc directly(to stick defaultly)
+Snipaste
+Finder Preferences
 Alfred Preferences
 Archive Utility
 Calculator

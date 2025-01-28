@@ -4,10 +4,14 @@ window="$(yabai -m query --windows --window)"
 
 window_state="unknown"
 if [ -n "$window" ]; then
-  if [ "$(jq -r '."has-fullscreen-zoom"' <<<"$window")" = "true" ]; then
-    window_state="fullscreen"
+  if [ "$(jq -r '."is-floating"' <<<"$window")" = "true" ]; then
+    window_state="floating"
   else
-    window_state="windowed"
+    if [ "$(jq -r '."has-fullscreen-zoom"' <<<"$window")" = "true" ]; then
+      window_state="fullscreen"
+    else
+      window_state="windowed"
+    fi
   fi
 fi
 
@@ -21,6 +25,9 @@ case "$window_state" in
   ;;
 "unknown")
   label=""
+  ;;
+"floating")
+  label=""
   ;;
 esac
 sketchybar -m --set window_mode label="$label"

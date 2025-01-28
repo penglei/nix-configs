@@ -29,13 +29,11 @@
   ${yabai} -m space 9 --label relax     #QQ音乐,...
   ${yabai} -m space 10 --label adhoc
 
-  # apps unmanaged (ignore)
+  # apps unmanaged (float window)
   if [ -f $HOME/.config/yabai/unmanaged-apps.txt ];then
-    ${yabai} -m rule --add app="^($(cat $HOME/.config/yabai/unmanaged-apps.txt | grep '^' | head -c-1 - | tr '\n' '|'))$" manage=off
+    ${yabai} -m rule --add app="^($(cat $HOME/.config/yabai/unmanaged-apps.txt | grep '^[^#]' | head -c-1 - | tr '\n' '|'))$" manage=off
   fi
 
-  #${yabai} -m rule --add app="^(Snipaste)$" sticky=on manage=off
-  #${yabai} -m rule --add title="^(Finder Preferences)$" manage=off
   #${yabai} -m rule --add app="^mpv$" manage=off sticky=on opacity=1.0 grid=8:8:6:0:2:2
   ${yabai} -m rule --add app="^TencentMeeting$" space=work
   ${yabai} -m rule --add app="^WeCom$" space=work
@@ -115,7 +113,7 @@
   ${yabai} -m signal --add event=window_title_changed action="$HOME/.config/yabai/event.sh window_title_changed"
   ${yabai} -m signal --add event=space_changed action="$HOME/.config/yabai/event.sh space_changed"
   ${yabai} -m signal --add event=window_resized action="$HOME/.config/yabai/event.sh window_resized"
-  ${yabai} -m signal --add event=window_resized action="$HOME/.config/yabai/event.sh window_destroyed"
+  ${yabai} -m signal --add event=window_destroyed action="$HOME/.config/yabai/event.sh window_destroyed"
 
   echo "yabai configuration loaded.."
 ''

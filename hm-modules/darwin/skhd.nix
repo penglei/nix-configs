@@ -28,6 +28,10 @@ in {
   };
   home.file."${config.xdg.configHome}/skhd/switch-space.sh".source =
     ../../files/dotfiles/_config/skhd/switch-space.sh;
+  home.file."${config.xdg.configHome}/skhd/win-hfocus.sh".source =
+    ../../files/dotfiles/_config/skhd/win-hfocus.sh;
+  home.file."${config.xdg.configHome}/skhd/win-vfocus.sh".source =
+    ../../files/dotfiles/_config/skhd/win-vfocus.sh;
   home.file."${config.xdg.configHome}/skhd/skhdrc".text = ''
     #for debugging
     alt - x :  cmd=$HOME/.local/bin/skhd-run-debug.sh; test -x $cmd && $cmd
@@ -68,11 +72,11 @@ in {
                       | ${jq} -r 'if .type == "bsp" then "float" else if .type == "float" then "stack" else "bsp" end end')" && \
                       ${sketchybar} -m --trigger space_mode_change &> /dev/null
 
-    #focus bsp windows
-    lalt - h : ${yabai} -m window --focus west
-    lalt - j : ${yabai} -m window --focus south
-    lalt - k : ${yabai} -m window --focus north
-    lalt - l : ${yabai} -m window --focus east
+    #focus bsp windows (yabai -m window --focus north, east, south, west)
+    lalt - k : $HOME/.config/skhd/win-vfocus.sh north
+    lalt - l : $HOME/.config/skhd/win-hfocus.sh east
+    lalt - j : $HOME/.config/skhd/win-vfocus.sh south
+    lalt - h : $HOME/.config/skhd/win-hfocus.sh west
 
     #cyclic focus stack windows
     ctrl - right : ${yabai} -m query --spaces --space \
@@ -116,7 +120,7 @@ in {
     lalt + shift - right  : ${yabai} -m window --grid 1:2:1:0:1:1
 
     # fast focus desktop
-    lalt - backspace : $HOME/.config/skhd/switch-space.sh
+    lalt - backspace : $HOME/.config/skhd/switch-space.sh recent
     lalt - left  : $HOME/.config/skhd/switch-space.sh $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 1  then 10 else "prev" end')
     lalt - right : $HOME/.config/skhd/switch-space.sh $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 10 then 1  else "next" end')
     lalt - 1 : $HOME/.config/skhd/switch-space.sh 1
@@ -203,7 +207,7 @@ in {
     lalt - t : ${yabai} -m window --toggle float --grid 8:8:1:1:6:6
 
     # toggle sticky (show on all spaces)
-    lalt - s : ${yabai} -m window --toggle sticky --toggle topmost --toggle float --grid 8:8:3:0:5:6
+    lalt - s : ${yabai} -m window --toggle sticky --toggle float --grid 8:8:3:0:5:6
 
     # # toggle opacity
     cmd + shift + alt - o : ${yabai} -m config window_opacity \
@@ -214,9 +218,6 @@ in {
     # lalt - p : ${yabai} -m window --toggle border --toggle pip
 
     # f13: ${skhd} -k "shift + cmd - 4" # Screen Capture: copy screen of selected area to the clipboard
-
-    # #'hyper' is a special key that is a combination of shift + alt + option + command
-    # hyper - b: ${sketchybar} --bar topmost="$(${sketchybar} --query bar | ${jq} -r 'if .topmost == "on" then "off" else "on" end')"
   '';
 }
 
