@@ -22,7 +22,7 @@
   ${yabai} -m space 2 --label term      #alacritty
   ${yabai} -m space 3 --label editor    #jetbrains, vscode,...
   ${yabai} -m space 4 --label misc
-  ${yabai} -m space 6 --label viewer    #skim, koodo, second terminal, ...
+  ${yabai} -m space 6 --label viewer    #skim, koodo, second terminal,...
   ${yabai} -m space 5 --label task      #AFFiNE, logseq,...
   ${yabai} -m space 7 --label web       #chrome,safari
   ${yabai} -m space 8 --label social    #telegram,wechat,...
@@ -37,10 +37,8 @@
   ${yabai} -m rule --add app="^(Snipaste)$" sticky=on manage=off
   ${yabai} -m rule --add title="^(Finder Preferences)$" manage=off
   ${yabai} -m rule --add app="^mpv$" manage=off sticky=on opacity=1.0 grid=8:8:6:0:2:2
-
   ${yabai} -m rule --add app="^TencentMeeting$" space=work
   ${yabai} -m rule --add app="^WeCom$" space=work
-  ${yabai} -m rule --add app="^kitty$" space=term
   ${yabai} -m rule --add app="^AFFiNE|Logseq|Notes$" space=task
   ${yabai} -m rule --add app="^(Skim|Koodo Reader|EuDic)$" space=viewer
   ${yabai} -m rule --add app="^(Google Chrome|Safari|Firefox)" space=web
@@ -114,10 +112,11 @@
   #listener can query window and space by:
   #❯ yabai -m query --windows --window
   #❯ yabai -m query --spaces --space
-  ${yabai} -m signal --add event=window_focused action="sketchybar -m --trigger window_focus &> /dev/null"
-  ${yabai} -m signal --add event=window_title_changed action="sketchybar -m --trigger title_change &> /dev/null"
-  ${yabai} -m signal --add event=space_changed action="sketchybar -m --trigger space_change &> /dev/null"
-  ${yabai} -m signal --add event=window_resized action="sketchybar -m --trigger window_resize &> /dev/null"
+  ${yabai} -m signal --add event=window_focused action="$HOME/.config/yabai/event.sh window_focused"
+  ${yabai} -m signal --add event=window_title_changed action="$HOME/.config/yabai/event.sh window_title_changed"
+  ${yabai} -m signal --add event=space_changed action="$HOME/.config/yabai/event.sh space_changed"
+  ${yabai} -m signal --add event=window_resized action="$HOME/.config/yabai/event.sh window_resized"
+  ${yabai} -m signal --add event=window_resized action="$HOME/.config/yabai/event.sh window_destroyed"
 
   echo "yabai configuration loaded.."
 ''

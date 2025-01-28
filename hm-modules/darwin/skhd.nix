@@ -56,9 +56,9 @@ in {
       then \
         ${alacritty} msg create-window; \
       else \
-        #We must clean the home nix-profile/bin from PATH, \
+        #We must clean the home .nix-profile/bin from PATH, \
         #so that it would be prepend to PATH in system shell config.\
-        export PATH=$(sed -E 's/:?\/$HOME\/.nix-profile\/bin:?/:/g' <<< $PATH); \
+        export PATH=$(sed -E "s|:?$HOME/.nix-profile/bin:?|:|g" <<< $PATH); \
         open -na ${pkgs.alacritty}/Applications/Alacritty.app; \
       fi
 
