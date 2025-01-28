@@ -115,12 +115,8 @@ in {
     #make floating window fill right-half of screen
     lalt + shift - right  : ${yabai} -m window --grid 1:2:1:0:1:1
 
-    # destroy desktop
-    # cmd + lalt - w : ${yabai} -m space --destroy
-    # cmd + lalt - w : ${yabai} -m space --focus prev && ${yabai} -m space recent --destroy
-
     # fast focus desktop
-    lalt - backspace : ${yabai} -m space --focus recent
+    lalt - backspace : $HOME/.config/skhd/switch-space.sh
     lalt - left  : $HOME/.config/skhd/switch-space.sh $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 1  then 10 else "prev" end')
     lalt - right : $HOME/.config/skhd/switch-space.sh $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 10 then 1  else "next" end')
     lalt - 1 : $HOME/.config/skhd/switch-space.sh 1
