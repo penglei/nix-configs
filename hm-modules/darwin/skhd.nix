@@ -26,6 +26,8 @@ in {
       StandardOutPath = "/tmp/skhd.out.log";
     };
   };
+  home.file."${config.xdg.configHome}/skhd/switch-space.sh".source =
+    ../../files/dotfiles/.config/skhd/switch-space.sh;
   home.file."${config.xdg.configHome}/skhd/skhdrc".text = ''
     #for debugging
     alt - x :  cmd=$HOME/.local/bin/skhd-run-debug.sh; test -x $cmd && $cmd
@@ -119,18 +121,18 @@ in {
 
     # fast focus desktop
     lalt - backspace : ${yabai} -m space --focus recent
-    lalt - left  : ${yabai} -m space --focus $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 1  then 10 else "prev" end')
-    lalt - right : ${yabai} -m space --focus $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 10 then 1  else "next" end')
-    lalt - 1 : ${yabai} -m space --focus 1
-    lalt - 2 : ${yabai} -m space --focus 2
-    lalt - 3 : ${yabai} -m space --focus 3
-    lalt - 4 : ${yabai} -m space --focus 4
-    lalt - 5 : ${yabai} -m space --focus 5
-    lalt - 6 : ${yabai} -m space --focus 6
-    lalt - 7 : ${yabai} -m space --focus 7
-    lalt - 8 : ${yabai} -m space --focus 8
-    lalt - 9 : ${yabai} -m space --focus 9
-    lalt - 0 : ${yabai} -m space --focus 10
+    lalt - left  : $HOME/.config/skhd/switch-space.sh $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 1  then 10 else "prev" end')
+    lalt - right : $HOME/.config/skhd/switch-space.sh $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 10 then 1  else "next" end')
+    lalt - 1 : $HOME/.config/skhd/switch-space.sh 1
+    lalt - 2 : $HOME/.config/skhd/switch-space.sh 2
+    lalt - 3 : $HOME/.config/skhd/switch-space.sh 3
+    lalt - 4 : $HOME/.config/skhd/switch-space.sh 4
+    lalt - 5 : $HOME/.config/skhd/switch-space.sh 5
+    lalt - 6 : $HOME/.config/skhd/switch-space.sh 6
+    lalt - 7 : $HOME/.config/skhd/switch-space.sh 7
+    lalt - 8 : $HOME/.config/skhd/switch-space.sh 8
+    lalt - 9 : $HOME/.config/skhd/switch-space.sh 9
+    lalt - 0 : $HOME/.config/skhd/switch-space.sh 10
 
     #"Command + m" is traditional shortcut for minimize current window
     #I don't think minimizing a window is needed, instead we can move it to a "temporary" space!
