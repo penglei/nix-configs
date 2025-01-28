@@ -20,7 +20,7 @@
 
   home.file = let
     files = map (name: {
-      path = ../../files/dotfiles/.config/sketchybar/${name};
+      path = ../../files/dotfiles/_config/sketchybar/${name};
       name = ".config/sketchybar/${name}";
     }) [
       "sketchybarrc"

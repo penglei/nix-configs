@@ -32,8 +32,8 @@ in {
   home.file."${config.xdg.configHome}/yabai/yabairc".text =
     (import ./rc/yabairc.nix) { inherit yabai; };
   home.file."${config.xdg.configHome}/yabai/event.sh".source =
-    ../../files/dotfiles/.config/yabai/events.sh;
+    ../../files/dotfiles/_config/yabai/events.sh;
   home.file."${config.xdg.configHome}/yabai/focus_space_window.sh".source =
-    ../../files/dotfiles/.config/yabai/focus_space_window.sh;
+    ../../files/dotfiles/_config/yabai/focus_space_window.sh;
 }
 

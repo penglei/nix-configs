@@ -1,7 +1,7 @@
 { pkgs, ... }: {
 
   home.file = {
-    ".config/rio/themes".source = ../files/dotfiles/.config/rio/themes;
+    ".config/rio/themes".source = ../files/dotfiles/_config/rio/themes;
   };
 
   programs.rio = {

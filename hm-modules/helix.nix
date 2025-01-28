@@ -259,7 +259,7 @@ let
 in {
 
   home.file."${config.xdg.configHome}/helix/themes" = {
-    source = ../files/dotfiles/.config/helix/themes;
+    source = ../files/dotfiles/_config/helix/themes;
   };
 
   programs.helix = {

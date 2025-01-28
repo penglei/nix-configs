@@ -4,10 +4,10 @@
 
   home.file = {
     ".config/alacritty/themes" = {
-      source = ../files/dotfiles/.config/alacritty/themes;
+      source = ../files/dotfiles/_config/alacritty/themes;
     };
     ".config/alacritty/userlocal.toml" = {
-      source = ../files/dotfiles/.config/alacritty/userlocal.toml;
+      source = ../files/dotfiles/_config/alacritty/userlocal.toml;
     };
   };
   programs.alacritty = {
@@ -22,7 +22,7 @@
         decorations = "buttonless";
         opacity = 1.0;
         startup_mode = "Maximized";
-        title = "😄";
+        title = ""; # nf-cod-smiley
         dynamic_title = true;
       };
       font = {

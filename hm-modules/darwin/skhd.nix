@@ -27,7 +27,7 @@ in {
     };
   };
   home.file."${config.xdg.configHome}/skhd/switch-space.sh".source =
-    ../../files/dotfiles/.config/skhd/switch-space.sh;
+    ../../files/dotfiles/_config/skhd/switch-space.sh;
   home.file."${config.xdg.configHome}/skhd/skhdrc".text = ''
     #for debugging
     alt - x :  cmd=$HOME/.local/bin/skhd-run-debug.sh; test -x $cmd && $cmd
@@ -199,11 +199,6 @@ in {
 
     # toggle window native fullscreen
     lalt + shift - m : ${yabai} -m window --toggle native-fullscreen
-
-    # # window focus follows mouse cursor
-    # lalt + shift - f : sh -c 'config="autoraise"; f="$HOME/.yabai.config.focus_follows_mouse"; \
-    #                   if [ "$(cat $f)" == "off" ]; then config="autoraise"; fi; \
-    #                   ${yabai} -m config focus_follows_mouse "$config" && printf "$config" > $f'
 
     #toggle current space windows layout orientation
     #lalt - e : ${yabai} -m window --toggle split

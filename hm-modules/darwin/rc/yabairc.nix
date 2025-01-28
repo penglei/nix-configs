@@ -30,13 +30,13 @@
   ${yabai} -m space 10 --label adhoc
 
   # apps unmanaged (ignore)
-  if [ -f $HOME/.yabai.unmanaged.apps ];then
-    ${yabai} -m rule --add app="^($(cat $HOME/.yabai.unmanaged.apps | grep '^' | head -c-1 - | tr '\n' '|'))$" manage=off
+  if [ -f $HOME/.config/yabai/unmanaged-apps.txt ];then
+    ${yabai} -m rule --add app="^($(cat $HOME/.config/yabai/unmanaged-apps.txt | grep '^' | head -c-1 - | tr '\n' '|'))$" manage=off
   fi
 
-  ${yabai} -m rule --add app="^(Snipaste)$" sticky=on manage=off
-  ${yabai} -m rule --add title="^(Finder Preferences)$" manage=off
-  ${yabai} -m rule --add app="^mpv$" manage=off sticky=on opacity=1.0 grid=8:8:6:0:2:2
+  #${yabai} -m rule --add app="^(Snipaste)$" sticky=on manage=off
+  #${yabai} -m rule --add title="^(Finder Preferences)$" manage=off
+  #${yabai} -m rule --add app="^mpv$" manage=off sticky=on opacity=1.0 grid=8:8:6:0:2:2
   ${yabai} -m rule --add app="^TencentMeeting$" space=work
   ${yabai} -m rule --add app="^WeCom$" space=work
   ${yabai} -m rule --add app="^AFFiNE|Logseq|Notes$" space=task
@@ -47,7 +47,6 @@
   ${yabai} -m rule --add app="^(iOA)$" space=adhoc
 
   ${yabai} -m config focus_follows_mouse off #autoraise, off
-  echo -n off >$HOME/.yabai.config.focus_follows_mouse
 
   ${yabai} -m config \
   	mouse_follows_focus on \

@@ -75,48 +75,43 @@ done
 # We add some regular items to the left side of the bar
 # only the properties deviating from the current defaults need to be set
 
-# sketchybar --add item space_separator left                         \
-#            --set space_separator icon=                            \
-#                                  background.padding_left=15        \
-#                                  background.padding_right=15       \
-#                                  label.drawing=off                 \
-#                                                                    \
-#            --add item front_app  left                              \
-#            --set front_app       script="$PLUGIN_DIR/front_app.sh" \
-#                                  icon.drawing=off                  \
-#            --subscribe front_app front_app_switched
+# sketchybar --add item yabai_space_label left                                  \
+#            --set yabai_space_label script="$PLUGIN_DIR/yabai_space_label.sh"  \
+#            --subscribe yabai_space_label space_change
 
-sketchybar --add item yabai_space_label left                                  \
-           --set yabai_space_label script="$PLUGIN_DIR/yabai_space_label.sh"  \
-           --subscribe yabai_space_label space_change
-
-
-sketchybar --add item space_separator left                         \
-           --set space_separator icon=                            \
-                                 background.padding_left=10        \
-                                 background.padding_right=-15      \
 
 #### yabai status ####
 
+sketchybar --add item space_separator_1 left                         \
+           --set space_separator_1 icon=""                          \
+                                 background.padding_left=0           \
+                                 background.padding_right=-10
+
 sketchybar -m --add       item            window_opacity left                                        \
               --set       window_opacity  script="$PLUGIN_DIR/yabai_windows_opacity.sh" lazy=off     \
-                                          click_script="skhd -k 'cmd + shift + alt - o'"            \
+                                          click_script="skhd -k 'cmd + shift + alt - o'"             \
                                           background.padding_right=-10                               \
               --subscribe window_opacity  opacity_change window_focus space_change                   \
               --add       item            space_mode left                                            \
               --set       space_mode      script="$PLUGIN_DIR/yabai_space_state.sh" lazy=off         \
+                                          click_script="skhd -k 'shift + alt - b'"                   \
                                           background.padding_right=-10                               \
-              --subscribe space_mode      window_focus window_resize space_change space_mode_change
-              #--add       item            window_mode left                                           \
-              #--set       window_mode     script="$PLUGIN_DIR/yabai_window_state.sh" lazy=off        \
-              #                            background.padding_right=-5                                \
-              #--subscribe window_mode     window_focus window_resize space_change
+              --subscribe space_mode      window_focus window_resize space_change space_mode_change  \
+              --add       item            window_mode left                                           \
+              --set       window_mode     script="$PLUGIN_DIR/yabai_window_state.sh" lazy=off        \
+                                          click_script="skhd -k 'alt - m'"                           \
+                                          background.padding_right=-5                                \
+              --subscribe window_mode     window_focus window_resize space_change
 
+sketchybar --add item space_separator_2 left                          \
+           --set space_separator_2 icon=""                           \
+                                 background.padding_left=5            \
+                                 background.padding_right=0
 #### Window Title Item ####
 
 # W I N D O W  T I T L E 
 sketchybar -m --add item title left \
-              --set title script="$PLUGIN_DIR/window_title.sh" y_offset=1 \
+              --set title script="$PLUGIN_DIR/window_title.sh" y_offset=0           \
               --subscribe title window_focus front_app_switched space_change title_change
 
 

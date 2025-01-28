@@ -5,7 +5,7 @@
   xdg.configFile = {
     "yazi/theme.toml" = {
       source =
-        ../files/dotfiles/.config/yazi/themes/catppuccin/macchiato/catppuccin-macchiato-sky.toml;
+        ../files/dotfiles/_config/yazi/themes/catppuccin/macchiato/catppuccin-macchiato-sky.toml;
     };
     "yazi/Catppuccin-macchiato.tmTheme" = let
       batTheme = config.programs.bat.themes;
@@ -108,11 +108,11 @@
         desc = "find file by filename";
       }
     ];
-    initLua = ../files/dotfiles/.config/yazi/init.lua;
+    initLua = ../files/dotfiles/_config/yazi/init.lua;
     plugins = {
       inherit (pkgs.yazi-plugins) full-border git max-preview lsar bookmarks fg;
-      "smart-paste" = ../files/dotfiles/.config/yazi/plugins/smart-paste.yazi;
-      "arrow" = ../files/dotfiles/.config/yazi/plugins/arrow.yazi;
+      "smart-paste" = ../files/dotfiles/_config/yazi/plugins/smart-paste.yazi;
+      "arrow" = ../files/dotfiles/_config/yazi/plugins/arrow.yazi;
     };
   };
 }
