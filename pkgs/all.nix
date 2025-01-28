@@ -45,9 +45,6 @@ in with pkgs; {
 
   #bitwarden-desktop = callPackage ./darwin/bitwarden-desktop.nix { };
   #spacelauncher = callPackage ./darwin/spacelauncher.nix { };
-  #spacebar = callPackage ./darwin/spacebar.nix {
-  #  inherit (darwin.apple_sdk.frameworks) Carbon Cocoa ScriptingBridge SkyLight;
-  #};
 
   # sketchybar = callPackage ./darwin/sketchybar.nix {
   #   inherit (darwin.apple_sdk.frameworks)

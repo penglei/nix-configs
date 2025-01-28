@@ -1,8 +1,6 @@
 { pkgs, config, ... }:
 
-let
-  homeProfilePath = path: "${config.home.homeDirectory}/${path}";
-  yabai = "${pkgs.yabai}/bin/yabai";
+let yabai = "${pkgs.yabai}/bin/yabai";
 in {
   # https://ss64.com/osx/launchctl.html
   launchd.agents.yabai = {
@@ -11,9 +9,8 @@ in {
     config = {
       ProgramArguments = [ "${pkgs.yabai}/bin/yabai" ];
       EnvironmentVariables = {
-        "PATH" = "${homeProfilePath ".nix-profile/bin"}:${
-            homeProfilePath ".local/bin"
-          }:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:";
+        "PATH" = config.launch_agent_common.path_env;
+        "SHELL" = "/bin/sh";
       };
       # KeepAlive = {
       #   OtherJobEnabled = builtins.listToAttrs [

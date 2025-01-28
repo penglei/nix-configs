@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -200,7 +200,6 @@ in {
           EnvironmentVariables = {
             "GNUPGHOME" = homedir;
             "SHELL" = "/bin/sh";
-            #"PATH" = "${homeProfilePath ".local/bin"}:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:";
           };
           StandardErrorPath = "/tmp/gpg-agent-launch.err.log";
           StandardOutPath = "/tmp/gpg-agent-launch.out.log";

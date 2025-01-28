@@ -1,7 +1,6 @@
 { pkgs, config, ... }:
 
-let homeProfilePath = path: "${config.home.homeDirectory}/${path}";
-in {
+{
   # https://ss64.com/osx/launchctl.html
   launchd.agents.sketchybar = {
     enable = true;
@@ -9,9 +8,7 @@ in {
     config = {
       ProgramArguments = [ "${pkgs.sketchybar}/bin/sketchybar" ];
       EnvironmentVariables = {
-        "PATH" = "${homeProfilePath ".nix-profile/bin"}:${
-            homeProfilePath ".local/bin"
-          }:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:";
+        "PATH" = config.launch_agent_common.path_env;
         "SHELL" = "/bin/sh";
       };
       KeepAlive = true;

@@ -3,7 +3,6 @@
 #key docs: https://github.com/koekeishiya/skhd/issues/1
 
 let
-  homeProfilePath = path: "${config.home.homeDirectory}/${path}";
   yabai = "${pkgs.yabai}/bin/yabai";
   skhd = "${pkgs.skhd}/bin/skhd";
   alacritty = "${pkgs.alacritty}/bin/alacritty";
@@ -17,10 +16,7 @@ in {
     config = {
       ProgramArguments = [ skhd ];
       EnvironmentVariables = {
-        # "PATH" = "${homeProfilePath ".nix-profile/bin"}:${homeProfilePath ".local/bin"}:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:";
-        "PATH" = "${
-            homeProfilePath ".local/bin"
-          }:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:";
+        "PATH" = config.launch_agent_common.path_env;
         "SHELL" = "/bin/sh";
       };
       KeepAlive = true;
@@ -31,6 +27,8 @@ in {
     };
   };
   home.file."${config.xdg.configHome}/skhd/skhdrc".text = ''
+    #for debugging
+    alt - x :  cmd=$HOME/.local/bin/skhd-run-debug.sh; test -x $cmd && $cmd
 
     #keywords:
     #https://github.com/koekeishiya/skhd/issues/1
@@ -42,12 +40,13 @@ in {
     #open a floating terminal
     #❯ alacritty msg create-window -e /bin/zsh -c "exec -c -a -zsh /bin/zsh";
     ralt - return : \
-       ${yabai} -m window --insert stack && \
-       if [ $(ls ''${TMPDIR}Alacritty-*.sock 2>/dev/null | wc -l) -gt 0 ]; then \
-         ${alacritty} msg create-window; \
-       else \
-         open -na /Users/penglei/Applications/Alacritty.app; sleep 0.03; \
-       fi && ${yabai} -m window --toggle float --grid 8:8:1:1:6:6
+      ${yabai} -m window --insert stack && \
+      if [ $(ls ''${TMPDIR}Alacritty-*.sock 2>/dev/null | wc -l) -gt 0 ]; then \
+        ${alacritty} msg create-window; \
+      else \
+        export PATH=$(sed -E 's/:?\/Users\/penglei\/.nix-profile\/bin:?/:/g' <<< $PATH); \
+        open -na /Users/penglei/Applications/Alacritty.app; sleep 0.03; \
+      fi && ${yabai} -m window --toggle float --grid 8:8:1:1:6:6
 
     lalt - return : \
       if [ \( $(ls ''${TMPDIR}Alacritty-*.sock 2>/dev/null | wc -l) -gt 0 \) -a \
@@ -55,6 +54,9 @@ in {
       then \
         ${alacritty} msg create-window; \
       else \
+        #We must clean the home nix-profile/bin from PATH, \
+        #so that it would be prepend to PATH in system shell config.\
+        export PATH=$(sed -E 's/:?\/$HOME\/.nix-profile\/bin:?/:/g' <<< $PATH); \
         open -na ${pkgs.alacritty}/Applications/Alacritty.app; \
       fi
 
