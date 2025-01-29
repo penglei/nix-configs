@@ -80,6 +80,7 @@
       lazygit
       gnupg # full with gui
       chezmoi
+      concealed-pbcopy
       passage
       yubikey-manager
       yubico-piv-tool

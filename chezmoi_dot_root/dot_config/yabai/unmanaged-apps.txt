@@ -1,4 +1,5 @@
 #mpv #config in yabairc directly(to stick defaultly)
+Raycast
 Snipaste
 Finder Preferences
 Alfred Preferences

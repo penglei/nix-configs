@@ -48,8 +48,9 @@ let
     ];
   };
 
-  ## Not recommanded: sensitive data is stored in /nix/store, which everyone can read.
+  #This approach is not recommended, as `pkg.writeText` will store sensitive data in `/nix/store`, which is accessible to everyone.
   # configFilePath = pkgs.writeText "config.json" (builtins.toJSON cfg); 
+
   configFile = "sing-box-client/config.json";
   configFilePath = config.sops.templates."${configFile}".path;
 

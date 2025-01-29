@@ -1,4 +1,9 @@
 Host router
   User root
+  ProxyJump pltt.ybyte.org
   HostKeyAlgorithms = +ssh-rsa
   PubkeyAcceptedAlgorithms = +ssh-rsa
+
+Host ganger
+  User penglei
+  ProxyJump pltt.ybyte.org
