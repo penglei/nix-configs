@@ -48,7 +48,7 @@
 
   ${yabai} -m config \
   	mouse_follows_focus on \
-  	window_placement first_child \
+  	window_placement second_child \
   	window_shadow off \
   	window_animation_duration 0.0 \
   	window_opacity_duration 0.0 \
