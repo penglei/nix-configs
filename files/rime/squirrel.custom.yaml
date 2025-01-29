@@ -7,6 +7,9 @@ patch:
       vim_mode: true # 当按下 Esc 的时候会自动将 Rime 切换成英文输入法
       #no_inline: true # 「输入码」是否直接显示在候选框上面，而不是显示在屏幕上
       #ascii_punct: true # 中文状态输出英文标点(半角)
+    com.raycast.macos:
+      ascii_mode: true
+      vim_mode: true
     com.raphaelamorim.rio:
       ascii_mode: true
       vim_mode: true

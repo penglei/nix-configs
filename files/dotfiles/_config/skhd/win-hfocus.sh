@@ -31,3 +31,17 @@ function focus() {
 }
 
 focus "$1"
+
+#TODO
+
+# #cyclic focus stack windows
+# ctrl - right : ${yabai} -m query --spaces --space \
+#                | ${jq} -re ".index" \
+#                | xargs -I{} ${yabai} -m query --windows --space {} \
+#                | ${jq} -sre '.[] | map(select(.minimized != 1)) | sort_by(.display, .frame.y, .frame.x, .id) | reverse | nth(index(map(select(."has-focus" == true))) - 1).id'
+#                | xargs -I{} ${yabai} -m window --focus {}
+# ctrl - left: ${yabai} -m query --spaces --space \
+#   | ${jq} -re ".index" \
+#   | xargs -I{} ${yabai} -m query --windows --space {} \
+#   | ${jq} -sre '.[] | map(select(.minimized != 1)) | sort_by(.display, .frame.y, .frame.y, .id) | nth(index(map(select(."has-focus" == true))) - 1).id' \
+#   | xargs -I{} ${yabai} -m window --focus {}

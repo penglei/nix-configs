@@ -78,31 +78,16 @@ in {
     lalt - j : $HOME/.config/skhd/win-vfocus.sh south
     lalt - h : $HOME/.config/skhd/win-hfocus.sh west
 
-    #cyclic focus stack windows
-    ctrl - right : ${yabai} -m query --spaces --space \
-                   | ${jq} -re ".index" \
-                   | xargs -I{} ${yabai} -m query --windows --space {} \
-                   | ${jq} -sre '.[] | map(select(.minimized != 1)) | sort_by(.display, .frame.y, .frame.x, .id) | reverse | nth(index(map(select(."has-focus" == true))) - 1).id' \
-                   | xargs -I{} ${yabai} -m window --focus {}
-
-    #backward
-    ctrl - left: ${yabai} -m query --spaces --space \
-      | ${jq} -re ".index" \
-      | xargs -I{} ${yabai} -m query --windows --space {} \
-      | ${jq} -sre '.[] | map(select(.minimized != 1)) | sort_by(.display, .frame.y, .frame.y, .id) | nth(index(map(select(."has-focus" == true))) - 1).id' \
-      | xargs -I{} ${yabai} -m window --focus {}
-
     #swap bsp window (move to target window area and resize) in the same space
-    lalt + shift - x : ${yabai} -m window --swap recent
-    lalt + shift - h : ${yabai} -m window --swap west
-    lalt + shift - j : ${yabai} -m window --swap south
-    lalt + shift - k : ${yabai} -m window --swap north
-    lalt + shift - l : ${yabai} -m window --swap east
-    #move bsp window (keep size but re-arrange relative windows) in the same space
-    shift + cmd - left : ${yabai} -m window --warp west
-    shift + cmd - down : ${yabai} -m window --warp south
-    shift + cmd - up : ${yabai} -m window --warp north
-    shift + cmd - right : ${yabai} -m window --warp east
+    lalt + shift - h : ${yabai} -m window --warp west
+    lalt + shift - j : ${yabai} -m window --warp south
+    lalt + shift - k : ${yabai} -m window --warp north
+    lalt + shift - l : ${yabai} -m window --warp east
+    lalt + ctrl - h : ${yabai} -m window --swap west
+    lalt + ctrl - j : ${yabai} -m window --swap south
+    lalt + ctrl - k : ${yabai} -m window --swap north
+    lalt + ctrl - l : ${yabai} -m window --swap east
+    #lalt + ctrl - x : ${yabai} -m window --swap recent
 
     #move floating window
     ctrl + shift - a : ${yabai} -m window --move rel:-100:0
@@ -110,16 +95,16 @@ in {
     ctrl + shift - w : ${yabai} -m window --move rel:0:-100
     ctrl + shift - d : ${yabai} -m window --move rel:100:0
 
-    #make floating window fill top-half of screen
-    lalt + shift - up     : ${yabai} -m window --grid 2:1:0:0:1:1
-    # make floating window fill bottom-half of screen
-    lalt + shift - down   : ${yabai} -m window --grid 2:1:0:1:1:1
-    #make floating window fill left-half of screen
-    lalt + shift - left   : ${yabai} -m window --grid 1:2:0:0:1:1
-    #make floating window fill right-half of screen
-    lalt + shift - right  : ${yabai} -m window --grid 1:2:1:0:1:1
+    # #make floating window fill top-half of screen
+    # lalt + shift - up     : ${yabai} -m window --grid 2:1:0:0:1:1
+    # # make floating window fill bottom-half of screen
+    # lalt + shift - down   : ${yabai} -m window --grid 2:1:0:1:1:1
+    # #make floating window fill left-half of screen
+    # lalt + shift - left   : ${yabai} -m window --grid 1:2:0:0:1:1
+    # #make floating window fill right-half of screen
+    # lalt + shift - right  : ${yabai} -m window --grid 1:2:1:0:1:1
 
-    # fast focus desktop
+    # fast focus space
     lalt - backspace : $HOME/.config/skhd/switch-space.sh recent
     lalt - left  : $HOME/.config/skhd/switch-space.sh $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 1  then 10 else "prev" end')
     lalt - right : $HOME/.config/skhd/switch-space.sh $(${yabai} -m query --spaces --space | ${jq} -r 'if .index == 10 then 1  else "next" end')
@@ -137,6 +122,13 @@ in {
     #"Command + m" is traditional shortcut for minimize current window
     #I don't think minimizing a window is needed, instead we can move it to a "temporary" space!
     cmd - m : ${yabai} -m window --space adhoc
+
+    # toggle window fullscreen zoom
+    lalt - m : ${yabai} -m window --toggle zoom-fullscreen \
+              && ${sketchybar} -m --trigger window_resize &> /dev/null
+
+    # toggle window native fullscreen
+    lalt + shift - m : ${yabai} -m window --toggle native-fullscreen
 
     # send window to space and follow focus
     lalt + shift - backspace : ${yabai} -m window --space recent --focus
@@ -174,11 +166,6 @@ in {
     # set new window insertion point in the south of the focused window
     cmd - i : ${yabai} -m window --insert south  #stack,west,east,north,south
 
-    lalt + ctrl - h : ${yabai} -m window --warp west
-    lalt + ctrl - j : ${yabai} -m window --warp south
-    lalt + ctrl - k : ${yabai} -m window --warp north
-    lalt + ctrl - l : ${yabai} -m window --warp east
-
     # rotate tree
     lalt - r : ${yabai} -m space --rotate 90
 
@@ -192,13 +179,6 @@ in {
 
     # # toggle window parent zoom
     # lalt - d : ${yabai} -m window --toggle zoom-parent
-
-    # toggle window fullscreen zoom
-    lalt - m : ${yabai} -m window --toggle zoom-fullscreen \
-              && ${sketchybar} -m --trigger window_resize &> /dev/null
-
-    # toggle window native fullscreen
-    lalt + shift - m : ${yabai} -m window --toggle native-fullscreen
 
     #toggle current space windows layout orientation
     #lalt - e : ${yabai} -m window --toggle split
