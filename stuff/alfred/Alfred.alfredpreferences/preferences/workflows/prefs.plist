@@ -6,5 +6,7 @@
 	<string>mouse.penglei.ybyte.org</string>
 	<key>defaultCreatedBy</key>
 	<string>penglei</string>
+	<key>showCanvasHints</key>
+	<false/>
 </dict>
 </plist>
