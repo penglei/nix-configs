@@ -37,17 +37,30 @@
     fsType = "ext4";
   };
 
+  #disable network scripting configuration
   #https://wiki.nixos.org/wiki/Systemd/networkd
   #https://www.reddit.com/r/NixOS/comments/1fwh4f0/networkinginterfaces_vs_systemdnetworknetworks/
-  # networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
-  # networking.interfaces.eno2.useDHCP = lib.mkDefault true;
-  # networking.interfaces.eno3.useDHCP = lib.mkDefault true;
-  # networking.interfaces.eno4.useDHCP = lib.mkDefault true;
+  networking.useNetworkd = true;
   systemd.network.enable = true;
-  systemd.network.networks."eno3" = {
-    matchConfig.name = "eno3";
+  systemd.network.networks."20-lan-primary" = {
+    matchConfig.Name = "eno3";
     networkConfig.DHCP = "ipv4";
+    linkConfig.RequiredForOnline = "routable";
+  };
+  systemd.network.networks."10-lan-secondary" = {
+    matchConfig.Name = "eno1";
+    networkConfig.DHCP = "ipv4";
+    dhcpV4Config = {
+      #There are multiple network interfaces on the machine connected to the same local area network.
+      #The primary interface has already applied the network configuration obtained from DHCP server,
+      #so we do not want this interface to obtain the same configuration again.
+      UseDNS = false;
+      SendHostname = false;
+      UseRoutes = false;
+    };
+  };
+  systemd.services."systemd-networkd" = {
+    environment.SYSTEMD_LOG_LEVEL = "debug";
   };
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
