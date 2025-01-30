@@ -42,12 +42,19 @@
   #https://wiki.nixos.org/wiki/Systemd/networkd
   #https://www.reddit.com/r/NixOS/comments/1fwh4f0/networkinginterfaces_vs_systemdnetworknetworks/
   networking.useNetworkd = true;
+  networking.nftables.enable = true;
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 80 443 ]; # extras
+  };
   systemd.network.enable = true;
   systemd.network.networks."20-lan-primary" = {
     matchConfig.Name = "eno3";
     networkConfig.DHCP = "ipv4";
     linkConfig.RequiredForOnline = "routable";
   };
+  # boot.kernel.sysctl = { "net.ipv4.conf.all.rp_filter" = 0; };
+  systemd.network.links."eno1".enable = false;
   systemd.network.networks."10-lan-secondary" = {
     matchConfig.Name = "eno1";
     networkConfig.DHCP = "ipv4";
