@@ -7,6 +7,7 @@
     ../modules/programs.nix
     ../modules/openssh.nix
     ../modules/pam.nix
+    ../modules/sing-box-client.nix
   ];
 
   #These modules ared loaded in boot stage-1, which are required
