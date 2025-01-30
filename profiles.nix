@@ -27,9 +27,10 @@ rec {
       ];
     };
     linux.modules = base.modules ++ [{
+      # The compatibility between zsh-vi-mode and autopairs plugins is not good.
       zsh-vi-mode.enable = false;
-    } # The compatibility between zsh-vi-mode and autopairs plugins is not good.
-      ];
+
+    }];
     darwin.modules = base.modules ++ [
       sops-nix.homeManagerModule
       ./hm-modules/darwin/launchd.nix

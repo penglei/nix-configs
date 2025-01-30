@@ -31,7 +31,7 @@ in {
     hostname = "ganger";
     username = "penglei";
     modules = [ ./nixos/ganger ];
-    hm-modules = profiles.hm.slim.modules;
+    hm-modules = profiles.hm.base.modules;
   };
 
   utm-vm = profiles.nixos-creator {

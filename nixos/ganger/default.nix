@@ -37,11 +37,18 @@
     fsType = "ext4";
   };
 
-  networking.useDHCP = lib.mkDefault true;
+  #https://wiki.nixos.org/wiki/Systemd/networkd
+  #https://www.reddit.com/r/NixOS/comments/1fwh4f0/networkinginterfaces_vs_systemdnetworknetworks/
+  # networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
   # networking.interfaces.eno2.useDHCP = lib.mkDefault true;
   # networking.interfaces.eno3.useDHCP = lib.mkDefault true;
   # networking.interfaces.eno4.useDHCP = lib.mkDefault true;
+  systemd.network.enable = true;
+  systemd.network.networks."eno3" = {
+    matchConfig.name = "eno3";
+    networkConfig.DHCP = "ipv4";
+  };
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
   hardware.cpu.intel.updateMicrocode =
