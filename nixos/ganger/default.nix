@@ -8,6 +8,7 @@
     ../modules/openssh.nix
     ../modules/pam.nix
     ../modules/sing-box-client.nix
+    ./router.nix
   ];
 
   #These modules ared loaded in boot stage-1, which are required
@@ -43,9 +44,17 @@
   #https://www.reddit.com/r/NixOS/comments/1fwh4f0/networkinginterfaces_vs_systemdnetworknetworks/
   networking.useNetworkd = true;
   networking.nftables.enable = true;
+
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 80 443 ]; # extras
+    filterForward = false;
+    checkReversePath = false;
+    extraInputRules = "accept";
+    extraForwardRules = ''
+      iifname wg0 accept
+      iifname eno3 accept
+    '';
   };
   systemd.network.enable = true;
   systemd.network.networks."20-lan-primary" = {
