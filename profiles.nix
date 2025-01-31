@@ -1,5 +1,5 @@
-{ self, pkgs, # pkgs used for standalone home-manager
-system, home-manager, sops-nix }:
+{ pkgs, # pkgs used for standalone home-manager
+system, home-manager, sops-nix, ... }:
 
 rec {
   hm = rec {

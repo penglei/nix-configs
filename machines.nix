@@ -1,4 +1,4 @@
-{ system, profiles, nixpkgs, pkgOverlays, ... }:
+{ system, profiles, nixpkgs, pkgOverlays, microvm, ... }:
 
 let
   cloudconfig = {
@@ -30,7 +30,12 @@ in {
     overlays = pkgOverlays;
     hostname = "ganger";
     username = "penglei";
-    modules = [ ./nixos/ganger ];
+    modules = [
+      ./nixos/ganger
+
+      # Include the microvm host module
+      microvm.nixosModules.host
+    ];
     hm-modules = profiles.hm.base.modules;
   };
 

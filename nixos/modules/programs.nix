@@ -8,6 +8,9 @@
     file
     curl
     gnumake
+    bridge-utils
     nixVersions.latest
+    conntrack-tools
+    dig
   ]; # merge syntatics
 }

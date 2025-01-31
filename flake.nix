@@ -5,6 +5,9 @@
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgsForNixOS.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    microvm.url = "github:astro/microvm.nix";
+    microvm.inputs.nixpkgs.follows = "nixpkgsForNixOS";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -24,7 +27,7 @@
   };
 
   outputs = { self, nixpkgs, nixpkgsForNixOS, flake-utils, home-manager
-    , sops-nix, nil-language-server, ... }:
+    , sops-nix, nil-language-server, microvm, ... }:
     let
       inherit (nixpkgs) lib;
 
@@ -43,9 +46,8 @@
         pkgs = nixpkgs.legacyPackages.${system}.appendOverlays pkgOverlays;
         #pkgs = import nixpkgs { inherit system; overlays = pkgOverlays; }; 
 
-        profiles = import ./profiles.nix {
-          inherit self pkgs system home-manager sops-nix;
-        };
+        profiles =
+          import ./profiles.nix { inherit pkgs system home-manager sops-nix; };
       in {
 
         #for debugging(do git track before building):
@@ -80,10 +82,10 @@
 
         ## nixos linux only
         packages.nixosConfigurations = import ./machines.nix {
-          inherit system pkgOverlays;
+          inherit self system pkgOverlays microvm;
           nixpkgs = nixpkgsForNixOS;
           profiles = import ./profiles.nix {
-            inherit self system home-manager sops-nix;
+            inherit system home-manager sops-nix;
             pkgs = nixpkgsForNixOS.legacyPackages.${system}.appendOverlays
               pkgOverlays;
           };
