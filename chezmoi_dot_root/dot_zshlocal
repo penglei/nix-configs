@@ -1,3 +1,4 @@
+export PATH=$HOME/Library/Python/3.9/bin:$PATH
 path+=$HOME/go/bin
 path+=$HOME/.cargo/bin
 path+=$HOME/.local/bin
