@@ -37,7 +37,7 @@
       profiles = import ./profiles.nix { inherit sops-nix; };
       overlays = [ (import ./pkgs/all.nix) ];
 
-      systems = eachSystem (system:
+      systems-outputs = eachSystem (system:
         let
           # overlays = [ (import ./pkgs/all.nix) ];
           pkgs = nixpkgs.legacyPackages.${system}.appendOverlays overlays;
@@ -65,7 +65,7 @@
           };
         }); # end each system
 
-      deploys = let
+      deploy-outputs = let
         system = "x86_64-linux"; # TODO support all platforms
         pkgs = import nixospkgs { inherit system; };
         deployPkgs = import nixospkgs {
@@ -99,9 +99,14 @@
           builtins.mapAttrs (_: deployLib: deployLib.deployChecks self.deploy)
           deploy-rs.lib;
       };
-    in systems // deploys // {
-      overlays.default = lib.lists.foldr (a: i: a // i) { } overlays;
-    } // {
+
+      overlay-outputs = {
+        overlays.default =
+          lib.lists.foldr (f: acc: (final: prev: acc // (f final prev))) { }
+          overlays;
+      };
+
+    in overlay-outputs // systems-outputs // deploy-outputs // {
       ##home-manager
       #
       # three scenarios:
