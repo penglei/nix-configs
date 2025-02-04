@@ -4,8 +4,11 @@ let
     username = config.sops.placeholder."pppoe.username";
     password = config.sops.placeholder."pppoe.password";
   };
-  cdnetCfg = "ppp/peers/cdnet";
+  provider = "cdnet";
+  cdnetCfg = "ppp/peers/${provider}";
 in {
+  imports = [ ./pppd-hooks.nix ];
+
   environment.systemPackages = with pkgs; [ ppp ];
   boot.kernel = {
     sysctl = {
@@ -17,17 +20,29 @@ in {
   services.pppd = {
     enable = true;
     peers = {
-      cdnet = {
+      "${provider}" = {
         autostart = true;
         enable = true;
-        config = ""; # will be overrided below
+        config = "#should be overrided!"; # will be overrided below
       };
     };
   };
-  environment.etc."${cdnetCfg}" =
-    lib.mkForce { source = config.sops.templates."${cdnetCfg}".path; };
+  systemd.services."pppd-${provider}" = {
+    serviceConfig = {
+      PrivateMounts = lib.mkForce false;
+      PrivateTmp = lib.mkForce false;
+      ProtectHome = lib.mkForce false;
+      ProtectSystem = lib.mkForce false;
+    };
+  };
+  environment.etc = {
+    "${cdnetCfg}" =
+      lib.mkForce { source = config.sops.templates."${cdnetCfg}".path; };
+  };
+
   sops.templates."${cdnetCfg}" = {
     content = ''
+      debug
       nodetach      #don't fork to a daemon
       persist       #don't exit after a connection has been made
       maxfail 0
