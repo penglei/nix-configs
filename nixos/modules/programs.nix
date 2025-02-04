@@ -12,5 +12,6 @@
     nixVersions.latest
     conntrack-tools
     dig
+    helix
   ]; # merge syntatics
 }

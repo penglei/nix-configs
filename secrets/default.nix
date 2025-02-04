@@ -12,5 +12,7 @@ in {
     "secret.main.password"
     "sing-box.server.address"
     "sing-box.shadowtls.server_name"
+    "pppoe.username"
+    "pppoe.password"
   ];
 }

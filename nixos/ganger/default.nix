@@ -3,6 +3,7 @@
 {
   imports = [
     ../nix.nix
+    ../../secrets # common sops config
     ../modules/configuration.nix
     ../modules/programs.nix
     ../modules/openssh.nix
@@ -71,8 +72,19 @@
     };
     #linkConfig.RequiredForOnline = "routable";
   };
+  systemd.network.networks."10-eno1-wan-and-ops" = {
+    matchConfig.Name = "eno1";
+    networkConfig = {
+      DHCP = true; # ops lan
+    };
+    dhcpV4Config = {
+      UseDNS = false;
+      UseRoutes = false;
+      UseGateway = false;
+    };
+  };
   # boot.kernel.sysctl = { "net.ipv4.conf.all.rp_filter" = 0; };
-  systemd.network.links."eno1".enable = false;
+  # systemd.network.links."eno1".enable = false;
   # systemd.network.networks."10-lan-secondary" = {
   #   matchConfig.Name = "eno1";
   #   networkConfig.DHCP = "ipv4";
