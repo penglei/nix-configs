@@ -1,5 +1,5 @@
-{ pkgs, # pkgs used for standalone home-manager
-system, home-manager, sops-nix, ... }:
+# 'pkgs' is used for standalone home-manager only.
+{ pkgs, system, home-manager, sops-nix, ... }:
 
 rec {
   hm = rec {
@@ -59,9 +59,10 @@ rec {
     ];
   };
 
-  hm-creator = {
-    standalone = username: {
-      ${username} = home-manager.lib.homeManagerConfiguration {
+  hm-creator = usernames:
+    pkgs.lib.listToAttrs (map (username: {
+      name = username;
+      value = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = let isDarwin = pkgs.lib.hasSuffix "darwin" system;
         in [{ home.username = username; }] ++ (if isDarwin then
@@ -72,8 +73,7 @@ rec {
         else
           hm.linux.modules ++ [{ home.homeDirectory = "/home/${username}"; }]);
       };
-    };
-  };
+    }) usernames);
 
   nixos-creator = { nixpkgs, system, hostname, username, overlays, modules
     , hm-modules ? hm.linux.modules, ... }:

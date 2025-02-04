@@ -141,7 +141,7 @@
       #nixfmt was renamed to nixfmt-classic. 
       #The nixfmt attribute may be used for the new RFC 166-style formatter in the future, which is currently available as nixfmt-rfc-style
       nixfmt-classic
-      nil-language-server
+      nil # nil-language-server
 
       yaml-language-server
       nodePackages.bash-language-server
@@ -178,7 +178,7 @@
 
       typst
       typstyle
-      typst-lsp
+      tinymist
 
     ] ++ lib.optionals stdenvNoCC.isLinux [
       #binutils #`ld` is not recommended installing globally.

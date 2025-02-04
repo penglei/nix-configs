@@ -51,8 +51,10 @@ in {
       plugin pppoe.so
       nic-eno1       #nic-xxx. N.B. 'nic-' prefix is used to forbid ambiguous of pppd option parsing.
       ifname pppoe-wan
+
       user "${secrets.pppoe.username}"
       password "${secrets.pppoe.password}"
+      #file ... #TODO read auth from a separate file.
 
       +ipv6
       mtu 1492
