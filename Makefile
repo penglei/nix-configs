@@ -17,7 +17,8 @@ restore:
 
 apply:
 	@if [[ "$$(uname)" == "Darwin" ]]; then \
-		chezmoi apply; home-manager switch --flake .; \
+		chezmoi apply; \
+		home-manager switch --flake .#penglei.aarch64-darwin; \
 	else \
 		sudo nixos-rebuild switch --flake .; \
 	fi

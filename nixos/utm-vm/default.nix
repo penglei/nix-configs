@@ -6,7 +6,6 @@
     ../modules/programs.nix
     ../modules/dnscrypt-proxy-client.nix
     ../modules/ssserver.nix
-    ./sops.nix
   ];
 
   boot.initrd.availableKernelModules =

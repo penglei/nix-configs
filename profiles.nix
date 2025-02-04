@@ -1,7 +1,6 @@
-# 'pkgs' is used for standalone home-manager only.
-{ pkgs, system, home-manager, sops-nix, ... }:
+{ sops-nix, ... }:
 
-rec {
+{
   hm = rec {
     slim = {
       modules = [
@@ -58,38 +57,4 @@ rec {
       ./hm-modules/yazi.nix # terminal file explorer
     ];
   };
-
-  hm-creator = usernames:
-    pkgs.lib.listToAttrs (map (username: {
-      name = username;
-      value = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = let isDarwin = pkgs.lib.hasSuffix "darwin" system;
-        in [{ home.username = username; }] ++ (if isDarwin then
-          hm.darwin.modules ++ [{
-            # Home Manager needs a bit of information about you and the paths it should manage.
-            home.homeDirectory = "/Users/${username}";
-          }]
-        else
-          hm.linux.modules ++ [{ home.homeDirectory = "/home/${username}"; }]);
-      };
-    }) usernames);
-
-  nixos-creator = { nixpkgs, system, hostname, username, overlays, modules
-    , hm-modules ? hm.linux.modules, ... }:
-    nixpkgs.lib.nixosSystem {
-      inherit system;
-      specialArgs = { inherit nixpkgs username hostname; };
-      modules = [
-        home-manager.nixosModules.home-manager
-        sops-nix.nixosModules.sops
-        { nixpkgs.overlays = overlays; }
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.${username}.imports = hm-modules;
-          # home-manager.extraSpecialArgs = { inherit username; };
-        }
-      ] ++ modules;
-    };
 }
