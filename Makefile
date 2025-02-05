@@ -22,3 +22,7 @@ apply:
 	else \
 		sudo nixos-rebuild switch --flake .; \
 	fi
+
+rsync:
+	rsync -avh . 192.168.1.5:/data/nix-configs \
+	--exclude .direnv --include='**.gitignore' --filter=':- .gitignore' --delete-after
