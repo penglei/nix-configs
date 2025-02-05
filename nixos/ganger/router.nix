@@ -7,7 +7,7 @@ let
   provider = "cdnet";
   cdnetCfg = "ppp/peers/${provider}";
 in {
-  imports = [ ./pppd-hooks.nix ];
+  imports = [ ./interface/pppd-hooks.nix ];
 
   environment.systemPackages = with pkgs; [ ppp ];
   boot.kernel = {
