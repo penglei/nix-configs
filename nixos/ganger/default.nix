@@ -61,18 +61,27 @@
       iifname eno3 accept
     '';
   };
+
+  #this also enable 'services.resolved'.
+  #see nixos/modules/system/boot/networkd.nix
   systemd.network.enable = true;
 
-  #systemd.network.networks."20-lan-primary" = {
-  #  matchConfig.Name = "eno3";
-  #  networkConfig = {
-  #    DHCP = "ipv4";
+  networking.nameservers = [ "192.168.101.1" ]; # configure nameservers manually
+  systemd.network.networks."20-lan-primary" = {
+    matchConfig.Name = "eno3";
+    networkConfig = {
+      DHCP = "ipv4";
 
-  #    IPv4Forwarding = true;
-  #    IPv6Forwarding = true;
-  #  };
-  #  #linkConfig.RequiredForOnline = "routable";
-  #};
+      IPv4Forwarding = true;
+      IPv6Forwarding = true;
+    };
+    #linkConfig.RequiredForOnline = "routable";
+    dhcpV4Config = {
+      UseDNS = false;
+      UseRoutes = true;
+      UseGateway = false;
+    };
+  };
 
   systemd.network.networks."10-eno1-wan-and-ops" = {
     matchConfig.Name = "eno1";

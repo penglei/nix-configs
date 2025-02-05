@@ -13,5 +13,6 @@
     conntrack-tools
     dig
     helix
+    lsof
   ]; # merge syntatics
 }
