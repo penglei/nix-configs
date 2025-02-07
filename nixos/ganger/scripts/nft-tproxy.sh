@@ -4,9 +4,17 @@ set -euo pipefail
 #OUTPUT_INTERFACE=$(ip route show default | awk '/default/ {print $5}')
 OUTPUT_INTERFACE="pppoe-wan"
 
-TPROXY_PORT=11911 ## same as sing-box inbound
-ROUTING_MARK=666  ## https://sing-box.sagernet.org/configuration/route/#default_mark
+## sing-box tproxy inbound
+TPROXY_PORT=21012
+
+#sing-box outbound connection
+## SO_MARK, rules.default_mark
+#see https://sing-box.sagernet.org/configuration/route/#default_mark
+OUT_MARK=666
+
 PROXY_FWMARK=119
+
+#https://book.huihoo.com/iptables-tutorial/x9125.htm
 
 #  [family]          [type][   gateway  ] [table]
 ip -4 route replace local default dev lo table 100
@@ -45,9 +53,11 @@ table inet $table {
     flags interval
     auto-merge
     elements = {
-      0.0.0.0/8, 10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.0.0.0/24, 192.0.2.0/24,
-      192.31.196.0/24, 192.52.193.0/24, 192.88.99.0/24, 192.168.0.0/16, 192.175.48.0/24, 198.18.0.0/15, 198.51.100.0/24,
-      203.0.113.0/24, 224.0.0.0/4, 240.0.0.0/4, 255.255.255.255,
+      0.0.0.0/8, 10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16,
+      172.16.0.0/12, 192.0.0.0/24, 192.0.2.0/24, 192.31.196.0/24,
+      192.52.193.0/24, 192.88.99.0/24, 192.168.0.0/16, 192.175.48.0/24,
+      198.18.0.0/15, 198.51.100.0/24, 203.0.113.0/24, 224.0.0.0/4, 240.0.0.0/4,
+      255.255.255.255,
     }
   }
 
@@ -56,7 +66,8 @@ table inet $table {
     flags interval
     auto-merge
     elements = {
-      ::1/128, ::/128, ::ffff:0:0/96, 64:ff9b:1::/48, 100::/64, 2001:2::/48, 2001:db8::/32, fe80::/10, 2001::/23, fc00::/7,
+      ::1/128, ::/128, ::ffff:0:0/96, 64:ff9b:1::/48, 100::/64,
+      2001:2::/48, 2001:db8::/32, fe80::/10, 2001::/23, fc00::/7,
     }
   }
 
@@ -65,68 +76,86 @@ table inet $table {
   # 才需要手动修正。
   # set dst_forward {}
 
+  counter cnt_dst_local_pre {
+    comment "prerouting dst local bypass"
+  }
+
+  counter cnt_prerouting_socket_transparent {
+    comment "prerouting tcp socket transparent 1"
+  }
+
   chain prerouting {
     type filter hook prerouting priority mangle; policy accept;
 
-    ip saddr 192.168.202.2 udp dport 53 log prefix "prerouting sing-box tproxy:AAAA:";
-
-    #DNS自动转发到代理进行处理。我们在这里没有这么做，因为在router上启用了systemd-resolved作为DNS代理缓存。
-    meta l4proto { tcp, udp } th dport 53 tproxy to :$TPROXY_PORT accept comment "proxy any dns query"
-
-    ip saddr 192.168.202.2 udp dport 53 log prefix "prerouting sing-box tproxy:BBBB:";
+    ct direction reply counter return
 
     fib daddr type local meta l4proto { tcp, udp } th dport $TPROXY_PORT \
+      log prefix "prohibit connect to tproxy directly. " \
       reject with icmpx type host-unreachable \
       comment "prohibit connect to tproxy port directly, avoid loop"
 
-    ip saddr 192.168.202.2 udp dport 53 log prefix "prerouting sing-box tproxy:CCCC:";
+    udp dport 53 log prefix "dns prerouting(v3): "
 
-    ip daddr @dst_bypass accept comment "prerouting: dst bypass ipv4"
-    ip6 daddr @dst_bypass6 accept comment "prerouting: dst bypass ipv6"
+    #meta iif != lo
+    meta l4proto { tcp, udp } th dport 53 \
+      tproxy to :$TPROXY_PORT log prefix "proxy: any dns query: " \
+      accept
 
-    ip saddr 192.168.202.2 udp dport 53 log prefix "prerouting sing-box tproxy:DDDD:";
 
-    ip saddr @src_bypass accept comment "prerouting: src bypass ipv4"
+    #counter debug
+    fib daddr type local counter name cnt_dst_local_pre accept comment "bypass: local dst"
 
-    fib daddr type local accept comment "local bypass"
+    ip daddr @dst_bypass accept comment "bypas prerouting: dst ipv4."
+    ip6 daddr @dst_bypass6 accept comment "bypass prerouting: dst ipv6."
 
-    ip saddr 192.168.202.2 udp dport 53 log prefix "prerouting sing-box tproxy:EEEE:";
+    ip saddr @src_bypass accept comment "bypass prerouting: src ipv4"
 
-    meta l4proto tcp socket transparent 1 meta mark set $PROXY_FWMARK accept comment "pass established connection"
+    #优化，已经是透明连接的请求不要再丢到透明代理。
+    #这个socket是内核提供的数据包原始socket信息。
+    #它是本机发起的对外连接的socket，它被rule7 打上标记后被重新路由到本机(路由表中设置了由lo进入)。
+    meta l4proto tcp socket transparent 1 \
+      counter log prefix "prerouting socket transparent: " accept
 
-    ip saddr 192.168.202.2 udp dport 53 log prefix "prerouting sing-box tproxy:FFFF:";
+    #mark 是meta mark的简写
+    meta l4proto tcp socket transparent 1 counter
+    meta l4proto { tcp, udp } mark 0 mark set $PROXY_FWMARK counter
+    meta l4proto { tcp, udp } mark != $PROXY_FWMARK counter accept comment "ignore other marks' packet"
 
-    meta l4proto { tcp, udp } tproxy to :$TPROXY_PORT meta mark set $PROXY_FWMARK \
-      log prefix "!!!proxy to singbox:" \
+    #这里的mark set 是为了外部流经的数据包(我们是router!!)，不是为了output的数据包.
+    meta l4proto { tcp, udp } meta mark $PROXY_FWMARK tproxy to :$TPROXY_PORT \
+      counter log prefix "intercept prerouting: default. " \
       comment "proxy"
 
-    ip saddr 192.168.202.2 udp dport 53 log prefix "prerouting sing-box tproxy:GGGG:";
   }
 
   chain output {
     type route hook output priority mangle; policy accept;
 
-    #rule1: 放行到其它设备的流量，这包含local和remote，但是到output interface的流量全部要去后面判断。
+    # 这时优化：确定是发往外部的数据包直接通过
     # oifname != $OUTPUT_INTERFACE accept comment "放行到任何其它设备的流量"
 
-    #rule2: 放行目的地址为local(即本机某个IP)的所有流量。
-    #       如果不加这一条，本地通过OUTPUT_INTERFACE地址访问*本地53端口*会被拦截进行重新路由。参见rule6。
-    fib daddr type local accept comment "bypass to local"
+    fib daddr type local \
+      log prefix "bypass: output local dst: " \
+      accept \
+      comment "bypass: local dst"
 
-    ip daddr @dst_bypass accept comment "out: dst bypass ipv4"
-    ip6 daddr @dst_bypass6 accept comment "out: dst bypass ipv6"
+    ip daddr @dst_bypass accept comment "bypass: dst ipv4: "
+    ip6 daddr @dst_bypass6 accept comment "bypass: dst ipv6: "
 
-    udp dport { netbios-ns, netbios-dgm, netbios-ssn } accept comment "bypass nbns ports"
+    udp dport { netbios-ns, netbios-dgm, netbios-ssn } accept comment "bypass: nbns ports: "
 
-    meta mark $ROUTING_MARK accept comment "allow to proxy server (real stream!!)"
+    meta mark $OUT_MARK log prefix "bypass: proxy server: " \
+      accept comment "bypass: proxy server!"
 
     #rule6: 本机发起对外的DNS请求重新路由
-    #在output链上，meta匹配的一定是本机发起的访问。但如果访问的是本地地址，会怎么样？前面的rule已经放行了。
-    meta l4proto { tcp, udp } th dport 53 meta mark set $PROXY_FWMARK accept comment "intercept dns query from local"
+    meta l4proto { tcp, udp } th dport 53 meta mark set $PROXY_FWMARK \
+      log prefix "intercept: out dns: " \
+      accept comment "intercept dns query from local"
 
+    #rule7
     meta l4proto { tcp, udp } meta mark set $PROXY_FWMARK \
-        comment "intercept output traffic" \
-        #log prefix "intercept outout: sing-box tproxy"
+        log prefix "intercept: any output: " \
+        comment "intercept output traffic"
   }
 }
 EOF

@@ -24,6 +24,8 @@ in {
       size = 500000;
       save = 500000;
       path = "$HOME/.zsh_nix_history";
+      #Statistic on the frequency of commands:
+      #❯ export LC_ALL='C'; cat $HOME/.zsh_nix_history | awk '{print $1}' | sort | uniq -c | sort -s -n -k 1,1
     };
     plugins = [
       {
