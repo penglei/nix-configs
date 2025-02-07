@@ -12,7 +12,7 @@
     nixVersions.latest
     conntrack-tools
     dnsutils # contains dig, nslookup
-    helix
+    neovim
     lsof
   ]; # merge syntatics
 }

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+## 垂直方向不能在tiling和floating之间切换 ##
+
 function select_window() {
   local direction="$1"
   local from_id="$2"

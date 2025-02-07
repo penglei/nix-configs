@@ -1,10 +1,28 @@
 #!/usr/bin/env bash
 
+## 水平方向可以在tiling window 和 floating window之间移动焦点 ##
+
+basic_floating_filter='.["is-floating"]==true'
+not_wecom_meeting_pop_excluder='((.app|test("WeCom")) and .subrole=="AXSystemDialog" and (.frame.h<40 and.frame.w<250)|not)'
+
+# not_calculator='(.app|test("Calculator")|not)'
+
+floating_window_filters=(
+  "$not_wecom_meeting_pop_excluder"
+  "$basic_floating_filter"
+)
+
+floating_filter="true $(printf " and %s" "${floating_window_filters[@]}")"
+
 function select_window() {
   local floating="$1"
   local all_windows
   all_windows="$(yabai -m query --windows --space)"
-  jq -r "first(.[] | select(.[\"is-floating\"] == $floating) | .id)" <<<"$all_windows"
+  if [[ "$floating" == "true" ]]; then
+    jq -r "first(.[] | select($floating_filter) | .id)" <<<"$all_windows"
+  else
+    jq -r "first(.[] | select(.[\"is-floating\"] == false) | .id)" <<<"$all_windows"
+  fi
 }
 
 function focus() {

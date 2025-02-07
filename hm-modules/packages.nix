@@ -75,7 +75,7 @@
       mynixcleaner
 
     ] ++ lib.optionals stdenvNoCC.isDarwin [
-      bash
+      bashInteractive
       git-cliff
       lazygit
       gnupg # full with gui
