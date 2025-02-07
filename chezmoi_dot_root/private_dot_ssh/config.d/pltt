@@ -1,9 +1,17 @@
 Host router
   User root
+  Hostname 192.168.101.1
   ProxyJump pltt.ybyte.org
+  HostKeyAlgorithms = +ssh-rsa
+  PubkeyAcceptedAlgorithms = +ssh-rsa
+
+Host router.ops
+  User root
+  Hostname 192.168.1.245
   HostKeyAlgorithms = +ssh-rsa
   PubkeyAcceptedAlgorithms = +ssh-rsa
 
 Host ganger
   User penglei
+  Hostname 192.168.101.170
   ProxyJump pltt.ybyte.org

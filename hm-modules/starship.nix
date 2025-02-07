@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 let lib = pkgs.lib;
 in {
@@ -11,7 +11,7 @@ in {
       ];
       username = {
         disabled = false;
-        show_always = true;
+        #show_always = true;
         style_user = "white bold";
         style_root = "black bold";
         format = "[ $user]($style) ";
