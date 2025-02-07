@@ -2,22 +2,11 @@
 let
   passwordstub = config.sops.placeholder."secret.main.password";
   cfg = {
-    inbounds = [
-      {
-        type = "mixed";
-        listen = "::";
-        listen_port = 10000;
-      }
-
-      {
-        type = "socks";
-        listen = "0.0.0.0";
-        listen_port = 18283;
-        sniff = true;
-        sniff_override_destination = true;
-        domain_strategy = "ipv4_only"; # work with chinadns-ng
-      }
-    ];
+    inbounds = [{
+      type = "socks";
+      listen = "127.0.0.1"; # TODO lan
+      listen_port = 18585;
+    }];
 
     outbounds = [
       {

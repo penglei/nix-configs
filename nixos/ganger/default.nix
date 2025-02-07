@@ -8,7 +8,7 @@
     ../modules/programs.nix
     ../modules/openssh.nix
     ../modules/pam.nix
-    ../modules/sing-box-client.nix
+    # ../modules/sing-box-client.nix
     ./router.nix
     ./vms/lan-vm-1.nix
   ];
@@ -66,7 +66,7 @@
   #see nixos/modules/system/boot/networkd.nix
   systemd.network.enable = true;
 
-  networking.nameservers = [ "192.168.101.1" ]; # configure nameservers manually
+  # networking.nameservers = [ "192.168.101.1" ]; # configure nameservers manually
   systemd.network.networks."20-lan-primary" = {
     matchConfig.Name = "eno3";
     networkConfig = {
@@ -86,7 +86,7 @@
   systemd.network.networks."10-eno1-wan-and-ops" = {
     matchConfig.Name = "eno1";
     networkConfig = {
-      DHCP = true; # ops lan
+      DHCP = "ipv4"; # ops lan
     };
     dhcpV4Config = {
       UseDNS = false;

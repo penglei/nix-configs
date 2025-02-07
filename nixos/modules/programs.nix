@@ -11,7 +11,7 @@
     bridge-utils
     nixVersions.latest
     conntrack-tools
-    dig
+    dnsutils # contains dig, nslookup
     helix
     lsof
   ]; # merge syntatics

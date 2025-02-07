@@ -19,7 +19,7 @@ in {
       Address = [ "192.168.202.1/24" "2001:db8::a/64" ];
       # Gateway = "192.168.202.1"; #don't specify gateway which would add a default route.
       #DNS = [ "192.168.101.1" ];
-      IPv6AcceptRA = true;
+      # IPv6AcceptRA = true;
       IPMasquerade = "ipv4";
       IPv4Forwarding = true;
     };
