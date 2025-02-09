@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
-#OUTPUT_INTERFACE=$(ip route show default | awk '/default/ {print $5}')
-OUTPUT_INTERFACE="pppoe-wan"
 
 ## sing-box tproxy inbound
 TPROXY_PORT=21012
@@ -12,14 +10,14 @@ TPROXY_PORT=21012
 #see https://sing-box.sagernet.org/configuration/route/#default_mark
 OUT_MARK=666
 
-PROXY_FWMARK=119
+PROXY_FWMARK=0x77
 
 #https://book.huihoo.com/iptables-tutorial/x9125.htm
 
 #  [family]          [type][   gateway  ] [table]
 ip -4 route replace local default dev lo table 100
 if ! (ip -4 rule show | grep -q 100); then
-  ip -4 rule add fwmark 119 lookup 100
+  ip -4 rule add fwmark $PROXY_FWMARK lookup 100
 fi
 
 ip -6 route replace local default dev lo table 100
@@ -31,7 +29,7 @@ fi
 #`th` means "Transport Header".
 #`fib` means forwarding information base
 
-table=sing-box-tproxy
+table=sb-tproxy
 
 if nft list tables | grep -q $table; then
   nft flush table inet $table
@@ -85,21 +83,28 @@ table inet $table {
   }
 
   chain prerouting {
+    #mangle hook 在conntrack之后执行，所以才能使用ct模块
     type filter hook prerouting priority mangle; policy accept;
 
-    ct direction reply counter return
+    # tcp dport != 22 tcp sport != 22 ip daddr 192.168.202.2 ct direction reply counter log prefix "debug daddr reply: "
+    # tcp dport != 22 tcp sport != 22 ip saddr 192.168.202.2 ct direction reply counter log prefix "debug saddr reply: "
+    ct direction reply return
 
     fib daddr type local meta l4proto { tcp, udp } th dport $TPROXY_PORT \
       log prefix "prohibit connect to tproxy directly. " \
       reject with icmpx type host-unreachable \
       comment "prohibit connect to tproxy port directly, avoid loop"
 
-    udp dport 53 log prefix "dns prerouting(v3): "
+    udp dport 53 log prefix "dns prerouting(v3): " counter
 
-    #meta iif != lo
+    #拦截所有DNS请求合适，即使是发往局域网内其它机器的DNS请求。
+    #TODO 这需要优化，因为这会导致两头内网机器之间测试DNS服务时出现异常。
     meta l4proto { tcp, udp } th dport 53 \
-      tproxy to :$TPROXY_PORT log prefix "proxy: any dns query: " \
-      accept
+      tproxy ip to 127.0.0.1:$TPROXY_PORT \
+      tproxy ip6 to [::1]:$TPROXY_PORT \
+      log prefix "proxy: any dns query(v3.1): " \
+      counter accept
+    udp dport 53 log prefix "dns prerouting(v3.2): " counter
 
 
     #counter debug
@@ -110,33 +115,32 @@ table inet $table {
 
     ip saddr @src_bypass accept comment "bypass prerouting: src ipv4"
 
-    #优化，已经是透明连接的请求不要再丢到透明代理。
-    #这个socket是内核提供的数据包原始socket信息。
-    #它是本机发起的对外连接的socket，它被rule7 打上标记后被重新路由到本机(路由表中设置了由lo进入)。
-    meta l4proto tcp socket transparent 1 \
-      counter log prefix "prerouting socket transparent: " accept
+   ##mark 是meta mark的简写
+   ##方法1:
+   meta l4proto { tcp, udp } mark 0 mark set $PROXY_FWMARK counter comment "packets through router(maybe lo,eth)"
+   meta l4proto { tcp, udp } mark != $PROXY_FWMARK counter accept comment "ignore other mark packet"
 
-    #mark 是meta mark的简写
-    meta l4proto tcp socket transparent 1 counter
-    meta l4proto { tcp, udp } mark 0 mark set $PROXY_FWMARK counter
-    meta l4proto { tcp, udp } mark != $PROXY_FWMARK counter accept comment "ignore other marks' packet"
+   ##方法2:
+   #meta l4proto tcp socket transparent 1 \
+   # counter log prefix "socket transparent: " \
+   # meta mark set $PROXY_FWMARK comment "fast path optimize"
 
-    #这里的mark set 是为了外部流经的数据包(我们是router!!)，不是为了output的数据包.
-    meta l4proto { tcp, udp } meta mark $PROXY_FWMARK tproxy to :$TPROXY_PORT \
+    meta l4proto { tcp, udp } meta mark $PROXY_FWMARK \
+      tproxy ip to 127.0.0.1:$TPROXY_PORT \
+      tproxy ip6 to [::1]:$TPROXY_PORT \
       counter log prefix "intercept prerouting: default. " \
       comment "proxy"
 
   }
 
   chain output {
+    #mangle hook 在conntrack之后执行，所以才能使用ct模块
     type route hook output priority mangle; policy accept;
 
-    # 这时优化：确定是发往外部的数据包直接通过
-    # oifname != $OUTPUT_INTERFACE accept comment "放行到任何其它设备的流量"
-
+    #rule5
     fib daddr type local \
       log prefix "bypass: output local dst: " \
-      accept \
+      counter accept \
       comment "bypass: local dst"
 
     ip daddr @dst_bypass accept comment "bypass: dst ipv4: "
@@ -144,18 +148,24 @@ table inet $table {
 
     udp dport { netbios-ns, netbios-dgm, netbios-ssn } accept comment "bypass: nbns ports: "
 
-    meta mark $OUT_MARK log prefix "bypass: proxy server: " \
-      accept comment "bypass: proxy server!"
+    meta mark $OUT_MARK log prefix "bypass: sing-box out: " \
+      accept comment "bypass direct or proxy server!"
 
     #rule6: 本机发起对外的DNS请求重新路由
-    meta l4proto { tcp, udp } th dport 53 meta mark set $PROXY_FWMARK \
+    #meta oif != lo 基本可以去掉，因为rule5根据路由决策已经短路了(有没有可能local route table被搞坏了但 oif 还是正确的？)。
+    #留在这里的好处是提醒不需要提前对lo output做处理，prerouting里会统一处理。
+    meta oif != lo meta l4proto { tcp, udp } th dport 53 meta mark set $PROXY_FWMARK \
       log prefix "intercept: out dns: " \
-      accept comment "intercept dns query from local"
+      counter accept comment "intercept dns query from local"
 
     #rule7
-    meta l4proto { tcp, udp } meta mark set $PROXY_FWMARK \
+    meta oif != lo meta l4proto { tcp, udp } meta mark set $PROXY_FWMARK \
         log prefix "intercept: any output: " \
-        comment "intercept output traffic"
+        counter comment "intercept output traffic"
+
+    #netfilter的在output之后进行reroute-check，当我们打上PROXY_FWMARK之后, 
+    #reroute-check发现路由表100中配置了将具有该mark的数据包转发到lo的规则。
+    #于是，lo interface将接受该数据包，并进行正常的网路栈处理(prerouting,...)
   }
 }
 EOF

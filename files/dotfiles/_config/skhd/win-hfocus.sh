@@ -3,7 +3,7 @@
 ## 水平方向可以在tiling window 和 floating window之间移动焦点 ##
 
 basic_floating_filter='.["is-floating"]==true'
-not_wecom_meeting_pop_excluder='((.app|test("WeCom")) and .subrole=="AXSystemDialog" and (.frame.h<40 and.frame.w<250)|not)'
+not_wecom_meeting_pop_excluder='((.app|test("WeCom|TencentMeeting")) and .subrole=="AXSystemDialog" and (.frame.h<100 and.frame.w<250)|not)'
 
 # not_calculator='(.app|test("Calculator")|not)'
 

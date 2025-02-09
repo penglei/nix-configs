@@ -1,60 +1,48 @@
 { config, ... }:
 
-let utils = (import ./utils.nix);
+let utils = (import ../utils.nix);
 in {
   systemd.network.networks."10-lan-vms" = {
     matchConfig.Name = [ "vm-*" ];
     networkConfig = { Bridge = "br-lan"; };
   };
 
-  systemd.network.netdevs."br-lan" = {
-    netdevConfig = {
-      Name = "br-lan";
-      Kind = "bridge";
-    };
-  };
-  systemd.network.networks."10-lan-bridge" = {
-    matchConfig.Name = "br-lan";
-    networkConfig = {
-      Address = [ "192.168.202.1/24" "2001:db8::a/64" ];
-      # Gateway = "192.168.202.1"; #don't specify gateway which would add a default route.
-      #DNS = [ "192.168.101.1" ];
-      # IPv6AcceptRA = true;
-      IPMasquerade = "ipv4";
-      IPv4Forwarding = true;
-    };
-    #linkConfig.RequiredForOnline = "routable";
-  };
-
   microvm.vms."lan-vm-1" = {
+    specialArgs = {
+      username = "penglei";
+      hostname = "lan-vm-1";
+    };
     config = {
       microvm = {
         mem = 8192;
         vcpu = 4;
 
-        shares = [{
-          source = "/nix/store";
-          mountPoint = "/nix/.ro-store";
-          tag = "rs-store";
-          proto = "virtiofs";
-        }];
+        shares = [
+          {
+            source = "/nix/store";
+            mountPoint = "/nix/.ro-store";
+            tag = "rs-store";
+            proto = "virtiofs";
+          }
+          {
+            source = "/var/lib/microvms/lan-vm-1/shares/opt";
+            mountPoint = "/opt";
+            tag = "opt";
+            proto = "virtiofs";
+          }
+        ];
         hypervisor = "cloud-hypervisor";
 
         interfaces = [(rec {
           type = "tap";
           id = "vm-1";
           mac = utils.gen_mac id;
-        })
-        # (rec {
-        #   type = "tap";
-        #   id = "vm-wan";
-        #   mac = utils.gen_mac id;
-        # })
-          ];
+        })];
       };
 
       imports = [
         ../../modules/programs.nix
+        ../../modules/configuration.nix
         {
           nix.settings = {
             experimental-features =
@@ -63,6 +51,19 @@ in {
         }
       ];
       system.stateVersion = config.system.nixos.version;
+
+      # system.activationScripts.ensure-ssh-key-dir.text = "mkdir -p /opt/ssh";
+      services.openssh.hostKeys = [
+        {
+          bits = 4096;
+          path = "/opt/ssh/ssh_host_rsa_key";
+          type = "rsa";
+        }
+        {
+          path = "/opt/ssh/ssh_host_ed25519_key";
+          type = "ed25519";
+        }
+      ];
 
       users.users.root.password = "toor";
       services.openssh = {
@@ -76,8 +77,7 @@ in {
         networkConfig = {
           Address = [ "192.168.202.2/24" "2001:db8::b/64" ];
           Gateway = "192.168.202.1";
-          DNS = [ "192.168.101.1" ];
-          IPv6AcceptRA = true;
+          #IPv6AcceptRA = true;
           DHCP = "no";
         };
       };
