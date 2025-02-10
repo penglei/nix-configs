@@ -3,6 +3,11 @@
 let default_ssh_auth_key = (import ../../config.nix).ssh.authorized_key;
 in {
 
+  programs.neovim = {
+    viAlias = true;
+    vimAlias = true;
+  };
+
   # Set your time zone.
   time.timeZone = lib.mkDefault "Asia/Shanghai";
 

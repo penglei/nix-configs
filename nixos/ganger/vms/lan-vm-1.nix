@@ -21,13 +21,13 @@ in {
           {
             source = "/nix/store";
             mountPoint = "/nix/.ro-store";
-            tag = "rs-store";
+            tag = "ro-store";
             proto = "virtiofs";
           }
           {
-            source = "/var/lib/microvms/lan-vm-1/shares/opt";
-            mountPoint = "/opt";
-            tag = "opt";
+            source = "/persist/var/lib/microvms/lan-vm-1/shares";
+            mountPoint = "/persist";
+            tag = "persist";
             proto = "virtiofs";
           }
         ];
@@ -43,6 +43,7 @@ in {
       imports = [
         ../../modules/programs.nix
         ../../modules/configuration.nix
+        ./writable-layer.nix
         {
           nix.settings = {
             experimental-features =
@@ -50,37 +51,60 @@ in {
           };
         }
       ];
-      system.stateVersion = config.system.nixos.version;
 
-      # system.activationScripts.ensure-ssh-key-dir.text = "mkdir -p /opt/ssh";
+      system.activationScripts.ensure-persist-dir = {
+        text = "mkdir -p /persist/{etc,opt/ssh}";
+      };
       services.openssh.hostKeys = [
         {
           bits = 4096;
-          path = "/opt/ssh/ssh_host_rsa_key";
+          path = "/persist/opt/ssh/ssh_host_rsa_key";
           type = "rsa";
         }
         {
-          path = "/opt/ssh/ssh_host_ed25519_key";
+          path = "/persist/opt/ssh/ssh_host_ed25519_key";
           type = "ed25519";
         }
       ];
+      # environment.etc.machine-id.source =
+      #   pkgs.runCommandLocal "machine-id-link" { } ''
+      #     ln -s /persist/etc/machine-id $out
+      #   '';
 
-      users.users.root.password = "toor";
+      # users.users.root.password = "toor";
       services.openssh = {
         enable = true;
-        settings.PermitRootLogin = "yes";
+        # settings.PermitRootLogin = "yes";
       };
 
-      systemd.network.enable = true;
-      systemd.network.networks."20-lan" = {
-        matchConfig.Type = "ether";
-        networkConfig = {
-          Address = [ "192.168.202.2/24" "2001:db8::b/64" ];
-          Gateway = "192.168.202.1";
-          #IPv6AcceptRA = true;
-          DHCP = "no";
+      networking = {
+        useNetworkd = true;
+        useDHCP = false;
+        nftables.enable = true;
+        wireless.enable = false;
+      };
+      services.resolved = {
+        #disable llmnr
+        llmnr = "false";
+        #disable mdns
+        extraConfig = ''
+          MulticastDNS=false
+        '';
+      };
+
+      systemd.network = {
+        enable = true;
+        networks."20-lan" = {
+          matchConfig.Type = "ether";
+          networkConfig = {
+            #Address = [ "192.168.202.2/24" "2001:db8::b/64" ];
+            #Gateway = "192.168.202.1";
+            IPv6AcceptRA = true;
+            DHCP = "ipv4";
+          };
         };
       };
+      system.stateVersion = config.system.nixos.version;
     };
   };
 }

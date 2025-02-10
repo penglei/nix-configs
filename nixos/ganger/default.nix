@@ -13,7 +13,10 @@
     ./interface/pppoe.nix
     ./interface/ops.nix
     ./interface/br-lan.nix
-    ./vms/lan-vm-1.nix
+    ./network/firewall.nix
+    ./network/miniupnpd.nix
+    ./network/kea.nix
+    ./vms
   ];
 
   #These modules ared loaded in boot stage-1, which are required
