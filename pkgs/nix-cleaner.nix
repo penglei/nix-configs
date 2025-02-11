@@ -23,9 +23,5 @@ writeShellApplication {
       #sudo nix-env -p /nix/var/nix/profiles/system --delete-generations old
     fi
 
-    if [[ -L /nix/var/nix/profiles/per-user/root/channels ]]; then
-        echo nix profile wipe-history --profile /nix/var/nix/profiles/per-user/root/channels
-    fi
-
   '';
 }

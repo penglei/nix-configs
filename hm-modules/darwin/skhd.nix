@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ lib, pkgs, config, ... }:
 
 #key docs: https://github.com/koekeishiya/skhd/issues/1
 
@@ -50,8 +50,10 @@ in {
       if [ $(ls ''${TMPDIR}Alacritty-*.sock 2>/dev/null | wc -l) -gt 0 ]; then \
         ${alacritty} msg create-window; \
       else \
-        export PATH=$(sed -E 's/:?\/Users\/penglei\/.nix-profile\/bin:?/:/g' <<< $PATH); \
-        open -na /Users/penglei/Applications/Alacritty.app; sleep 0.03; \
+        export PATH=$(sed -E 's/:?${
+          lib.strings.escape [ "/" ] config.home.homeDirectory
+        }\/.nix-profile\/bin:?/:/g' <<< $PATH); \
+        open -na $HOME/Applications/Alacritty.app; sleep 0.03; \
       fi && ${yabai} -m window --toggle float --grid 8:8:1:1:6:6
 
     lalt - return : \
@@ -60,9 +62,10 @@ in {
       then \
         ${alacritty} msg create-window; \
       else \
-        #We must clean the home .nix-profile/bin from PATH, \
+        #We must clean the NIX_PROFILES PATH, \
         #so that it would be prepend to PATH in system shell config.\
         export PATH=$(sed -E "s|:?$HOME/.nix-profile/bin:?|:|g" <<< $PATH); \
+        export PATH=$(sed -E "s|:?/nix/var/nix/profiles/default:?|:|g" <<< $PATH); \
         open -na ${pkgs.alacritty}/Applications/Alacritty.app; \
       fi
 

@@ -28,14 +28,7 @@
     experimental-features = "nix-command flakes";
   };
 
-  # Applies for imperative commands
-  xdg.configFile."nixpkgs/config.nix".text = ''
-    {
-      allowUnfree = true;
-      allowBroken = true;
-      experimental-features = "nix-command flakes";
-    }
-  '';
+  xdg.enable = true;
   programs = {
     command-not-found.enable = true;
 
@@ -45,7 +38,6 @@
     };
 
     zoxide.enable = true;
-
   };
 }
 

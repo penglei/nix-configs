@@ -37,6 +37,6 @@ fi
 
 #osascript \                
 #  -e 'tell application "Finder"' \
-#  -e 'make new alias file at POSIX file "/Users/penglei/Applications/Home Manager Apps" to POSIX file "/nix/store/76az0w1nvsvr57ngy6pjdy3gxxpn8wl1-alacritty-0.11.0/Applications/Alacritty.app"' \
+#  -e 'make new alias file at POSIX file "$HOME/Applications/Home Manager Apps" to POSIX file "/nix/store/76az0w1nvsvr57ngy6pjdy3gxxpn8wl1-alacritty-0.11.0/Applications/Alacritty.app"' \
 #  -e 'set name of result to "Alacritty.app"' \
 #  -e 'end tell'

@@ -1,7 +1,7 @@
 
 [core]
-	hooksPath = /Users/penglei/.git-hooks
-	quotepath = false
+;	hooksPath = ~/.git-hooks
+;	quotepath = false
 ; [filter "lfs"]
 ; 	clean = git-lfs clean -- %f
 ; 	smudge = git-lfs smudge -- %f

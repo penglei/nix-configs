@@ -1,15 +1,15 @@
 { lib, config, ... }:
 with lib;
 let
-  homeProfilePath = path: "${config.home.homeDirectory}/${path}";
+  homePath = path: "${config.home.homeDirectory}/${path}";
   cfg = config.launch_agent_common;
 in {
   options = {
     launch_agent_common.paths = mkOption {
       type = with types; listOf str;
       default = [
-        "${homeProfilePath ".nix-profile/bin"}"
-        "${homeProfilePath ".local/bin"}"
+        "${homePath ".nix-profile/bin"}"
+        "${homePath ".local/bin"}"
         "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
       ];
     };

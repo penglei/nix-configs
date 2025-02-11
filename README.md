@@ -41,15 +41,16 @@ run home-manager
 ❯ nix run nixpkgs#home-manager switch -- --flake .
 ```
 
-#### Replace zsh's env injection
+#### Replace zsh's nix env injection
 
 In a flake directory, we can employ [direnv](https://github.com/direnv/direnv) to automatically initialize the shell using `use flake`.
-However, subsequently adding packages temporarily with `nix shell ...` does not take effect in this shell.
+However, subsequently adding packages temporarily by `nix shell ...` does not take effect in this shell.
 The reason is that the path priority in its PATH variable is incorrect, and the fundamental cause is that
 subshells reinitialize by reading configurations (such as zshrc) are not reentrant.
 The following configuration can solve this problem:
 
 ```
+XDG_DATA_DIRS=${XDG_DATA_DIRS:-/usr/local/share:/usr/share}
 export NIX_PROFILES="/nix/var/nix/profiles/default $HOME/.nix-profile"
 setopt local_options shwordsplit
 for i in $NIX_PROFILES; do
@@ -57,9 +58,16 @@ for i in $NIX_PROFILES; do
     export NIX_SSL_CERT_FILE=$i/etc/ssl/certs/ca-bundle.crt
   fi
 
-  #if ! (($path[(I)$i/bin])); then #zsh style
-  if ! [[ :$PATH: == *:"$i/bin":* ]]; then
-    export PATH="$i/bin:$PATH"
+  #if ! (($path[(I)$i/bin])); #zsh style
+  if [ -e "$i/bin" ]; then
+    if ! [[ :$PATH: == *:"$i/bin":* ]]; then
+      export PATH="$i/bin:$PATH"
+    fi
+  fi
+  if [ -e "$i/share" ]; then
+    if ! [[ :$XDG_DATA_DIRS == *:"$i/share"* ]]; then
+      export XDG_DATA_DIRS="$XDG_DATA_DIRS:$i/share"
+    fi
   fi
 done
 unset i

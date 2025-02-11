@@ -14,14 +14,7 @@ in {
     config = {
       ProgramArguments = [ "${pkgs.shiori}/bin/shiori" "server" ];
       EnvironmentVariables = envs // {
-        "PATH" = lib.strings.concatStringsSep ":" [
-          "${config.home.homeDirectory}/.nix-profile/bin"
-          "/usr/local/bin"
-          "/usr/bin"
-          "/bin"
-          "/usr/sbin"
-          "/sbin"
-        ];
+        "PATH" = config.launch_agent_common.path_env;
       };
       KeepAlive = true;
       RunAtLoad = true;

@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   programs.git = {
     enable = true;
     userEmail = "penglei@ybyte.org";
@@ -47,6 +47,10 @@
       push.default = "current";
       merge.conflictstyle = "zdiff3";
       diff.colorMoved = "default";
+      core = {
+        hooksPath = "${config.xdg.configHome}/.git-hooks";
+        quotepath = false;
+      };
     };
 
     # Prettier pager, adds syntax highlighting and line numbers

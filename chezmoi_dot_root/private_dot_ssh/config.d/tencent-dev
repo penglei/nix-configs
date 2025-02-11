@@ -2,7 +2,7 @@ Host cloud-dev
     Hostname 9.134.52.172
     Port 36000
     User ubuntu
-    RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent /Users/penglei/.gnupg/S.gpg-agent.extra
+    RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
 
 Host team-khaos
     Hostname 9.134.191.144

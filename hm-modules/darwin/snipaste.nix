@@ -1,6 +1,6 @@
-{ lib, ... }:
+{ lib, config, ... }:
 let
-  homeDir = "/Users/penglei";
+  homeDir = config.home.homeDirectory;
   configText = ''
     [General]
     auto_backup=false

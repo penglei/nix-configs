@@ -6,7 +6,7 @@
       mkdir -p $chezmoi_cfg_dir
       cat <<EOF > $chezmoi_cfg_dir/chezmoi.json
       {
-          "sourceDir": "/Users/penglei/nix-configs",
+          "sourceDir": "${config.home.homeDirectory}/nix-configs",
           "git": {
               "autoPush": false
           }
