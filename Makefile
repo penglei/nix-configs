@@ -11,7 +11,7 @@ pin-registry:
 
 update-sops:
 	sops updatekeys secrets/basic.yaml 
-	sops updatekeys secrets/server.yaml
+	sops updatekeys secrets/secrets.yaml
 
 edit-backup:
 	@./scripts/edit-backup.sh

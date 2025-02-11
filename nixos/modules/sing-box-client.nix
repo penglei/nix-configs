@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 let
-  passwordstub = config.sops.placeholder."secret.main.password";
+  passwordstub = config.sops.placeholder."main-password";
   cfg = {
     inbounds = [{
       type = "socks";
@@ -20,14 +20,14 @@ let
       {
         type = "shadowtls";
         tag = "shadowtls-out";
-        server = config.sops.placeholder."sing-box.server.address";
+        server = config.sops.placeholder."sing-box/server/address";
         server_port = 443;
         version = 3;
         password = passwordstub;
         tls = {
           enabled = true;
           server_name =
-            config.sops.placeholder."sing-box.shadowtls.server_name";
+            config.sops.placeholder."sing-box/shadowtls/server_name";
           utls = {
             enabled = true;
             fingerprint = "chrome";
@@ -45,6 +45,8 @@ let
 
 in {
   imports = [ ../../secrets ];
+
+  sops-keys = [ "sing-box/server/address" "sing-box/shadowtls/server_name" ];
 
   sops.templates."${configFile}" = {
     content = builtins.toJSON cfg;

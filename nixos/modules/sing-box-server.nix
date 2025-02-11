@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 let
-  passwordstub = config.sops.placeholder."secret.main.password";
+  passwordstub = config.sops.placeholder."main-password";
   cfg = {
     inbounds = [
       {
@@ -11,7 +11,7 @@ let
         version = 3;
         users = [{ password = passwordstub; }];
         handshake = {
-          server = config.sops.placeholder."sing-box.shadowtls.server_name";
+          server = config.sops.placeholder."sing-box/shadowtls/server_name";
           server_port = 443;
         };
         strict_mode = true;
@@ -38,6 +38,7 @@ let
 
 in {
   imports = [ ../../secrets ];
+  sops-keys = [ "sing-box/shadowtls/server_name" ];
 
   sops.templates."${configFile}" = {
     content = builtins.toJSON cfg;

@@ -30,7 +30,7 @@
     family = "inet";
     content = ''
       chain forward {
-        type filter hook forward priority filter; policy drop;
+        type filter hook forward priority filter; policy allow;
         jump miniupnpd
       }
     '';

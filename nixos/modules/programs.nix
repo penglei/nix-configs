@@ -14,5 +14,6 @@
     dnsutils # contains dig, nslookup
     neovim
     lsof
+    tree
   ]; # merge syntatics
 }

@@ -1,14 +1,13 @@
 { config, pkgs, lib, ... }:
 let
-  secrets.pppoe = {
-    username = config.sops.placeholder."pppoe.username";
-    password = config.sops.placeholder."pppoe.password";
-  };
   provider = "cdnet";
   cdnetCfg = "ppp/peers/${provider}";
   ifname = "eno1";
 in {
   imports = [ ./pppd-hooks.nix ];
+
+  #declare required secret keys
+  sops-keys = [ "network/pppoe/username" "network/pppoe/password" ];
 
   environment.systemPackages = with pkgs; [ ppp ];
   boot.kernel = {
@@ -53,8 +52,8 @@ in {
       nic-${ifname}       #nic-xxx. N.B. 'nic-' prefix is used to prevent be ambiguous for pppd option parsing.
       ifname pppoe-wan
 
-      user "${secrets.pppoe.username}"
-      password "${secrets.pppoe.password}"
+      user "${config.sops.placeholder."network/pppoe/username"}"
+      password "${config.sops.placeholder."network/pppoe/password"}"
       #file ... #TODO read auth from a separate file.
 
       +ipv6
@@ -69,6 +68,7 @@ in {
       usepeerdns        #env DNS1, DNS2 will be passed to callback hook script.
       ipparam thewan    #pass the string 'thewan' to callback hook script as 5th parameter.
     '';
+
     mode = "0400";
   };
 }

@@ -1,18 +1,21 @@
-{ lib, ... }:
+{ lib, config, ... }:
 
-let
-  sopsDescrypt = keys:
-    lib.foldl (acc: key: acc // { "${key}" = { sopsFile = ./server.yaml; }; })
-    { } keys;
-in {
+{
+  options.sops-keys = lib.mkOption {
+    type = with lib.types; listOf str;
+    default = [ "main-password" ];
+    description = "sops secrets";
+  };
 
-  sops = { defaultSopsFile = ./basic.yaml; };
-
-  sops.secrets = sopsDescrypt [
-    "secret.main.password"
-    "sing-box.server.address"
-    "sing-box.shadowtls.server_name"
-    "pppoe.username"
-    "pppoe.password"
-  ];
+  config = {
+    sops = {
+      defaultSopsFile = ./secrets.yaml;
+      secrets = (builtins.listToAttrs (builtins.map (k: {
+        name = k;
+        value = {
+          #sopsFile = ./secrets.yaml;
+        };
+      }) config.sops-keys));
+    };
+  };
 }
