@@ -14,6 +14,18 @@
   #   EOF
   # '';
 
+  networking.firewall = {
+    enable = true;
+    logRefusedConnections = false;
+    logRefusedPackets = false;
+    allowedTCPPorts = [ 80 443 ]; # extras
+    extraInputRules = ''
+      iifname != pppoe-wan accept
+    '';
+    filterForward = false;
+    checkReversePath = false;
+  };
+
   networking.nftables.tables.miniupnpd = {
     family = "inet";
     content = ''
