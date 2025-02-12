@@ -2,7 +2,11 @@
   nix = {
     package = pkgs.nixVersions.git;
     registry."nixpkgs".flake = nixpkgs;
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      keep-outputs = true;
+      keep-derivations = true;
+    };
   };
 
   ##re-configure nixpkgs (hm will do `import pkgs.path nixpkgs.config` again in internal).

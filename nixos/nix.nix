@@ -10,6 +10,8 @@
     gc.automatic = true;
 
     settings = rec {
+      keep-outputs = true;
+      keep-derivations = true;
       auto-optimise-store = true;
       use-cgroups = true;
       warn-dirty = false;
