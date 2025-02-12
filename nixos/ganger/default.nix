@@ -14,6 +14,7 @@
     ./interface/ops.nix
     ./interface/br-lan.nix
     ./interface/lan-eno.nix
+    ./network/sing-box
     ./network/firewall.nix
     ./network/miniupnpd.nix
     ./network/kea.nix

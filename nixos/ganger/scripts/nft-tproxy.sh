@@ -69,25 +69,20 @@ table inet $table {
     }
   }
 
-  # 我们透明代理是尽量forward，一般不需要单独配置forward的场景。
-  # 除非哪天我们优化性能，将一些dst bypass的判断offload到nftables中出现误判时，
-  # 才需要手动修正。
+  # 透明代理是尽量将数据包forward到代理程序，而不是采用白名单的机制进行forward。
+  # 将来如果需要将代理内部的判断条件offload到nftables中进行性能优化是，则可以加上
+  # 根据dst、src 进行提早判断的优化。
+  # set src_forward {}
   # set dst_forward {}
 
   counter cnt_dst_local_pre {
     comment "prerouting dst local bypass"
   }
 
-  counter cnt_prerouting_socket_transparent {
-    comment "prerouting tcp socket transparent 1"
-  }
-
   chain prerouting {
     #mangle hook 在conntrack之后执行，所以才能使用ct模块
     type filter hook prerouting priority mangle; policy accept;
 
-    # tcp dport != 22 tcp sport != 22 ip daddr 192.168.202.2 ct direction reply counter log prefix "debug daddr reply: "
-    # tcp dport != 22 tcp sport != 22 ip saddr 192.168.202.2 ct direction reply counter log prefix "debug saddr reply: "
     ct direction reply return
 
     fib daddr type local meta l4proto { tcp, udp } th dport $TPROXY_PORT \
