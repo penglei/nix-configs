@@ -12,9 +12,7 @@ OUT_MARK=666
 
 PROXY_FWMARK=0x77
 
-#https://book.huihoo.com/iptables-tutorial/x9125.htm
-
-#  [family]          [type][   gateway  ] [table]
+#  [family] [action][type][ gateway ] [table]
 ip -4 route replace local default dev lo table 100
 if ! (ip -4 rule show | grep -q 100); then
   ip -4 rule add fwmark $PROXY_FWMARK lookup 100

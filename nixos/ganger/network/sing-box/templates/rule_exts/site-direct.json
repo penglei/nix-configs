@@ -1,0 +1,10 @@
+{
+  "rules": [
+    {
+      "domain": [
+        "cache.nixos.org"
+      ]
+    }
+  ],
+  "version": 1
+}
