@@ -37,7 +37,6 @@ let
   configFilePath = config.sops.templates."${configFile}".path;
 
 in {
-  imports = [ ../../secrets ];
   sops-keys = [ "sing-box/shadowtls/server_name" ];
 
   sops.templates."${configFile}" = {

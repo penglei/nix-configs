@@ -1,4 +1,5 @@
 { pkgs, nixpkgs, ... }: {
+
   nix = {
     package = pkgs.nixVersions.git;
     registry."nixpkgs".flake = nixpkgs;

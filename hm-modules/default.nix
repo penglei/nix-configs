@@ -1,4 +1,4 @@
-{
+{ config, ... }: {
   # **************************installation****************************#
   # bootstrap tips:                                                   #
   #  first run `nix shell home-manager#home-manager`,                 #

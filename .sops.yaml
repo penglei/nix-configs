@@ -4,6 +4,7 @@
 
 keys:
 - &main 354E6EB6E69FCDA3BCA1B3B7B346D48376F25ECB # gpg (support yubikey)
+- &macos age1z8kh9pcvz3qapexfn64cmxurxvll98r3gu3n6dh4h63052p8dfjs5d9u64
 - &recovery age153uqe6cwr5rfqr79y5al4lr8udzahad30snqwhj65kqg4yrh6ygqg364pr # important recovery key
 - &ganger age1pzvxzyje0ytuw46p2hdfe6u9dxnddfy6vmvl5jn2yrkc7d342fqs50z2jt
 - &hk-alpha age1lrqtrvnahhdfu6pq00ncp5fk0vsm05duvkxk78d7nf6eezy7jayqlpxmvj #ssh host key
@@ -16,6 +17,7 @@ creation_rules:
   - pgp:
     - *main
     age:
+    - *macos
     - *recovery
     - *ganger
     - *sg-alpha

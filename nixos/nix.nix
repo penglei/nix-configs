@@ -1,6 +1,9 @@
 { pkgs, nixpkgs, username, ... }:
 
 {
+
+  imports = [ ../secrets ];
+
   nix = {
     channel.enable = false; # exclude legacy path from NIX_PATH
 
