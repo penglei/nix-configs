@@ -1,12 +1,11 @@
 { pkgs, nixpkgs, username, ... }:
 
 {
-  nixpkgs.config.allowUnfree = true;
-
   nix = {
-    channel.enable = false; # set env NIX_PATH
-    package = pkgs.nixVersions.git; # or versioned attributes like nix_2_4
-    registry.nixpkgs.flake = nixpkgs;
+    channel.enable = false; # exclude legacy path from NIX_PATH
+
+    package = pkgs.nixVersions.git;
+    registry."nixpkgs".flake = nixpkgs;
 
     gc.automatic = true;
 

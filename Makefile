@@ -31,6 +31,17 @@ apply:
 		fi \
 	fi
 
+build:
+	if [[ "$(SYSTEM)" == *darwin ]]; then \
+		home-manager build --flake .#penglei.$(SYSTEM); \
+	else \
+		if [[ "$$(uname -a)" == *NixOS* ]]; then \
+			sudo nixos-rebuild build --flake .; \
+		else \
+			home-manager build --flake .#penglei.$(SYSTEM); \
+		fi \
+	fi
+
 MACHINE ?= ganger
 rsync:
 	rsync -avh . $(MACHINE):/data/nix-configs \

@@ -131,11 +131,22 @@
 
         hm-creator = { username, system }:
           let
-            pkgs = import nixpkgs { inherit system overlays; };
+            pkgs = import nixpkgs {
+              inherit system overlays;
+              # allowUnfree = true;
+              allowBroken = true;
+            };
             isDarwin = nixpkgs.lib.hasSuffix "darwin" system;
           in home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            modules = [{ home.username = username; }] ++ (if isDarwin then
+            extraSpecialArgs = {
+              # For registering user level nixpkgs registry
+              inherit nixpkgs;
+            };
+            modules = [
+              { home.username = username; }
+              (import ./hm-modules/nix.nix) # standalone
+            ] ++ (if isDarwin then
               profiles.hm.darwin.modules ++ [{
                 # Home Manager needs a bit information about you and the paths it should manage.
                 home.homeDirectory = "/Users/${username}";
@@ -160,13 +171,22 @@
           { hostname, system, username, modules, hm-modules, ... }:
           nixpkgs.lib.nixosSystem {
             inherit system;
-            specialArgs = { inherit nixpkgs username hostname; };
+            specialArgs = {
+              inherit username hostname;
+
+              # For registering system level nixpkgs registry same as self (`nix registry list`)
+              inherit nixpkgs;
+            };
             modules = [
               home-manager.nixosModules.home-manager
               sops-nix.nixosModules.sops
-              { nixpkgs.overlays = overlays; }
               {
-                # home-manager.extraSpecialArgs = { inherit username; };
+                nixpkgs = {
+                  overlays = overlays;
+                  config.allowBroken = true;
+                };
+              }
+              {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.${username}.imports = hm-modules;

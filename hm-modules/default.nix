@@ -1,5 +1,3 @@
-{ config, ... }:
-
 {
   # **************************installation****************************#
   # bootstrap tips:                                                   #
@@ -21,14 +19,10 @@
   # changes in each release.
   home.stateVersion = "22.05";
 
-  # Applies inside of the home-manager config
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowBroken = true;
-    experimental-features = "nix-command flakes";
-  };
-
   xdg.enable = true;
+
+  nix = { settings = { use-xdg-base-directories = true; }; };
+
   programs = {
     command-not-found.enable = true;
 

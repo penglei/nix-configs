@@ -20,25 +20,10 @@ Clone this directory and place it in the home directory (for neovim and chezmoi)
 
 ### home-manager(macOS)
 
-First, we should enable nix command and flake features.
-
-
-file `/etc/nix/nix.conf`:
+First, we should enable nix command and flake features to init:
 
 ```
-build-users-group = nixbld
-
-experimental-features = nix-command flakes
-allow-import-from-derivation = true
-keep-outputs = true
-keep-derivations = true
-trusted-users = root penglei
-```
-
-run home-manager
-
-```
-❯ nix run nixpkgs#home-manager switch -- --flake .
+❯ nix --extra-experimental-features nix-command --extra-experimental-features flakes run nixpkgs#home-manager switch -- --flake .#penglei.aarch64-darwin
 ```
 
 #### Replace zsh's nix env injection
