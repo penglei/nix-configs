@@ -1,6 +1,5 @@
 # lan trunk out traffic
 {
-  # networking.nameservers = [ "127.53.53.53" ]; # configure nameservers manually
   systemd.network.networks."20-lan-primary" = {
     matchConfig.Name = "eno3";
     networkConfig = {

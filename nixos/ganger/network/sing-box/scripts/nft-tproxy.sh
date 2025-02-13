@@ -88,17 +88,18 @@ table inet $table {
       reject with icmpx type host-unreachable \
       comment "prohibit connect to tproxy port directly, avoid loop"
 
-    udp dport 53 log prefix "dns prerouting(v3): " counter
+    # udp dport 53 log prefix "debug dns prerouting(1): " counter
+    #sing-box tproxy 实现的hijack-dns占用太多句柄，cache机制也有一些问题
+    ##拦截所有DNS请求合适，即使是发往局域网内其它机器的DNS请求。
+    ##TODO 这需要优化，因为这会导致两头内网机器之间测试DNS服务时出现异常。
+    #meta l4proto { tcp, udp } th dport 53 \
+    #  tproxy ip to 127.0.0.1:$TPROXY_PORT \
+    #  tproxy ip6 to [::1]:$TPROXY_PORT \
+    #  log prefix "proxy: any dns query(v3.1): " \
+    #  counter accept
+    #udp dport 53 log prefix "debug dns prerouting(2): " counter
 
-    #拦截所有DNS请求合适，即使是发往局域网内其它机器的DNS请求。
-    #TODO 这需要优化，因为这会导致两头内网机器之间测试DNS服务时出现异常。
-    meta l4proto { tcp, udp } th dport 53 \
-      tproxy ip to 127.0.0.1:$TPROXY_PORT \
-      tproxy ip6 to [::1]:$TPROXY_PORT \
-      log prefix "proxy: any dns query(v3.1): " \
-      counter accept
-    udp dport 53 log prefix "dns prerouting(v3.2): " counter
-
+    udp dport 53 accept
 
     #counter debug
     fib daddr type local counter name cnt_dst_local_pre accept comment "bypass: local dst"

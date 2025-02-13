@@ -39,6 +39,7 @@ in {
       RuntimeDirectory = "sing-box";
       RuntimeDirectoryMode = "0700";
       ExecStart = [
+        ""
         "${
           lib.getExe pkgs.sing-box-prebuilt
         } -D \${STATE_DIRECTORY} -C \${RUNTIME_DIRECTORY} run -c ${configFilePath}"

@@ -14,10 +14,13 @@
     ./interface/ops.nix
     ./interface/br-lan.nix
     ./interface/lan-eno.nix
+
+    ./network/mosdns.nix
     ./network/sing-box
     ./network/firewall.nix
     ./network/miniupnpd.nix
     ./network/kea.nix
+
     ./vms
   ];
 
@@ -63,6 +66,7 @@
   };
 
   # services.resolved.enable = false;
+  networking.nameservers = [ "192.168.202.1" ]; # configure nameservers manually
   services.resolved = {
     #disable llmnr
     llmnr = "false";
@@ -70,6 +74,7 @@
     extraConfig = ''
       MulticastDNS=false
     '';
+    # domain = ".";
   };
 
   systemd.services."systemd-networkd" = {

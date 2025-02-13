@@ -2,7 +2,7 @@ let lib = import "./lib.ncl" in
 let LoIPv4 = { listen | default = "127.0.0.1", .. } in
 let Addr = import "addr.ncl" in
 let self_dns_servers =
-  #是不是可以不用inbound，而是通过nftables拦截到tproxy实现?
+  #❯ dig +noedns +qr +retry=0 @127.0.0.1 -p 29753 www.google.com
   (lib.case (Addr.self_dns > 0))
     [
       {
