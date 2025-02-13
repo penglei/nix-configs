@@ -10,7 +10,7 @@ let
 
     # (实验性) API 入口设置
     api:
-      http: "${router_lan_ip}:8080" # 在该地址启动 api 接口。
+      http: "${router_lan_ip}:18280" # 在该地址启动 api 接口。
 
     plugins:
       - tag: main_sequence

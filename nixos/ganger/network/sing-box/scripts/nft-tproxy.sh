@@ -109,15 +109,16 @@ table inet $table {
 
     ip saddr @src_bypass accept comment "bypass prerouting: src ipv4"
 
-   ##mark 是meta mark的简写
-   ##方法1:
-   meta l4proto { tcp, udp } mark 0 mark set $PROXY_FWMARK counter comment "packets through router(maybe lo,eth)"
-   meta l4proto { tcp, udp } mark != $PROXY_FWMARK counter accept comment "ignore other mark packet"
+    ##mark 是meta mark的简写
+    ##方法1:
+    meta l4proto { tcp, udp } mark 0 mark set $PROXY_FWMARK \
+      counter comment "packets through router(maybe lo,eth)"
+    meta l4proto { tcp, udp } mark != $PROXY_FWMARK counter accept comment "ignore other mark packet"
 
-   ##方法2:
-   #meta l4proto tcp socket transparent 1 \
-   # counter log prefix "socket transparent: " \
-   # meta mark set $PROXY_FWMARK comment "fast path optimize"
+    ##方法2:
+    #meta l4proto tcp socket transparent 1 \
+    # counter log prefix "socket transparent: " \
+    # meta mark set $PROXY_FWMARK comment "fast path optimize"
 
     meta l4proto { tcp, udp } meta mark $PROXY_FWMARK \
       tproxy ip to 127.0.0.1:$TPROXY_PORT \

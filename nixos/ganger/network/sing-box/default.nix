@@ -21,6 +21,7 @@ in {
 
   systemd.packages = [ pkgs.sing-box-prebuilt ];
   systemd.services.sing-box = {
+    path = with pkgs; [ iproute2 nftables bash ];
     preStart = ''
       echo "working directory: $(pwd)"
       echo "RUNTIME_DIRECTORY: $RUNTIME_DIRECTORY"
@@ -30,8 +31,8 @@ in {
       #ln -sf ${configFilePath} $RUNTIME_DIRECTORY/config.json
     '';
     postStart = ''
-      echo "working directory: $(pwd)"
-      echo "RUNTIME_DIRECTORY: $RUNTIME_DIRECTORY"
+      # setup route and nftables
+      ${./scripts/intercept.sh} start
     '';
     serviceConfig = {
       StateDirectory = "sing-box";
@@ -45,6 +46,12 @@ in {
         } -D \${STATE_DIRECTORY} -C \${RUNTIME_DIRECTORY} run -c ${configFilePath}"
       ];
     };
+    preStop = ''
+      ${./scripts/intercept.sh} stop
+    '';
+    postStop = ''
+      #TODO notify mosdns forwarding dns query to outside
+    '';
     wantedBy = [ "multi-user.target" ];
   };
 
