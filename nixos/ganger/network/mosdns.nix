@@ -56,10 +56,13 @@ in {
     #   chown mosdns:mosdns /var/lib/mosdns
     # '';
   };
+
   # # 创建专用用户/组（可选，systemd 会自动创建动态用户）
   # users.users.mosdns = {
   #   isSystemUser = true;
   #   group = "mosdns";
   # };
   # users.groups.mosdns = { };
+
 }
+

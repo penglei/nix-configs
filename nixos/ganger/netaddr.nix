@@ -7,7 +7,7 @@ let
   };
   ipv4 = rec {
     router = "192.168.202.1";
-    subnet.all = "192.168.202.1/24";
+    subnet.all = "192.168.202.0/24";
     subnet.dhcp_pools = {
       begin = "192.168.202.2";
       end = "192.168.202.100";

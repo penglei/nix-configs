@@ -3,7 +3,9 @@
   systemd.network.networks."20-lan-primary" = {
     matchConfig.Name = "eno3";
     networkConfig = {
-      DHCP = "ipv4";
+      # Bridge = "br-lan"; # lan interface
+
+      # DHCP = "ipv4"; # debug
 
       IPv4Forwarding = true;
       IPv6Forwarding = true;
@@ -37,4 +39,5 @@
   #     UseRoutes = false;
   #   };
   # };
+
 }

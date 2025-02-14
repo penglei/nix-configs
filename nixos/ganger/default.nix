@@ -17,6 +17,7 @@
     ./interface/br-lan.nix
     ./interface/lan-eno.nix
 
+    ./network/nat.nix
     ./network/mosdns.nix
     ./network/sing-box.nix
     ./network/firewall.nix
