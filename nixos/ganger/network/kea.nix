@@ -1,5 +1,4 @@
-let utils = import ../utils.nix;
-in {
+{ config, ... }: {
   services.kea = {
     # ctrl-agent = { enable = true; };
     dhcp4 = {
@@ -18,12 +17,14 @@ in {
         subnet4 = [{
           id = 1;
           interface = "br-lan";
-          subnet = "192.168.202.0/24";
-          pools = [{ pool = "192.168.202.2 - 192.168.202.100"; }];
+          subnet = config.netaddr.ipv4.subnet.all;
+          pools = with config.netaddr.ipv4.subnet.dhcp_pools; [{
+            pool = "${begin} - ${end}";
+          }];
           option-data = [
             {
               name = "routers";
-              data = "192.168.202.1";
+              data = config.netaddr.ipv4.router;
             }
             {
               name = "v6-only-preferred";
@@ -31,28 +32,12 @@ in {
             }
           ];
           ddns-qualifying-suffix = "lan.";
-          reservations = [
-            {
-              hw-address = "44:A8:42:20:80:92";
-              ip-address = "192.168.202.170";
-              # hostname = "ganger";
-            }
-            {
-              hw-address = utils.gen_mac "vm-1";
-              ip-address = "192.168.202.2";
-              hostname = "lan-vm-1";
-            }
-            {
-              hw-address = "A0:63:91:95:95:3E";
-              ip-address = "192.168.202.254";
-              hostname = "switch";
-            }
-          ];
+          reservations = config.netaddr.ipv4.subnet.reservations;
         }];
         option-data = [
           {
             name = "domain-name-servers";
-            data = "192.168.202.1";
+            data = config.netaddr.ipv4.dns;
             always-send = true;
           }
           {

@@ -41,10 +41,10 @@ let addr = import "addr.ncl" in
     server = "example.org",
     server_port = 2080,
     domain_resolver = {
-      server = "dns-internal",
+      server = "dns-internal-ipv4",
       rewrite_ttl = 60,
     },
-    # or "domain_resolver" = "dns-internal",
+    # or "domain_resolver" = "dns-internal-ipv4",
     # or global route config like `{route.default_domain_resolver = "local"}`
   },
   {

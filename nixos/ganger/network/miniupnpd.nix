@@ -1,8 +1,7 @@
-{
-
+{ config, ... }: {
   services.miniupnpd = {
     enable = true;
-    externalInterface = "pppoe-wan";
+    externalInterface = config.netaddr.iface.wan.name;
     internalIPs = [ "br-lan" ];
     natpmp = true;
   };

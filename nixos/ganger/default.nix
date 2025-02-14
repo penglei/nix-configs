@@ -10,6 +10,8 @@
     ../modules/pam.nix
     # ../modules/sing-box-client.nix
 
+    ./netaddr.nix
+
     ./interface/pppoe.nix
     ./interface/ops.nix
     ./interface/br-lan.nix
@@ -66,7 +68,8 @@
   };
 
   # services.resolved.enable = false;
-  networking.nameservers = [ "192.168.202.1" ]; # configure nameservers manually
+  networking.nameservers =
+    [ config.netaddr.ipv4.dns ]; # configure nameservers manually
   services.resolved = {
     #disable llmnr
     llmnr = "false";

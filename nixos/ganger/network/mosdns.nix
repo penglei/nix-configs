@@ -1,7 +1,7 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
-  router_lan_ip = "192.168.202.1";
+  router_lan_ip = config.netaddr.ipv4.router;
   # 生成 mosdns 配置文件（替换为你的实际配置）
   mosdnsConfig = pkgs.writeText "mosdns.yaml" ''
     log:

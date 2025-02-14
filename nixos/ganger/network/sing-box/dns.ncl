@@ -1,3 +1,4 @@
+let addr = import "./addr.ncl" in
 let dns_debug_names = ["www.qq.com", "www.baidu.com", ] in
 let debug_client_subnet_rules = [
   #debugging edns0-subnet
@@ -22,7 +23,6 @@ let debug_client_subnet_rules = [
   },
 ]
 in
-let Addr = import "./addr.ncl" in
 {
   #servers是特殊的dns outbound
   servers =
@@ -46,22 +46,14 @@ let Addr = import "./addr.ncl" in
         detour = "dynamic-proxy", #dns请求本身走国外
       },
 
-      #内部resolver使用的dns
-      {
-        tag = "local",
-        type = "udp",
-        server = "127.0.0.1",
-        server_port = Addr.self_dns,
-      },
-
       #代理内部使用的dns resolver，提供给rule resolve action 或者 outbound domain_resolver 使用。
-      #这个server(tag)只是一个占位符，用以表达**sing-box内部Resolver服务**，任何dns rules 不得将流量转发到该server，
+      #这个server tag只是一个占位符，用以表达**sing-box内部Resolver服务**，任何dns rules 不得将流量转发到该server，
       #否则解析过程会形成loop。
       {
-        tag = "dns-internal",
+        tag = "dns-internal-ipv4",
         type = "udp",
         server = "127.0.0.1",
-        server_port = 29753, #必须在inbound中配置该服务。
+        server_port = addr.self_dns, #必须在inbound中配置该服务。
       },
       {
         type = "predefined",

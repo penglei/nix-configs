@@ -56,13 +56,7 @@
       {
         "server": "127.0.0.1",
         "server_port": 29753,
-        "tag": "local",
-        "type": "udp"
-      },
-      {
-        "server": "127.0.0.1",
-        "server_port": 29753,
-        "tag": "dns-internal",
+        "tag": "dns-internal-ipv4",
         "type": "udp"
       },
       {
@@ -88,6 +82,7 @@
   },
   "inbounds": [
     {
+      "listen": "127.0.0.1",
       "listen_port": 21012,
       "network": "tcp",
       "type": "tproxy"
@@ -247,7 +242,7 @@
       },
       {
         "action": "resolve",
-        "server": "dns-internal",
+        "server": "dns-internal-ipv4",
         "strategy": "prefer_ipv4"
       },
       {

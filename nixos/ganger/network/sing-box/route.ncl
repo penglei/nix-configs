@@ -37,7 +37,7 @@
     {
       action = "resolve",
       strategy = "prefer_ipv4", #dns.strategy will be used by default
-      server = "dns-internal",
+      server = "dns-internal-ipv4",
     },
 
     #快速跳出指定的直连site/ip

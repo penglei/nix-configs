@@ -2,7 +2,7 @@
 let
   provider = "cdnet";
   cdnetCfg = "ppp/peers/${provider}";
-  ifname = "eno1";
+
 in {
   imports = [ ./pppd-hooks.nix ];
 
@@ -49,8 +49,8 @@ in {
       holdoff 5     #wait 5 seconds to wait re-initiating the link after it terminates.
 
       plugin pppoe.so
-      nic-${ifname}       #nic-xxx. N.B. 'nic-' prefix is used to prevent be ambiguous for pppd option parsing.
-      ifname pppoe-wan
+      nic-${config.netaddr.iface.wan.nic}       #nic-xxx. N.B. 'nic-' prefix is used to prevent be ambiguous for pppd option parsing.
+      ifname ${config.netaddr.iface.wan.name}
 
       user "${config.sops.placeholder."network/pppoe/username"}"
       password "${config.sops.placeholder."network/pppoe/password"}"

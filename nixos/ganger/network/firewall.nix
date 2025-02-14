@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ config, ... }: {
 
   # networking.firewall.extraCommands = with pkgs.lib; ''
   #   ${pkgs.nftables}/bin/nft -f - <<EOF
@@ -20,7 +20,7 @@
     logRefusedPackets = false;
     allowedTCPPorts = [ 80 443 ]; # extras
     extraInputRules = ''
-      iifname != pppoe-wan accept
+      iifname != ${config.netaddr.iface.wan.name} accept
     '';
     filterForward = false;
     checkReversePath = false;

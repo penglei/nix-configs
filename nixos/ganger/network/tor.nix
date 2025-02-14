@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
 
   services.networkd-dispatcher = {
     enable = true;
@@ -6,7 +6,7 @@
       onState = [ "routable" "off" ];
       script = ''
         #!${pkgs.runtimeShell}
-        if [[ $IFACE == "pppoe-wan" && $AdministrativeState == "configured" ]]; then
+        if [[ $IFACE == ${config.netaddr.ipv4.wan.name} && $AdministrativeState == "configured" ]]; then
           echo "Restarting Tor ..."
           #systemctl restart tor
         fi
