@@ -15,5 +15,6 @@
         else
           std.fail_with "invalid value type: %{std.typeof value}"
       ),
-  sops_placeholder = fun name => "<SOPS:%{std.hash 'Sha256 name}:PLACEHOLDER>"
+  sops_placeholder = fun name => "<SOPS:%{std.hash 'Sha256 name}:PLACEHOLDER>",
+  placeholder = fun name => "<PLACEHOLDER:%{name}>",
 }

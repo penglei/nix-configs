@@ -16,7 +16,7 @@
     ./interface/lan-eno.nix
 
     ./network/mosdns.nix
-    ./network/sing-box
+    ./network/sing-box.nix
     ./network/firewall.nix
     ./network/miniupnpd.nix
     ./network/kea.nix

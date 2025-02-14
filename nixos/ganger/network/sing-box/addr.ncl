@@ -22,7 +22,7 @@ else
     mixed_proxy = 0, #23490,
     tproxy = 21012,
     proxy_server = {
-      server = lib.sops_placeholder "sing-box/server/address",
+      server = lib.placeholder "sing-box/server/address",
       server_port = 443,
     },
   } | Basic

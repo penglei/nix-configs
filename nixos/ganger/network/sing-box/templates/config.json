@@ -126,18 +126,18 @@
       "multiplex": {
         "enabled": true
       },
-      "password": "<SOPS:c828a0879f3971bf579377024fa2ba2f57f931f5e439e6a9b05b639b5ab326de:PLACEHOLDER>",
+      "password": "<PLACEHOLDER:main-password>",
       "tag": "shadowsocks-inner",
       "type": "shadowsocks"
     },
     {
-      "password": "<SOPS:c828a0879f3971bf579377024fa2ba2f57f931f5e439e6a9b05b639b5ab326de:PLACEHOLDER>",
-      "server": "<SOPS:aabb550273cdd4f48e4c8ffc2752bdd292faafddb8bdab889c53ca34268d2657:PLACEHOLDER>",
+      "password": "<PLACEHOLDER:main-password>",
+      "server": "<PLACEHOLDER:sing-box/server/address>",
       "server_port": 443,
       "tag": "out-shadowtls",
       "tls": {
         "enabled": true,
-        "server_name": "<SOPS:5fb5129564d840209f391b121c0fe6c95d24f5764eab46f3912a94a84b38ef86:PLACEHOLDER>",
+        "server_name": "<PLACEHOLDER:sing-box/shadowtls/server_name>",
         "utls": {
           "enabled": true,
           "fingerprint": "chrome"

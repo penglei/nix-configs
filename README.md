@@ -20,7 +20,16 @@ Clone this directory and place it in the home directory (for neovim and chezmoi)
 
 ### home-manager(macOS)
 
-First, we should enable nix command and flake features to init:
+Firstly, put the following content in the file `/etc/nix/nix.conf`:
+
+```
+build-users-group = nixbld
+
+trusted-users = root penglei
+```
+
+
+Then, do initialize:
 
 ```
 ❯ nix --extra-experimental-features nix-command --extra-experimental-features flakes run nixpkgs#home-manager switch -- --flake .#penglei.aarch64-darwin
