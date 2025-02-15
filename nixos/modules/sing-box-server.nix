@@ -33,11 +33,11 @@ let
   #This approach is not recommended, as `pkg.writeText` will store sensitive data in `/nix/store`, which is accessible to everyone.
   # configFilePath = pkgs.writeText "config.json" (builtins.toJSON cfg); 
 
-  configFile = "sing-box-client/config.json";
+  configFile = "sing-box-server/config.json";
   configFilePath = config.sops.templates."${configFile}".path;
 
 in {
-  sops-keys = [ "sing-box/shadowtls/server_name" ];
+  sops-keys = [ "main-password" "sing-box/shadowtls/server_name" ];
 
   sops.templates."${configFile}" = {
     content = builtins.toJSON cfg;

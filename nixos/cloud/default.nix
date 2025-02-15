@@ -3,6 +3,7 @@
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
+    ../../secrets # common sops config
     ../nix.nix
     ../modules/configuration.nix
     ../modules/programs.nix

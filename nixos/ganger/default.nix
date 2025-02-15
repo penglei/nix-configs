@@ -12,17 +12,21 @@
 
     ./netaddr.nix
 
-    ./interface/pppoe.nix
     ./interface/ops.nix
+    ./interface/pppoe.nix
     ./interface/br-lan.nix
     ./interface/lan-eno.nix
 
+    ./network/kea.nix
     ./network/nat.nix
     ./network/mosdns.nix
     ./network/sing-box.nix
     ./network/firewall.nix
     ./network/miniupnpd.nix
-    ./network/kea.nix
+
+    # ipv6
+    # ./network/dhcpcd-pd.nix
+    # ./network/radvd.nix
 
     ./vms
   ];
@@ -55,8 +59,7 @@
     fsType = "ext4";
   };
 
-  #this also enable 'services.resolved'.
-  #see nixos/modules/system/boot/networkd.nix
+  #this also enable 'services.resolved', see also 'nixos/modules/system/boot/networkd.nix'.
   systemd.network.enable = true;
 
   #disable network scripting configuration

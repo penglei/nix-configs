@@ -33,7 +33,8 @@ in {
   systemd.services.mosdns = {
     enable = true;
     description = "mosdns DNS resolver";
-    after = [ "network.target" ];
+    after = [ "network-online.target" "sing-box.service" ];
+    wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
 
     # 服务配置

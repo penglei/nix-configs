@@ -12,13 +12,14 @@
     networkConfig = {
       #Address = [ "192.168.202.1/24" "2001:db8::a/64" ];
       Address = [ config.netaddr.ipv4.router ];
-      # Gateway = "192.168.202.1"; #don't specify gateway which would add a default route unexpectly.
-      #IPv6AcceptRA = true;
+      #Specifying a gateway would add a default route unexpectly,
+      #which is conflict with router.
+      # Gateway = "192.168.202.1";
 
-      #masquerade is provided by router, not the self host in the lan network
+      #host-self is not a router, don't do work of router.
       #IPMasquerade = "ipv4";
-      # IPv6SendRA = true;
-      # IPv4Forwarding = true;
+      #IPv6SendRA = true;
+      #IPv4Forwarding = true;
     };
     routes = [{
       Destination = config.netaddr.ipv4.subnet.all;

@@ -1,3 +1,6 @@
+# ipv6 test:
+#❯ curl https://6.ipw.cn/
+
 { config, pkgs, lib, ... }:
 let
   provider = "cdnet";
@@ -13,7 +16,11 @@ in {
   boot.kernel = {
     sysctl = {
       "net.ipv4.conf.all.forwarding" = true;
+
+      # enable forwarding ipv6 and kernel slaac
       "net.ipv6.conf.all.forwarding" = true;
+      "net.ipv6.conf.all.accept_ra" = 2;
+      "net.ipv6.conf.default.accept_ra" = 2;
     };
   };
 
@@ -54,15 +61,29 @@ in {
 
       user "${config.sops.placeholder."network/pppoe/username"}"
       password "${config.sops.placeholder."network/pppoe/password"}"
-      #file ... #TODO read auth from a separate file.
+      #file ... #Or read auth from a separate file.
 
       +ipv6
+      ipv6cp-use-persistent
+      ipv6cp-accept-local
+      ipv6cp-accept-remote
+
       mtu 1492
       mru 1492
 
-      #?
       set AUTOIPV6=1
       set PEERDNS=0
+
+      ## Add a default IPv6 route to the system routing tables,
+      ## using the peer as the gateway, when  IPv6CP  negotiation
+      ## is  successfully  completed.This  entry is removed when
+      ## the PPP connection is broken.  This option is privileged
+      ## if the nodefaultroute6 option has been specified.
+      ## WARNING: Do not enable this option by default.  IPv6 routing tables
+      ## are managed by kernel (as apposite to IPv4) and IPv6 default route
+      ## is config‐ured by kernel automatically too based on ICMPv6 Router Advertisement packets.
+      ## This option may conflict with kernel IPv6 route setup and should be used only for broken IPv6 networks.
+      #defaultroute6
 
       nodefaultroute    #don't add default route.
       usepeerdns        #env DNS1, DNS2 will be passed to callback hook script.

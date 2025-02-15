@@ -29,6 +29,10 @@ start_intercept() {
     nft flush table inet $PROXY_NFTABLE
   fi
 
+  #`meta` connection metadata, `l4proto` can match ipv6 packet
+  #`th` means "Transport Header".
+  #`fib` means forwarding information base
+
   nft -f - <<EOF
 table inet $PROXY_NFTABLE {
 
@@ -78,6 +82,7 @@ table inet $PROXY_NFTABLE {
     type filter hook prerouting priority mangle; policy accept;
 
     ct direction reply return
+    meta nfproto ipv6 return  #还未支持ipv6的透明代理。
 
     fib daddr type local meta l4proto { tcp, udp } th dport $TPROXY_PORT \
       log prefix "prohibit connect to tproxy directly. " \
@@ -120,6 +125,8 @@ table inet $PROXY_NFTABLE {
   chain output {
     #mangle hook 在conntrack之后执行，所以才能使用ct模块
     type route hook output priority mangle; policy accept;
+
+    meta nfproto ipv6 accept  #还未支持ipv6的透明代理。
 
     fib daddr type local \
       log prefix "bypass: output local dst: " \

@@ -47,7 +47,7 @@ in {
       # for sending and receiving IPv6 packets. It is executed with the parameters
       # <interface-name> <tty-device> <speed> <local-link-local-address> <remote-link-local-address> <ipparam>
 
-      ${infoLog "ipv6-up"} 
+      ${infoLog "ipv6-up"}
 
     '';
 
@@ -57,7 +57,7 @@ in {
       # Similar to /etc/ppp/ip-down, but it is executed when IPv6 packets can no longer
       # be transmitted on the link. It is executed with the same  parameters as the ipv6-up script.
 
-      ${infoLog "ipv6-down"} 
+      ${infoLog "ipv6-down"}
 
     '';
 
@@ -70,15 +70,15 @@ in {
       # etc.
       #
 
-      ${infoLog "ip-up"} 
+      ${infoLog "ip-up"}
 
       if [[ "$1" == "pppoe-wan" ]]; then
         echo replace ipv4 default route to pppoe-wan. >> ${logfile}
 
-        echo current ipv4 main routes: >> ${logfile}
-        ip route >> ${logfile}
+        #echo current ipv4 main routes: >> ${logfile}
+        #ip route >> ${logfile}
         ip route replace default via $5 dev pppoe-wan proto static
-        ip route >> ${logfile}
+        #ip route >> ${logfile}
       fi
 
     '';
@@ -91,16 +91,16 @@ in {
       # It should be used to delete routes, unset IP addresses etc.
       #
 
-      ${infoLog "ip-down"} 
+      ${infoLog "ip-down"}
 
       if [[ "$1" == "pppoe-wan" ]]; then
         echo clean ipv4 default route. >> ${logfile}
         echo current ipv4 main routes:
 
-        ip route >> ${logfile}
+        #ip route >> ${logfile}
         #ip route del default via $5 dev pppoe-wan proto static
         ip route del default dev pppoe-wan proto static
-        ip route >> ${logfile}
+        #ip route >> ${logfile}
       fi
 
     '';

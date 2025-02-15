@@ -63,6 +63,9 @@ in {
 
   systemd.packages = [ pkgs.sing-box-prebuilt templates ];
   systemd.services.sing-box = {
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+
     path = with pkgs; [ iproute2 nftables bash ];
     #preStart = ''
     #  echo "working directory: $(pwd)"

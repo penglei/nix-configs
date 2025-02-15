@@ -121,6 +121,12 @@ $ sudo nixos-rebuild switch --flake .
 
 ## Tips
 
+* rollback nixos
+
+    ```
+    /nix/var/nix/profiles/system-*-link/bin/switch-to-configuration switch
+    ```
+
 * Clean home-manager news
 
     ```

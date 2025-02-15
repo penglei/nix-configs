@@ -3,12 +3,12 @@
   systemd.network.networks."20-lan-primary" = {
     matchConfig.Name = "eno3";
     networkConfig = {
-      # Bridge = "br-lan"; # lan interface
+      # debug
+      DHCP = "ipv4";
 
-      # DHCP = "ipv4"; # debug
-
+      #Bridge = "br-lan";
+      #IPv6AcceptRA = true;
       IPv4Forwarding = true;
-      IPv6Forwarding = true;
     };
     #linkConfig.RequiredForOnline = "routable";
     dhcpV4Config = {

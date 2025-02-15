@@ -1,12 +1,13 @@
 { lib, config, ... }:
 
 {
-  options.sops-keys = lib.mkOption {
-    type = with lib.types; listOf str;
-    default = [ "main-password" ];
-    description = "sops secrets";
+  options = {
+    sops-keys = lib.mkOption {
+      type = with lib.types; listOf str;
+      default = [ "main-password" ];
+      description = "sops secrets";
+    };
   };
-
   config = {
     sops = {
       defaultSopsFile = ./secrets.yaml;
