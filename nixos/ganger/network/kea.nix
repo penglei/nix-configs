@@ -21,16 +21,15 @@
           pools = with config.netaddr.ipv4.subnet.dhcp_pools; [{
             pool = "${begin} - ${end}";
           }];
-          option-data = [
-            {
-              name = "routers";
-              data = config.netaddr.ipv4.router;
-            }
-            {
-              name = "v6-only-preferred";
-              data = "1800";
-            }
-          ];
+          option-data = [{
+            name = "routers";
+            data = config.netaddr.ipv4.router;
+          }
+          # {
+          #   name = "v6-only-preferred";
+          #   data = "1800";
+          # }
+            ];
           ddns-qualifying-suffix = "lan.";
           reservations = config.netaddr.ipv4.subnet.reservations;
         }];

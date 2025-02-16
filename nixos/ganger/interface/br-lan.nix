@@ -10,11 +10,11 @@
   systemd.network.networks."10-lan-bridge" = {
     matchConfig.Name = "br-lan";
     networkConfig = {
-      #Address = [ "192.168.202.1/24" "2001:db8::a/64" ];
+      #Address = [config.netaddr.ipv4.subnet.all];
       Address = [ config.netaddr.ipv4.router ];
       #Specifying a gateway would add a default route unexpectly,
       #which is conflict with router.
-      # Gateway = "192.168.202.1";
+      # Gateway = config.netaddr.ipv4.gateway;
 
       #host-self is not a router, don't do work of router.
       #IPMasquerade = "ipv4";
@@ -23,7 +23,7 @@
     };
     routes = [{
       Destination = config.netaddr.ipv4.subnet.all;
-      # Gateway = "192.168.202.1";
+      # Gateway = config.netaddr.ipv4.gateway;
       Metric = 1024;
     }];
     #linkConfig.RequiredForOnline = "routable";

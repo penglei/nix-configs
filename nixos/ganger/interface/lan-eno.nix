@@ -4,11 +4,11 @@
     matchConfig.Name = "eno3";
     networkConfig = {
       # debug
-      DHCP = "ipv4";
+      # DHCP = "ipv4";
 
-      #Bridge = "br-lan";
+      Bridge = "br-lan";
       #IPv6AcceptRA = true;
-      IPv4Forwarding = true;
+      # IPv4Forwarding = true;
     };
     #linkConfig.RequiredForOnline = "routable";
     dhcpV4Config = {

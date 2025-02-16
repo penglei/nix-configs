@@ -6,26 +6,26 @@ let
     wan.name = "pppoe-wan";
   };
   ipv4 = rec {
-    router = "192.168.202.1";
-    subnet.all = "192.168.202.0/24";
+    router = "192.168.101.100";
+    subnet.all = "192.168.101.0/24";
     subnet.dhcp_pools = {
-      begin = "192.168.202.2";
-      end = "192.168.202.100";
+      begin = "192.168.101.2";
+      end = "192.168.101.100";
     };
     subnet.reservations = [
       {
         hw-address = "44:A8:42:20:80:92";
-        ip-address = "192.168.202.170";
+        ip-address = "192.168.101.170";
         # hostname = "ganger";
       }
       {
         hw-address = utils.gen_mac "vm-1";
-        ip-address = "192.168.202.2";
+        ip-address = "192.168.101.2";
         hostname = "lan-vm-1";
       }
       {
         hw-address = "A0:63:91:95:95:3E";
-        ip-address = "192.168.202.254";
+        ip-address = "192.168.101.254";
         hostname = "switch";
       }
     ];

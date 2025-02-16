@@ -34,7 +34,7 @@ in {
     enable = true;
     description = "mosdns DNS resolver";
     after = [ "network-online.target" "sing-box.service" ];
-    wants = [ "network-online.target" ];
+    wants = [ "network-online.target" "sing-box.service" ];
     wantedBy = [ "multi-user.target" ];
 
     # 服务配置

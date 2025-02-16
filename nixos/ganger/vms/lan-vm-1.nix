@@ -97,8 +97,6 @@ in {
         networks."20-lan" = {
           matchConfig.Type = "ether";
           networkConfig = {
-            #Address = [ "192.168.202.2/24" "2001:db8::b/64" ];
-            #Gateway = "192.168.202.1";
             IPv6AcceptRA = true;
             DHCP = "ipv4";
           };
