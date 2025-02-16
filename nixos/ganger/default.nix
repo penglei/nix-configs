@@ -24,9 +24,9 @@
     ./network/firewall.nix
     ./network/miniupnpd.nix
 
-    # ipv6
-    # ./network/dhcpcd-pd.nix
-    # ./network/radvd.nix
+    # lan ipv6
+    ./network/dhcpcd-pd.nix
+    ./network/radvd.nix
 
     ./vms
   ];

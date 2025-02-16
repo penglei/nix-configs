@@ -17,10 +17,12 @@ in {
     sysctl = {
       "net.ipv4.conf.all.forwarding" = true;
 
-      # enable forwarding ipv6 and kernel slaac
       "net.ipv6.conf.all.forwarding" = true;
-      "net.ipv6.conf.all.accept_ra" = 2;
-      "net.ipv6.conf.default.accept_ra" = 2;
+      # enable kernel slaac automatically
+      # "net.ipv6.conf.all.accept_ra" = 2;
+      # "net.ipv6.conf.default.accept_ra" = 2;
+      "net.ipv6.conf.all.accept_ra" = 1;
+      "net.ipv6.conf.default.accept_ra" = 1;
     };
   };
 
@@ -63,15 +65,15 @@ in {
       password "${config.sops.placeholder."network/pppoe/password"}"
       #file ... #Or read auth from a separate file.
 
+      # RA SLAAC /64 address
       +ipv6
       ipv6cp-use-persistent
-      ipv6cp-accept-local
-      ipv6cp-accept-remote
 
       mtu 1492
       mru 1492
 
-      set AUTOIPV6=1
+      #env for hooks?
+      set AUTOIPV6=0
       set PEERDNS=0
 
       ## Add a default IPv6 route to the system routing tables,

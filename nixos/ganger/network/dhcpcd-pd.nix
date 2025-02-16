@@ -29,12 +29,12 @@ let
 
     #Use the interface connected to WAN
     interface ${config.netaddr.iface.wan.name}
-      ## Enable routing solicitation for current interface
-      #ipv6rs
+      # # Enable routing solicitation for current interface
+      ipv6rs
 
       ## Set the Interface Association Identifier to iaid.
       ## This option must be used in an interface block.
-      #iaid 1
+      iaid 1
 
       ##Request a DHCPv6 Normal Address for iaid. iaid defaults to the iaid option as described above.
       #ia_na
@@ -46,14 +46,15 @@ let
       #ia_pd 2 eth0/1/64 eth0.12/12/64 eth0.20/20/64 eth0.34/34/64 # request prefixes for multiple VLANs
 
       #Request a PD and assign to interface
-      ia_pd 2 br-lan
+      # ia_pd 2/::/60 br-lan/0
+      ia_pd 1 br-lan
   '';
 in {
 
   environment.systemPackages = [ pkgs.dhcpcd ];
 
   systemd.services.dhcpcd-pd = {
-    # enable = false;
+    enable = true;
     description = "DHCP Client configured for ipv6 only";
 
     wantedBy = [
