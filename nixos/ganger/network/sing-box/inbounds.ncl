@@ -62,4 +62,4 @@ let all_ipv6_servers =
     (fun s => s & { listen | force = "::1" })
     all_ipv4_servers
 in
-all_ipv4_servers
+all_ipv4_servers @ all_ipv6_servers
