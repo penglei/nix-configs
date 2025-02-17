@@ -45,10 +45,6 @@
 
         in {
 
-          #for debugging(N.B. track files in git before building):
-          #❯ nix build .#pkgs.passage
-          #packages.pkgs = pkgs;
-
           #home-manager bootstrap tips:
           #❯ nix shell nixpkgs#git
           #❯ nix develop
@@ -63,7 +59,7 @@
               export PATH=$(pwd)/result/bin:$PATH
             '';
           };
-        }); # end each system
+        } // (import ./nix/debug.nix pkgs)); # end each system
 
       deploy-outputs = let
         system = "x86_64-linux"; # TODO support all platforms
