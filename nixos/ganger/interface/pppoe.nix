@@ -1,5 +1,6 @@
 # ipv6 test:
 #❯ curl https://6.ipw.cn/
+#❯ curl -6 ip.sb
 
 { config, pkgs, lib, ... }:
 let
