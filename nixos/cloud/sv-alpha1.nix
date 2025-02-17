@@ -6,7 +6,7 @@
 
     networkConfig = {
       DHCP = "ipv4";
-      Address = [ "240d:c000:f07f:8d00:acb8:fb6a:24fa:1" ];
+      Address = [ "240d:c000:f07f:8d00:acb8:fb6a:24fa:0" ];
     };
     routes = [{
       Destination = "::/0";

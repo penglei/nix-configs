@@ -71,12 +71,7 @@
 
   sv-alpha = {
     username = "penglei";
-    modules = [ ./nixos/cloud ./nixos/cloud/sv-alpha.nix ];
-    hm-modules = profiles.hm.slim.modules;
-  };
-  sv-beta = {
-    username = "penglei";
-    modules = [ ./nixos/cloud ./nixos/cloud/sv-beta.nix ];
+    modules = [ ./nixos/cloud ./nixos/cloud/sv-alpha0.nix ];
     hm-modules = profiles.hm.slim.modules;
   };
 }
