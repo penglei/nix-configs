@@ -12,6 +12,8 @@ PROXY_ROUTE_TABLE=100
 
 PROXY_NFTABLE=sb-tproxy
 
+OUT_INTERFACE="pppoe-wan"
+
 start_intercept() {
 
   #  [family] [action][type][ gateway ] [table]
@@ -135,6 +137,12 @@ table inet $PROXY_NFTABLE {
     type route hook output priority mangle; policy accept;
 
     # meta nfproto ipv6 accept  #服务端未支持ipv6
+
+    #No IPv6 NAT is used, so there's no IPv6-based local area network, all nodes connect directly and we can't dinstict 'internal'.
+    # However, as a router, we need to understand routing for home subnets.
+    # Directly using dynamic IPv6 PD (Prefix Delegation) for judgment would make rule maintenance cumbersome: we need reload after pppd restarted.
+    # Therefore, we take a simplified approach - assuming all internal Ethernet networks can connect directly without requiring forwarding.
+    meta nfproto ipv6 meta oif != $OUT_INTERFACE accept;
 
     fib daddr type local \
       log prefix "bypass output local dst: " \

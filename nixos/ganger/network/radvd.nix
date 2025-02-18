@@ -66,6 +66,11 @@ let
   };
 
 in {
+
+  # An alternative
+  # https://bird.network.cz/
+  # services.bird
+
   services.radvd = {
     enable = true;
     debugLevel = 5;
