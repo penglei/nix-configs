@@ -102,7 +102,7 @@ in {
           };
         };
       };
-      system.stateVersion = config.system.nixos.version;
+      # system.stateVersion = "23.05";
     };
   };
 }

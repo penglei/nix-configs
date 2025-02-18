@@ -18,6 +18,5 @@ else
     tproxy = 21012,
     proxy_server = {
       server = lib.placeholder "sing-box/server/address",
-      server_port = 443,
     },
   }

@@ -5,9 +5,10 @@ let
     inbounds = [
       {
         type = "shadowtls";
+        tag = "in-shadowtls";
         listen = "::";
         listen_port = 443;
-        detour = "shadowsocks-in";
+        detour = "shadowsocks-inner";
         version = 3;
         users = [{ password = passwordstub; }];
         handshake = {
@@ -19,11 +20,21 @@ let
 
       {
         type = "shadowsocks";
-        tag = "shadowsocks-in";
+        tag = "shadowsocks-inner";
         listen = "127.0.0.1";
         method = "2022-blake3-aes-128-gcm";
         password = passwordstub;
         multiplex = { enabled = true; };
+      }
+
+      {
+        type = "shadowsocks";
+        tag = "in-ss";
+        listen = "::";
+        listen_port = 80;
+        method = "2022-blake3-aes-128-gcm";
+        password = passwordstub;
+        network = "tcp";
       }
     ];
 
@@ -44,11 +55,13 @@ in {
     mode = "0400";
   };
 
+  environment.systemPackages = [ pkgs.sing-box-prebuilt ];
+
   systemd.services.sing-box = {
     description = "sing-box server daemon";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.sing-box ];
+    path = [ pkgs.sing-box-prebuilt ];
     script = "exec sing-box run -c ${configFilePath}";
     serviceConfig = { WorkingDirectory = "/tmp"; };
   };

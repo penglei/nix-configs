@@ -67,7 +67,8 @@
         ],
         "type": "predefined"
       }
-    ]
+    ],
+    "strategy": "ipv4_only"
   },
   "experimental": {
     "cache_file": {
@@ -169,6 +170,18 @@
       },
       "type": "shadowtls",
       "version": 3
+    },
+    {
+      "method": "2022-blake3-aes-128-gcm",
+      "network": "tcp",
+      "password": "<PLACEHOLDER:main-password>",
+      "plugin": "v2ray-plugin",
+      "plugin_opts": "client;<PLACEHOLDER:v2ray-plugin/opts>",
+      "server": "<PLACEHOLDER:sing-box/server/address>",
+      "server_port": 80,
+      "tag": "out-ss",
+      "type": "shadowsocks",
+      "udp_over_tcp": true
     },
     {
       "domain_resolver": {
@@ -303,6 +316,13 @@
           }
         ],
         "type": "logical"
+      },
+      {
+        "outbound": "dynamic-proxy",
+        "rule_set": [
+          "site-proxy",
+          "ip-proxy"
+        ]
       }
     ]
   }

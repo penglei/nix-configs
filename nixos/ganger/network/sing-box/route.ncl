@@ -41,7 +41,10 @@
     },
 
     #快速跳出指定的直连site/ip
-    { rule_set = ["site-direct", "ip-direct"], "outbound" = "out-direct" },
+    {
+      rule_set = ["site-direct", "ip-direct"],
+      outbound = "out-direct"
+    },
 
     ###split traffic
 
@@ -62,7 +65,7 @@
       #action = "direct"
     },
 
-    # 域名不在国内，并且域名 IP 不在中国区，走代理
+    # 域名不在国内，并且域名 IP 不在中国区，走代理。
     # 对于透明代理模式，这能生效吗?
     {
       type = "logical",
@@ -78,6 +81,10 @@
       ],
       outbound = "dynamic-proxy"
     },
+    {
+      rule_set = ["site-proxy", "ip-proxy"],
+      outbound = "dynamic-proxy"
+    }
   ],
   final = "out-direct", #Default outbound tag. the first outbound will be used if empty.
 

@@ -8,6 +8,6 @@ render: build
 
 
 rsync: render
-	@rsync -avh ./outputs/* ganger:~/sing-box/ \
+	@rsync -avh ./outputs/* scripts ganger:~/sing-box/ \
 	--exclude .direnv --include='**.gitignore' --filter=':- .gitignore' --delete-after
 

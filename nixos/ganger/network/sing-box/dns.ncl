@@ -103,7 +103,7 @@ in
 
   client_subnet = "222.211.224.1/24", #default edns0-subnet #成都
   # client_subnet = "1.0.1.10/32",
-  #strategy = "prefer_ipv4",
+  strategy = "ipv4_only",
 
   #Stores a reverse mapping of IP addresses after responding to a DNS query
   #in order to provide domain names when routing.

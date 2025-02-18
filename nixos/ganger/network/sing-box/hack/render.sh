@@ -12,19 +12,22 @@ mkdir -p outputs
 
 cp -r templates/* outputs
 
-proxy_address_placeholder="<PLACEHOLDER:sing-box/server/address>"
-proxy_address="${PROXY_ADDRESS:-1.2.3.4}"
-
-proxy_password_placeholder="<PLACEHOLDER:main-password>"
-proxy_password="${PROXY_PASSWORD:-123456}"
-
-proxy_mock_srvname_placeholder="<PLACEHOLDER:sing-box/shadowtls/server_name>"
-proxy_mock_srvname="${PROXY_MOCK_SRVNAME:-bing.com}"
-
 main_config="outputs/config.json"
+project_root=$(git rev-parse --show-toplevel)
 
-sed -i "s,$proxy_address_placeholder,$proxy_address,g" $main_config
-sed -i "s,$proxy_password_placeholder,$proxy_password,g" $main_config
-sed -i "s,$proxy_mock_srvname_placeholder,$proxy_mock_srvname,g" $main_config
+function replace_from_secrets() {
+  local key_path="$1"
+  local placeholder="<PLACEHOLDER:${key_path}>"
+  local yq_key_path
+  yq_key_path=$(printf '%s' "$key_path" | tr "/" ".")
+  local value
+  value=$(sops -d "${project_root}/secrets/secrets.yaml" | yq ".${yq_key_path}")
+
+  sed -i "s,$placeholder,$value,g" $main_config
+}
+
+replace_from_secrets "main-password"
+replace_from_secrets "sing-box/server/address"
+replace_from_secrets "sing-box/shadowtls/server_name"
 
 echo "render completed."
