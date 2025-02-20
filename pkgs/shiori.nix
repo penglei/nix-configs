@@ -1,27 +1,46 @@
-{ lib, stdenvNoCC, fetchurl, bash, ... }:
+{ lib, buildGoModule, fetchFromGitHub, nixosTests, installShellFiles, stdenv, }:
 
-stdenvNoCC.mkDerivation rec {
+buildGoModule rec {
   pname = "shiori";
   version = "1.7.4";
 
-  src = fetchurl {
-    url =
-      "https://github.com/go-shiori/shiori/releases/download/v${version}/shiori_Darwin_aarch64_${version}.tar.gz";
-    sha256 = "sha256-4wj0GVJ7256Sljfh0JTpEEt+MunNpF5cXS0WCJniq2I=";
+  vendorHash = "sha256-RTnaDAl79LScbeKKAGJOI/YOiHEwwlxS2CmNhw80KL0=";
+
+  doCheck = false;
+
+  src = fetchFromGitHub {
+    owner = "go-shiori";
+    repo = pname;
+    rev = "v${version}";
+    sha256 = "sha256-T4EFwvejLgNkcykPjSHU8WXJwqSqYPFaAD+9JX+uiJU=";
   };
 
-  # Work around the "unpacker appears to have produced no directories"
-  # case that happens when the archive doesn't have a subdirectory.
-  setSourceRoot = "sourceRoot=`pwd`";
-
-  buildInputs = [ bash ];
-  installPhase = ''
-    runHook preInstall
-
-    install -m755 ./shiori -D $out/bin/shiori
-
-    runHook postInstall
+  unpackPhase = ''
+    echo "------------"
+    pwd
+    echo "------------"
   '';
-  meta = with lib; { platforms = platforms.darwin; };
+
+  ldflags =
+    [ "-X main.version=${version}" "-X main.commit=nixpkgs-${src.rev}" ];
+
+  nativeBuildInputs = [ installShellFiles ];
+  postInstall =
+    lib.optionalString (stdenv.hostPlatform != stdenv.buildPlatform) ''
+      installShellCompletion --cmd shiori \
+        --bash <($out/bin/shiori completion bash) \
+        --fish <($out/bin/shiori completion fish) \
+        --zsh <($out/bin/shiori completion zsh)
+    '';
+
+  passthru.tests.smoke-test = nixosTests.shiori;
+
+  meta = with lib; {
+    description = "Simple bookmark manager built with Go";
+    mainProgram = "shiori";
+    homepage = "https://github.com/go-shiori/shiori";
+    license = licenses.mit;
+    maintainers = with maintainers; [ minijackson CaptainJawZ ];
+  };
 }
 
