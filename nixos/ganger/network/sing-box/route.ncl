@@ -29,16 +29,17 @@
     #兼容clash控制面板，选择“全局”时，出站流量走“out-proxy”，即全部走代理
     { clash_mode = "global", outbound = "out-proxy" },
 
-    #Resolve request destination from domain to IP addresses.
-    #If the inbound is a proxy protocol such as SOCKS5, HTTP_PROXY,
-    #or others that carry domain information, DNS resolution can be
-    #performed at an early stage. This allows subsequent rules to
-    #make decisions based on the geographical attributes of the resolved IP address.
-    {
-      action = "resolve",
-      strategy = "prefer_ipv4", #dns.strategy will be used by default
-      server = "dns-internal-ipv4",
-    },
+    # Maybe we can override destination ip to ipv6 for geo determination
+    # #Internally resolve destination from domain to IP addresses.
+    # #If the inbound is a proxy protocol such as SOCKS5, HTTP_PROXY,
+    # #or others that carry domain information, DNS resolution can be
+    # #performed at an early stage. This allows subsequent rules to
+    # #make decisions based on the geographical attributes of the internal resolved IP address.
+    # {
+    #   action = "resolve",
+    #   strategy = "ipv4_only", #"prefer_ipv4",   #dns.strategy will be used by default
+    #   server = "dns-internal-ipv4",
+    # },
 
     #快速跳出指定的直连site/ip
     {
@@ -48,7 +49,7 @@
 
     ###split traffic
 
-    #国内IP或域名，直连
+    #国内IP or 国内域名：直连
     {
       #type = "default", #default
       ip_is_private = true,
@@ -65,7 +66,26 @@
       #action = "direct"
     },
 
-    # 域名不在国内，并且域名 IP 不在中国区，走代理。
+    #国外域名 and 非国内IP and IPv6：走支持IPv6的代理
+    {
+      type = "logical",
+      mode = "and",
+      rules = [
+        {
+          rule_set = "geosite-geolocation-!cn"
+        },
+        {
+          rule_set = "geoip-cn",
+          invert = true
+        },
+        {
+          ip_version = 6,
+        }
+      ],
+      outbound = "out-sv-ss-inner",
+    },
+
+    # 国外域名 and 非国内IP：走代理。
     # 对于透明代理模式，这能生效吗?
     {
       type = "logical",

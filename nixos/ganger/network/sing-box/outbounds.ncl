@@ -5,25 +5,27 @@ let addr = import "addr.ncl" in
     tag = "dynamic-proxy",
     type = "selector",
     outbounds = [
-      "shadowsocks-inner",
       "out-subscribe-a",
+      "out-sv-ss-inner",
     ],
     default = "out-subscribe-a",
     interrupt_exist_connections = false,
   },
+
+  ###{-support ipv6
   {
-    tag = "shadowsocks-inner",
+    tag = "out-sv-ss-inner",
     type = "shadowsocks",
     method = "2022-blake3-aes-128-gcm",
     multiplex = {
       enabled = true, #复用连接，而不是每次都建新连接
     },
     password = lib.placeholder "main-password",
-    detour = "out-shadowtls", # 绕道到shadowtls进行包装传输
+    detour = "out-sv-alpha", # 绕道进行shadowtls包装传输
   },
   (
     {
-      tag = "out-shadowtls",
+      tag = "out-sv-alpha",
       type = "shadowtls",
       version = 3,
       server | default = "127.0.0.1",
@@ -39,7 +41,7 @@ let addr = import "addr.ncl" in
   ),
   (
     {
-      tag = "out-ss",
+      tag = "out-sv-ss",
       type = "shadowsocks",
       server | default = "127.0.0.1",
       server_port = 80,
@@ -52,18 +54,19 @@ let addr = import "addr.ncl" in
     }
     & addr.proxy_server
   ),
-  {
-    tag = "out-named-server-example",
-    type = "socks",
-    server = "example.org",
-    server_port = 2080,
-    domain_resolver = {
-      server = "dns-internal-ipv4",
-      rewrite_ttl = 60,
-    },
-    # or "domain_resolver" = "dns-internal-ipv4",
-    # or global route config like `{route.default_domain_resolver = "local"}`
-  },
+  ###-}
+  # {
+  #   tag = "out-named-server-example",
+  #   type = "socks",
+  #   server = "example.org",
+  #   server_port = 2080,
+  #   domain_resolver = {
+  #     server = "dns-internal-ipv4",
+  #     rewrite_ttl = 60,
+  #   },
+  #   # or "domain_resolver" = "dns-internal-ipv4",
+  #   # or global route config like `{route.default_domain_resolver = "local"}`
+  # },
   {
     tag = "out-direct",
     type = "direct",
