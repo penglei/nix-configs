@@ -17,4 +17,5 @@
       ),
   sops_placeholder = fun name => "<SOPS:%{std.hash 'Sha256 name}:PLACEHOLDER>",
   placeholder = fun name => "<PLACEHOLDER:%{name}>",
+  rawplaceholder = fun name => "<RAW-PLACEHOLDER:%{name}>",
 }

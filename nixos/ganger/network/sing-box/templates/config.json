@@ -7,6 +7,11 @@
     "reverse_mapping": true,
     "rules": [
       {
+        "action": "route",
+        "rule_set": "dns-direct",
+        "server": "dns-cn"
+      },
+      {
         "rule_set": "site-proxy",
         "server": "dns-abroad"
       },
@@ -137,10 +142,11 @@
   },
   "outbounds": [
     {
-      "default": "shadowsocks-inner",
+      "default": "out-subscribe-a",
       "interrupt_exist_connections": false,
       "outbounds": [
-        "shadowsocks-inner"
+        "shadowsocks-inner",
+        "out-subscribe-a"
       ],
       "tag": "dynamic-proxy",
       "type": "selector"
@@ -196,6 +202,20 @@
     {
       "tag": "out-direct",
       "type": "direct"
+    },
+    {
+      "domain_resolver": {
+        "rewrite_ttl": 60,
+        "server": "dns-internal-ipv4"
+      },
+      "method": "<PLACEHOLDER:proxies/subscribe-a/common/method>",
+      "password": "<PLACEHOLDER:proxies/subscribe-a/common/password>",
+      "plugin": "<PLACEHOLDER:proxies/subscribe-a/common/plugin>",
+      "plugin_opts": "<PLACEHOLDER:proxies/subscribe-a/common/plugin_opts>",
+      "server": "<PLACEHOLDER:proxies/subscribe-a/common/server>",
+      "server_port": "<RAW-PLACEHOLDER:proxies/subscribe-a/server1/port>",
+      "tag": "out-subscribe-a",
+      "type": "shadowsocks"
     }
   ],
   "route": {
@@ -203,6 +223,12 @@
     "default_mark": 666,
     "final": "out-direct",
     "rule_set": [
+      {
+        "format": "source",
+        "path": "rule_exts/dns-direct.json",
+        "tag": "dns-direct",
+        "type": "local"
+      },
       {
         "format": "source",
         "path": "rule_exts/site-proxy.json",

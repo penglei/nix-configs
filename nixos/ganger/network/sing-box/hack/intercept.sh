@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#设置nftables拦截网络，实现透明代理
+
 set -euo pipefail
 
 action="${1-start}"

@@ -10,7 +10,7 @@ let debug_client_subnet_rules = [
       { inbound = "in-dnsserver(::1)" },
     ],
     server = "dns-abroad",
-    client_subnet = "222.211.224.1/32", #it should response ip located in cn
+    client_subnet = "222.211.224.1/24", #it should response ip located in cn
   },
   {
     type = "logical",
@@ -61,6 +61,7 @@ in
       },
     ],
   rules = [
+    { rule_set = "dns-direct", action = "route", server = "dns-cn" },
 
     ## 有点没理解clash的设计思路，这个配置有用吗?
     ## 无论用什么模式，至少应该保证dns解析正确，否则错误的解析还是影响网络访问的连通性。
@@ -72,7 +73,7 @@ in
 
     # 手动配置直连的域名并不一定要走国内的DNS，cache.nixos.org是一个(可能的)例子:
     # 海外解析更准确，但是直连速度却更快。
-    #{ rule_set = "site-direct", action = "route", server = "dns-cn" },
+    # { rule_set = "site-direct", action = "route", server = "dns-cn" },
     # 明确走代理的网站也用国外的DNS解析
     { rule_set = "site-proxy", server = "dns-abroad" },
 

@@ -5,9 +5,10 @@ let addr = import "addr.ncl" in
     tag = "dynamic-proxy",
     type = "selector",
     outbounds = [
-      "shadowsocks-inner"
+      "shadowsocks-inner",
+      "out-subscribe-a",
     ],
-    default = "shadowsocks-inner",
+    default = "out-subscribe-a",
     interrupt_exist_connections = false,
   },
   {
@@ -68,3 +69,4 @@ let addr = import "addr.ncl" in
     type = "direct",
   }
 ]
+@ (import "./subscribes/a.ncl")
