@@ -1,0 +1,10 @@
+{
+  "rules": [
+    {
+      "domain_suffix": [
+        ".fc-sigma.xyz"
+      ]
+    }
+  ],
+  "version": 1
+}

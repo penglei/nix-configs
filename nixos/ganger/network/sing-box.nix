@@ -10,20 +10,25 @@ let
     import re, hashlib, sys
     print(
       re.sub(
-        r"<PLACEHOLDER:([^>]+)>",
+        r"<PLACEHOLDER:([^>]+)>|\"<RAW-PLACEHOLDER:([^>]+)>\"",
         lambda m:
-          "<SOPS:"+hashlib.sha256(m.group(1).encode()).hexdigest()+":PLACEHOLDER>",
+          "<SOPS:"+hashlib.sha256((m.group(1) or m.group(2)).encode()).hexdigest()+":PLACEHOLDER>",
         open(sys.argv[1]).read()), end="")
   '';
   templates = pkgs.runCommand "sing-box-config-template" {
     src = ./sing-box;
-    buildInputs =
-      [ pkgs.python3Minimal pkgs.bash pkgs.coreutils-full pkgs.nickel ];
+    buildInputs = [
+      pkgs.bash
+      pkgs.coreutils-full
+      pkgs.nickel # render configuration first stage: nickel to json with custom key placeholder: <PLACEHOLDER:keypath>
+      pkgs.python3Minimal # render configuration second stage: replace custom key placeholer to sops key placeholder: <PLACEHOLDER:key's sha256>
+    ];
   } ''
     # don't run build.sh directly, as the build environment(chroot) doesn't bring the /usr/bin/env
     bash $src/hack/build.sh $out
     python3 -c '${sops_replace_py}' $out/config.json > config.json
     mv config.json $out/
+    cp $out/config.json $out/template.txt
   '';
   # templates = pkgs.stdenvNoCC.mkDerivation {
   #   name = "sing-box-config-templatee";
@@ -53,6 +58,12 @@ in {
     "main-password"
     "sing-box/server/address"
     "sing-box/shadowtls/server_name"
+    "proxies/subscribe-a/common/server"
+    "proxies/subscribe-a/server1/port"
+    "proxies/subscribe-a/common/method"
+    "proxies/subscribe-a/common/password"
+    "proxies/subscribe-a/common/plugin"
+    "proxies/subscribe-a/common/plugin_opts"
   ];
 
   sops.templates."${configFile}" = {
@@ -82,7 +93,7 @@ in {
     '';
     postStart = ''
       # setup route and nftables
-      ${./sing-box/scripts/intercept.sh} start
+      ${./sing-box/hack/intercept.sh} start
     '';
     serviceConfig = {
       StateDirectory = "sing-box";
@@ -97,7 +108,7 @@ in {
       ];
     };
     preStop = ''
-      ${./sing-box/scripts/intercept.sh} stop
+      ${./sing-box/hack/intercept.sh} stop
     '';
     postStop = ''
       #TODO notify mosdns forwarding dns query to outside

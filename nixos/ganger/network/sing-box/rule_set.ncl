@@ -1,5 +1,11 @@
 [
   {
+    tag = "dns-direct",
+    type = "local",
+    format = "source",
+    path = "rule_exts/dns-direct.json"
+  },
+  {
     tag = "site-proxy",
     type = "local",
     format = "source",
