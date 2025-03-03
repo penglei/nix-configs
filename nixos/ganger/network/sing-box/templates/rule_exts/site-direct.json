@@ -1,9 +1,7 @@
 {
   "rules": [
     {
-      "domain": [
-        "cache.nixos.org"
-      ]
+      "domain": []
     }
   ],
   "version": 1

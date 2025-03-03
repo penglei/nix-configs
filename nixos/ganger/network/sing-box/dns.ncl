@@ -77,6 +77,12 @@ in
     # 明确走代理的网站也用国外的DNS解析
     { rule_set = "site-proxy", server = "dns-abroad" },
 
+    # #ipv6 is too slow, disable it for some sites.
+    # {
+    #   domain = ["cache.nixos.org"],
+    #   action = "predefined",
+    # },
+
     # 屏蔽广告DNS解析
     {
       rule_set = "geosite-category-ads-all",
@@ -104,7 +110,7 @@ in
 
   client_subnet = "222.211.224.1/24", #default edns0-subnet #成都
   # client_subnet = "1.0.1.10/32",
-  strategy = "prefer_ipv4", #"ipv4_only",
+  strategy = "ipv4_only", #"prefer_ipv4",
 
   #Stores a reverse mapping of IP addresses after responding to a DNS query
   #in order to provide domain names when routing.

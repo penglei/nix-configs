@@ -23,6 +23,7 @@
     ./network/sing-box.nix
     ./network/firewall.nix
     ./network/miniupnpd.nix
+    ./network/torrent.nix
 
     # lan ipv6
     ./network/dhcpcd-pd.nix

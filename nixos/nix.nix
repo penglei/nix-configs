@@ -24,6 +24,7 @@
       extra-experimental-features = [ "ca-derivations" ];
       trusted-users = [ "@wheel" username ];
       allowed-users = trusted-users;
+      substituters = [ "https://mirror.sjtu.edu.cn/nix-channels/store" ];
     };
   };
 }

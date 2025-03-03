@@ -102,6 +102,16 @@ in {
           };
         };
       };
+
+      services = {
+        rtorrent = { enable = true; };
+        flood = {
+          openFirewall = true;
+          enable = true;
+          host = "::";
+        };
+      };
+
       system.stateVersion = "23.11";
     };
   };
