@@ -73,7 +73,7 @@
         "type": "predefined"
       }
     ],
-    "strategy": "ipv4_only"
+    "strategy": "prefer_ipv4"
   },
   "experimental": {
     "cache_file": {
@@ -145,27 +145,27 @@
       "default": "out-subscribe-a",
       "interrupt_exist_connections": false,
       "outbounds": [
-        "shadowsocks-inner",
-        "out-subscribe-a"
+        "out-subscribe-a",
+        "out-sv-ss-inner"
       ],
       "tag": "dynamic-proxy",
       "type": "selector"
     },
     {
-      "detour": "out-shadowtls",
+      "detour": "out-sv-alpha",
       "method": "2022-blake3-aes-128-gcm",
       "multiplex": {
         "enabled": true
       },
       "password": "<PLACEHOLDER:main-password>",
-      "tag": "shadowsocks-inner",
+      "tag": "out-sv-ss-inner",
       "type": "shadowsocks"
     },
     {
       "password": "<PLACEHOLDER:main-password>",
       "server": "<PLACEHOLDER:sing-box/server/address>",
       "server_port": 443,
-      "tag": "out-shadowtls",
+      "tag": "out-sv-alpha",
       "tls": {
         "enabled": true,
         "server_name": "<PLACEHOLDER:sing-box/shadowtls/server_name>",
@@ -185,19 +185,9 @@
       "plugin_opts": "client;<PLACEHOLDER:v2ray-plugin/opts>",
       "server": "<PLACEHOLDER:sing-box/server/address>",
       "server_port": 80,
-      "tag": "out-ss",
+      "tag": "out-sv-ss",
       "type": "shadowsocks",
       "udp_over_tcp": true
-    },
-    {
-      "domain_resolver": {
-        "rewrite_ttl": 60,
-        "server": "dns-internal-ipv4"
-      },
-      "server": "example.org",
-      "server_port": 2080,
-      "tag": "out-named-server-example",
-      "type": "socks"
     },
     {
       "tag": "out-direct",
@@ -309,11 +299,6 @@
         "outbound": "out-proxy"
       },
       {
-        "action": "resolve",
-        "server": "dns-internal-ipv4",
-        "strategy": "prefer_ipv4"
-      },
-      {
         "outbound": "out-direct",
         "rule_set": [
           "site-direct",
@@ -328,6 +313,23 @@
           "geoip-cn",
           "geosite-cn"
         ]
+      },
+      {
+        "mode": "and",
+        "outbound": "out-sv-ss-inner",
+        "rules": [
+          {
+            "rule_set": "geosite-geolocation-!cn"
+          },
+          {
+            "invert": true,
+            "rule_set": "geoip-cn"
+          },
+          {
+            "ip_version": 6
+          }
+        ],
+        "type": "logical"
       },
       {
         "mode": "and",
