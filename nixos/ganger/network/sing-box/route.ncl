@@ -23,6 +23,7 @@
     #Forward DNS requests to the DNS server that is automatically and lazily
     #created inside sing-box. The request will be routed by dns.route.
     { protocol = "dns", action = "hijack-dns" },
+    { protocol = "bittorrent", outbound = "out-direct" },
 
     #兼容clash控制面板，选择“直连”时，出站流量走“out-direct”
     { clash_mode = "direct", outbound = "out-direct" },

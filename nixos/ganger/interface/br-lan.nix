@@ -11,7 +11,7 @@
     matchConfig.Name = "br-lan";
     networkConfig = {
       #Address = [config.netaddr.ipv4.subnet.all];
-      Address = [ config.netaddr.ipv4.router ];
+      Address = [ "${config.netaddr.ipv4.router}/24" ];
       #Specifying a gateway would add a default route unexpectly,
       #which is conflict with router.
       # Gateway = config.netaddr.ipv4.gateway;

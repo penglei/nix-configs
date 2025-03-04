@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let utils = (import ../utils.nix);
 in {
@@ -52,6 +52,7 @@ in {
         }
       ];
 
+      environment.systemPackages = [ pkgs.miniupnpc ];
       system.activationScripts.ensure-persist-dir = {
         text = "mkdir -p /persist/{etc,opt/ssh}";
       };
@@ -82,6 +83,11 @@ in {
         useDHCP = false;
         nftables.enable = true;
         wireless.enable = false;
+        firewall = {
+          extraInputRules = ''
+            ip saddr ${config.netaddr.ipv4.gateway} udp sport 1900 accept comment "Allow LAN traffic for UPnP"
+          '';
+        };
       };
       services.resolved = {
         #disable llmnr
