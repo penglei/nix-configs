@@ -29,6 +29,7 @@
       bottom
       rsync
       wget
+      miniupnpc
       curl
       xz
       zstd
