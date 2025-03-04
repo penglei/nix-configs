@@ -51,7 +51,7 @@
           #❯ home-manager switch --flake .
           devShells.default = pkgs.mkShell {
             buildInputs = with pkgs; [
-              home-manager.defaultPackage.${system} # home-manager command
+              home-manager.packages.${system}.default # home-manager command
               ssh-to-pgp
               ssh-to-age
             ];

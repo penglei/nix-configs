@@ -24,7 +24,7 @@ Firstly, put the following content in the file `/etc/nix/nix.conf`:
 
 ```
 build-users-group = nixbld
-
+experimental-features = nix-command flakes
 trusted-users = root penglei
 ```
 
@@ -142,7 +142,7 @@ $ sudo nixos-rebuild switch --flake .
     $ nix --extra-experimental-features nix-command --extra-experimental-features flakes shell nixpkgs#vim
     ```
 
-### macOS application ops
+### macOS ops
 
 * yabai
 
@@ -195,6 +195,14 @@ $ sudo nixos-rebuild switch --flake .
 
 
     *installation.yaml should be writable after upgrading squirrel.*
+
+
+* upgrade nix
+
+  run in root:
+  ```
+  # nix profile install nixpkgs#nix_git
+  ```
 
 ## references
 
