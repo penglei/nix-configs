@@ -1,3 +1,5 @@
+# this nix hm module is only imported by standalone home-manager scenario, which is define in flake.nix
+
 { pkgs, nixpkgs, ... }: {
 
   nix = {
@@ -7,6 +9,7 @@
       experimental-features = [ "nix-command" "flakes" ];
       keep-outputs = true;
       keep-derivations = true;
+      substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store" ];
     };
   };
 
