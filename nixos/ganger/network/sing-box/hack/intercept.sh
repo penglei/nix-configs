@@ -105,7 +105,7 @@ table inet $PROXY_NFTABLE {
     udp dport 53 accept #TODO pass 更多必要的udp流量
 
 
-    ip daddr @dst_bypass accept comment "bypas prerouting: dst ipv4."
+    ip daddr @dst_bypass accept comment "bypass prerouting: dst ipv4."
     ip6 daddr @dst_bypass6 accept comment "bypass prerouting: dst ipv6."
     ip saddr @src_bypass accept comment "bypass prerouting: src ipv4"
 
@@ -139,6 +139,8 @@ table inet $PROXY_NFTABLE {
     type route hook output priority mangle; policy accept;
 
     # meta nfproto ipv6 accept  #服务端未支持ipv6
+
+    meta l4proto udp accept
 
     #No IPv6 NAT is used, so there's no IPv6-based local area network, all nodes connect directly and we can't dinstict 'internal'.
     # However, as a router, we need to understand routing for home subnets.

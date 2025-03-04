@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
@@ -59,6 +59,8 @@
     device = "/dev/disk/by-partlabel/disk-main-root";
     fsType = "ext4";
   };
+
+  environment.systemPackages = with pkgs; [ tcpdump bottom htop ];
 
   #this also enable 'services.resolved', see also 'nixos/modules/system/boot/networkd.nix'.
   systemd.network.enable = true;

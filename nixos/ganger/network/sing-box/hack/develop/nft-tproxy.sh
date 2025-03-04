@@ -104,7 +104,7 @@ table inet $table {
     #counter debug
     fib daddr type local counter name cnt_dst_local_pre accept comment "bypass: local dst"
 
-    ip daddr @dst_bypass accept comment "bypas prerouting: dst ipv4."
+    ip daddr @dst_bypass accept comment "bypass prerouting: dst ipv4."
     ip6 daddr @dst_bypass6 accept comment "bypass prerouting: dst ipv6."
 
     ip saddr @src_bypass accept comment "bypass prerouting: src ipv4"
