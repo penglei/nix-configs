@@ -22,6 +22,7 @@
     ./network/mosdns.nix
     ./network/sing-box.nix
     ./network/firewall.nix
+    ./network/ddns.nix
     ./network/miniupnpd.nix
     ./network/torrent.nix
 
