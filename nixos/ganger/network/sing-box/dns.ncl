@@ -55,10 +55,6 @@ in
         server = "127.0.0.1",
         server_port = addr.self_dns, #必须在inbound中配置该服务。
       },
-      {
-        type = "predefined",
-        responses = [{ rcode = "REFUSED" }],
-      },
     ],
   rules = [
     { rule_set = "dns-direct", action = "route", server = "dns-cn" },
@@ -81,6 +77,7 @@ in
     # {
     #   domain = ["cache.nixos.org"],
     #   action = "predefined",
+    #   rcode = "REFUSED",
     # },
 
     # 屏蔽广告DNS解析

@@ -18,7 +18,8 @@ in {
     mode = "0400";
   };
 
-  sops.secrets = let sfile = ../../secrets/server.yaml;
+  #declare secrets
+  sops.secrets = let sfile = ../../secrets/secrets.yaml;
   in {
     "ssserver/config.json" = {
       sopsFile = sfile;
@@ -27,7 +28,7 @@ in {
     };
     "ss-password" = {
       sopsFile = sfile;
-      key = "secret.main.password";
+      key = "main-password";
     };
   };
   systemd.services.ssserver = {

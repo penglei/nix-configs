@@ -1,5 +1,6 @@
 { pkgs, config, ... }:
 let
+  proxy = "sv-alpha";
   passwordstub = config.sops.placeholder."main-password";
   cfg = {
     inbounds = [{
@@ -20,14 +21,14 @@ let
       {
         type = "shadowtls";
         tag = "shadowtls-out";
-        server = config.sops.placeholder."sing-box/server/address";
+        server = config.sops.placeholder."sing-box/${proxy}/address";
         server_port = 443;
         version = 3;
         password = passwordstub;
         tls = {
           enabled = true;
           server_name =
-            config.sops.placeholder."sing-box/shadowtls/server_name";
+            config.sops.placeholder."sing-box/${proxy}/shadowtls/server_name";
           utls = {
             enabled = true;
             fingerprint = "chrome";
@@ -45,7 +46,8 @@ let
   configFilePath = config.sops.templates."${configFile}".path;
 
 in {
-  sops-keys = [ "sing-box/server/address" "sing-box/shadowtls/server_name" ];
+  sops-keys =
+    [ "sing-box/${proxy}/address" "sing-box/${proxy}/shadowtls/server_name" ];
 
   sops.templates."${configFile}" = {
     content = builtins.toJSON cfg;
