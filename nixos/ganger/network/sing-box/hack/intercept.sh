@@ -138,9 +138,10 @@ table inet $PROXY_NFTABLE {
     #mangle hook 在conntrack之后执行，所以才能使用ct模块
     type route hook output priority mangle; policy accept;
 
-    # meta nfproto ipv6 accept  #服务端未支持ipv6
+    ct direction reply return
 
     meta l4proto udp accept
+    # meta nfproto ipv6 accept  #服务端未支持ipv6
 
     #No IPv6 NAT is used, so there's no IPv6-based local area network, all nodes connect directly and we can't dinstict 'internal'.
     # However, as a router, we need to understand routing for home subnets.
