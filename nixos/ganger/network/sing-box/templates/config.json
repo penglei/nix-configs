@@ -63,14 +63,6 @@
         "server_port": 29753,
         "tag": "dns-internal-ipv4",
         "type": "udp"
-      },
-      {
-        "responses": [
-          {
-            "rcode": "REFUSED"
-          }
-        ],
-        "type": "predefined"
       }
     ],
     "strategy": "ipv4_only"
@@ -289,6 +281,10 @@
       {
         "action": "hijack-dns",
         "protocol": "dns"
+      },
+      {
+        "outbound": "out-direct",
+        "protocol": "bittorrent"
       },
       {
         "clash_mode": "direct",
