@@ -2,7 +2,9 @@
   "rules": [
     {
       "domain_suffix": [
-        ".fc-sigma.xyz"
+        ".fc-sigma.xyz",
+        ".xyzcdn.net",
+        ".ruguoapp.com"
       ]
     }
   ],

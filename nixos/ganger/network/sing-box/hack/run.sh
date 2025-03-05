@@ -2,14 +2,15 @@
 
 set -eu -o pipefail
 
+set -x
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-cd "$SCRIPT_DIR"/..
+CURDIR=$(cd "$SCRIPT_DIR"/.. && pwd)
 
-mkdir -p outputs
+sudo "$CURDIR/hack/intercept.sh" stop
+sudo "$CURDIR/hack/intercept.sh" start
 
-cd outputs
+export PATH=$CURDIR/bin:$PATH
 
-#nix run nixpkgs#sing-box -- run -c config.json
-
-sing-box run -c config.json
+sing-box run -c "$CURDIR"/config.json

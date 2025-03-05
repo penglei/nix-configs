@@ -54,7 +54,11 @@
     modules = [
       ./nixos/cloud
 
-      ./nixos/modules/ssserver.nix
+      #./nixos/modules/ssserver.nix
+
+      ((import ./nixos/modules/sing-box-server.nix) {
+        proxy_name = "hk-alpha";
+      })
     ];
     hm-modules = profiles.hm.slim.modules;
   };

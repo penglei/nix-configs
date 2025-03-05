@@ -17,6 +17,8 @@ else
     mixed_proxy = 23490,
     tproxy = 21012,
     proxy_server = {
-      server = lib.placeholder "sing-box/server/address",
+      sv-alpha = {
+        server = lib.placeholder "sing-box/sv-alpha/address",
+      }
     },
   }

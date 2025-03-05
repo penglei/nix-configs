@@ -1,4 +1,5 @@
 {
+  imports = [ ((import ../modules/sing-box-server.nix) "sv-alpha") ];
   networking = { useNetworkd = true; };
 
   systemd.network.networks."20-eth" = {

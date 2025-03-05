@@ -9,7 +9,10 @@
       experimental-features = [ "nix-command" "flakes" ];
       keep-outputs = true;
       keep-derivations = true;
-      substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store" ];
+      substituters = [
+        "https://mirrors.ustc.edu.cn/nix-channels/store"
+        "https://cache.nixos.org"
+      ];
     };
   };
 

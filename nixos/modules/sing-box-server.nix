@@ -1,3 +1,4 @@
+{ proxy_name }:
 { pkgs, config, ... }:
 let
   passwordstub = config.sops.placeholder."main-password";
@@ -12,10 +13,11 @@ let
         version = 3;
         users = [{ password = passwordstub; }];
         handshake = {
-          server = config.sops.placeholder."sing-box/shadowtls/server_name";
+          server =
+            config.sops.placeholder."sing-box/${proxy_name}/shadowtls/server_name";
           server_port = 443;
         };
-        strict_mode = true;
+        #strict_mode = true;
       }
 
       {
@@ -48,7 +50,8 @@ let
   configFilePath = config.sops.templates."${configFile}".path;
 
 in {
-  sops-keys = [ "main-password" "sing-box/shadowtls/server_name" ];
+  sops-keys =
+    [ "main-password" "sing-box/${proxy_name}/shadowtls/server_name" ];
 
   sops.templates."${configFile}" = {
     content = builtins.toJSON cfg;

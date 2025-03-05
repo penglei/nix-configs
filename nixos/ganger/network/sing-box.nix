@@ -56,8 +56,11 @@ in {
 
   sops-keys = [
     "main-password"
-    "sing-box/server/address"
-    "sing-box/shadowtls/server_name"
+    "sing-box/sv-alpha/v2ray-plugin/opts"
+    "sing-box/sv-alpha/address"
+    "sing-box/sv-alpha/shadowtls/server_name"
+    "sing-box/hk-alpha/address"
+    "sing-box/hk-alpha/shadowtls/server_name"
     "proxies/subscribe-a/common/server"
     "proxies/subscribe-a/server1/port"
     "proxies/subscribe-a/common/method"
