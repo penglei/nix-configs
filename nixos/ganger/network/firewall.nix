@@ -18,7 +18,7 @@
     enable = true;
     logRefusedConnections = false;
     logRefusedPackets = false;
-    allowedTCPPorts = [ 80 443 ]; # extras
+    allowedTCPPorts = [ 80 443 22 ]; # extras
     extraInputRules = ''
       iifname != ${config.netaddr.iface.wan.name} accept
     '';
