@@ -24,7 +24,10 @@
       extra-experimental-features = [ "ca-derivations" ];
       trusted-users = [ "@wheel" username ];
       allowed-users = trusted-users;
-      substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store" ];
+      substituters = [
+        "https://mirrors.ustc.edu.cn/nix-channels/store"
+        "https://cache.nixos.org"
+      ];
     };
   };
 }
