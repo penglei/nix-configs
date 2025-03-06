@@ -315,9 +315,6 @@
         "outbound": "out-sv-ss-inner",
         "rules": [
           {
-            "rule_set": "geosite-geolocation-!cn"
-          },
-          {
             "invert": true,
             "rule_set": "geoip-cn"
           },
@@ -331,9 +328,6 @@
         "mode": "and",
         "outbound": "dynamic-proxy",
         "rules": [
-          {
-            "rule_set": "geosite-geolocation-!cn"
-          },
           {
             "invert": true,
             "rule_set": "geoip-cn"

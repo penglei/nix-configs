@@ -63,7 +63,6 @@
 
       action = "route",
       outbound = "out-direct",
-      # or?
       #action = "direct"
     },
 
@@ -72,9 +71,9 @@
       type = "logical",
       mode = "and",
       rules = [
-        {
-          rule_set = "geosite-geolocation-!cn"
-        },
+        # {
+        #   rule_set = "geosite-geolocation-!cn"
+        # },
         {
           rule_set = "geoip-cn",
           invert = true
@@ -92,9 +91,9 @@
       type = "logical",
       mode = "and",
       rules = [
-        {
-          rule_set = "geosite-geolocation-!cn"
-        },
+        # {
+        #   rule_set = "geosite-geolocation-!cn"
+        # },
         {
           rule_set = "geoip-cn",
           invert = true

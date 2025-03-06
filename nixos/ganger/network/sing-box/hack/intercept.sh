@@ -6,6 +6,8 @@ set -euo pipefail
 
 action="${1-start}"
 
+debug=${DEBUG:-}
+
 TPROXY_PORT=21012
 OUT_MARK=666
 PROXY_FWMARK=0x77
@@ -15,6 +17,12 @@ PROXY_ROUTE_TABLE=100
 PROXY_NFTABLE=sb-tproxy
 
 OUT_INTERFACE="pppoe-wan"
+
+function log() {
+  if [[ -n "$debug" ]]; then
+    printf "%s" "log ${1}"
+  fi
+}
 
 start_intercept() {
 
@@ -85,13 +93,13 @@ table inet $PROXY_NFTABLE {
     #mangle hook 在conntrack之后执行，所以才能使用ct模块
     type filter hook prerouting priority mangle; policy accept;
 
-    # meta nfproto ipv6 ip6 daddr 2404:6800:4012:8::200e log prefix "prerouting(1): "
+    # meta nfproto ipv6 ip6 daddr 2404:6800:4012:8::200e $(log 'prefix "prerouting(1): "')
 
     ct direction reply return
     #meta nfproto ipv6 return  #服务端未支持ipv6
 
     fib daddr type local meta l4proto { tcp, udp } th dport $TPROXY_PORT \
-      log prefix "prohibit connect to tproxy directly. " \
+      $(log 'prefix "prohibit connect to tproxy directly. "') \
       reject with icmpx type host-unreachable \
       comment "prohibit connect to tproxy port directly, avoid loop"
 
@@ -100,7 +108,7 @@ table inet $PROXY_NFTABLE {
     #meta l4proto { tcp, udp } th dport 53 \
     #  tproxy ip to 127.0.0.1:$TPROXY_PORT \
     #  tproxy ip6 to [::1]:$TPROXY_PORT \
-    #  counter log prefix "proxy any dns query " \
+    #  counter $(log 'prefix "proxy any dns query "') \
     #  accept
     udp dport 53 accept #TODO pass 更多必要的udp流量
 
@@ -118,18 +126,18 @@ table inet $PROXY_NFTABLE {
 
     ##方法2
     ##meta l4proto tcp socket transparent 1 \
-    ## counter log prefix "socket transparent: " \
+    ## counter $(log 'prefix "socket transparent: "') \
     ## meta mark set $PROXY_FWMARK comment "fast path optimize"
 
     #注意需要明确的proxy address
     meta l4proto { tcp, udp } meta mark $PROXY_FWMARK \
       tproxy ip to 127.0.0.1:$TPROXY_PORT \
-      counter log prefix "intercept ipv4 prerouting: " \
+      counter $(log 'prefix "intercept ipv4 prerouting: "') \
       accept comment "proxy"
 
     meta l4proto { tcp, udp } meta mark $PROXY_FWMARK \
       tproxy ip6 to [::1]:$TPROXY_PORT \
-      counter log prefix "intercept ipv6 prerouting: " \
+      counter $(log 'prefix "intercept ipv6 prerouting: "') \
       accept comment "proxy"
 
   }
@@ -150,7 +158,7 @@ table inet $PROXY_NFTABLE {
     meta nfproto ipv6 meta oif != $OUT_INTERFACE accept;
 
     fib daddr type local \
-      log prefix "bypass output local dst: " \
+      $(log 'prefix "bypass output local dst: "') \
       counter accept \
       comment "bypass: local dst"
 
@@ -160,19 +168,19 @@ table inet $PROXY_NFTABLE {
     udp dport { netbios-ns, netbios-dgm, netbios-ssn } accept comment "bypass: nbns ports: "
 
     #
-    #meta mark $OUT_MARK log prefix "bypass sing-box out: " \
+    #meta mark $OUT_MARK $(log 'prefix "bypass sing-box out: "') \
     #  accept comment "bypass direct or proxy server!"
 
     # ## 本机发起对外的DNS请求重新路由
     # #meta oif != lo 基本可以去掉，因为rule5根据路由决策已经短路了(有没有可能local route table被搞坏了但 oif 还是正确的？)。
     # #留在这里的好处是提醒不需要提前对lo output做处理，prerouting里会统一处理。
     # meta oif != lo meta l4proto { tcp, udp } th dport 53 meta mark set $PROXY_FWMARK \
-    #   log prefix "intercept out dns: " \
+    #   $(log 'prefix "intercept out dns: "') \
     #   counter accept comment "intercept dns query from local"
 
     #rule7
     meta oif != lo meta l4proto { tcp, udp } meta mark set $PROXY_FWMARK \
-        log prefix "intercept any output: " \
+        $(log 'prefix "intercept any output: "') \
         counter comment "intercept output traffic"
 
     #netfilter在output之后再次进行检查(reroute-check)。此时，我们将数据包打上PROXY_FWMARK,
@@ -186,7 +194,6 @@ EOF
 }
 
 stop_intercept() {
-
   if nft list tables | grep -q $PROXY_NFTABLE; then
     nft delete table inet $PROXY_NFTABLE
   fi
