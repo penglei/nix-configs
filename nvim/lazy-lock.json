@@ -30,6 +30,7 @@
   "guihua.lua": { "branch": "master", "commit": "d783191eaa75215beae0c80319fcce5e6b3beeda" },
   "hop.nvim": { "branch": "master", "commit": "efe58182f71fbe592f82fb211ab026f2819e855d" },
   "lazy.nvim": { "branch": "main", "commit": "d8f26efd456190241afd1b0f5235fe6fdba13d4a" },
+  "lean.nvim": { "branch": "main", "commit": "594d051d03eef7ab5e4f91b680e3c87e53936259" },
   "leap.nvim": { "branch": "main", "commit": "67d26a13cfbf558450955ee9c76e78e03d13ee9e" },
   "lsp_signature.nvim": { "branch": "master", "commit": "a47bc81c457f13db9ebdb5fac5dff651d71a501d" },
   "lspsaga.nvim": { "branch": "main", "commit": "13b3cdc9a53ec821b9e693ee71501cc2d6cf206c" },
