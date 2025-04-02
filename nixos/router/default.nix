@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ hostname, username, pkgs, ... }:
 
 {
   imports = [
@@ -7,29 +7,33 @@
     ../modules/programs.nix
     ../modules/pam.nix
     ../modules/openssh.nix
-    ../modules/sing-box-client.nix
   ];
 
-  boot.initrd.availableKernelModules =
-    [ "nvme" "virtio_pci" "xhci_pci" "usbhid" "virtiofs" ];
+  boot.initrd.availableKernelModules = [ "ahci" "usbhid" ];
 
-  # Use the systemd-boot EFI boot loader.
   boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+    grub.enable = true;
+    grub.devices = [ "/dev/sda" ];
   };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-partlabel/disk-main-esp";
-    fsType = "vfat";
-    options = [ "fmask=0077" "dmask=0077" ];
-  };
   fileSystems."/" = {
-    device = "/dev/disk/by-partlabel/disk-main-root";
+    device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
   };
 
-  networking = { useDHCP = lib.mkDefault true; };
+  networking = {
+    #使用 dhcpcd, resolvconf 管理网络配置，因此打开这两个配置。
+    dhcpcd.enable = true;
+    resolvconf.enable = true;
+
+    useDHCP = true;
+    hostName = hostname;
+  };
+  users = {
+    mutableUsers = true;
+    users.${username}.hashedPassword =
+      "$6$hhh$QTt9LG93fOjTHzydcPGwX8IvXBPLQNpi/Pg.rX974mTqe7zQhHJgeqfIn/mRqeWs1KCn8hwH3YIvZ3Lc/jfre1";
+  };
   environment.systemPackages = with pkgs; [ htop ];
   services.timesyncd.enable = false;
   system.stateVersion = "23.11";
