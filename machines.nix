@@ -42,10 +42,9 @@
     modules = [ ./nixos/tart-vm ];
   };
 
-  router-dev = {
+  router = {
     username = "penglei";
-    system = "aarch64-linux";
-    modules = [ ./nixos/router-dev ];
+    modules = [ ./nixos/router ];
     hm-modules = profiles.hm.slim.modules;
   };
 
@@ -53,8 +52,6 @@
     username = "penglei";
     modules = [
       ./nixos/cloud
-
-      #./nixos/modules/ssserver.nix
 
       ((import ./nixos/modules/sing-box-server.nix) {
         proxy_name = "hk-alpha";

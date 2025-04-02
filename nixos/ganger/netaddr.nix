@@ -28,6 +28,10 @@ let
         ip-address = "192.168.101.254";
         hostname = "switch";
       }
+      {
+        hw-address = "70:85:c2:20:32:84";
+        ip-address = "192.168.101.1";
+      }
     ];
     gateway = router;
     dns = router;
