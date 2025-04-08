@@ -21,10 +21,12 @@
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixospkgs";
 
+    attic.url = "github:zhaofengli/attic";
+    attic.inputs.nixpkgs.follows = "nixospkgs";
   };
 
   outputs = { self, nixpkgs, nixospkgs, flake-utils, home-manager, sops-nix
-    , microvm, deploy-rs, ... }:
+    , microvm, deploy-rs, attic, ... }:
     let
       inherit (nixpkgs) lib;
 
@@ -200,7 +202,7 @@
               hm-modules = profiles.hm.linux.modules;
             });
           in nixos-creator config)
-          (import ./machines.nix { inherit profiles microvm; });
+          (import ./machines.nix { inherit profiles microvm attic; });
       in machines;
     };
 }
