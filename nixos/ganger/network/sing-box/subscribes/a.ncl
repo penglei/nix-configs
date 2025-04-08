@@ -14,5 +14,17 @@ let lib = import "../lib.ncl" in
       server = "dns-internal-ipv4",
       rewrite_ttl = 60,
     },
-  }
+  },
+  {
+    type = "shadowsocks",
+    tag = "out-clashcloud-ss",
+    server = lib.placeholder "proxies/subscribe-b/server1/addr",
+    server_port = lib.rawplaceholder "proxies/subscribe-b/common/port",
+    method = lib.placeholder "proxies/subscribe-b/common/method",
+    password = lib.placeholder "proxies/subscribe-b/common/password",
+    #domain_resolver = {
+    #  server = "dns-internal-ipv4",
+    #  rewrite_ttl = 60,
+    #},
+  },
 ]

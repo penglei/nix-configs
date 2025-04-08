@@ -14,8 +14,9 @@ let addr = import "addr.ncl" in
 
       #subscribe
       "out-subscribe-a",
+      "out-clashcloud-ss",
     ],
-    default = "out-hk-alpha-ss-on-shadowtls",
+    default = "out-clashcloud-ss",
     interrupt_exist_connections = false,
   },
 

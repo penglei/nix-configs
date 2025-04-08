@@ -162,7 +162,8 @@
       parinfer-rust # vim plugin for lisp brackets
 
       #python
-      python3 # (python3.withPackages (ps: [ ps.numpy ps.pygments]))
+      python3 # or customize (python3.withPackages (ps: [ ps.numpy ps.pygments]))
+      python3Packages.uv # package manager
       python3Packages.python-lsp-server
       isort
       black

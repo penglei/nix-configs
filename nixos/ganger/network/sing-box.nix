@@ -61,12 +61,18 @@ in {
     "sing-box/sv-alpha/shadowtls/server_name"
     "sing-box/hk-alpha/address"
     "sing-box/hk-alpha/shadowtls/server_name"
+
     "proxies/subscribe-a/common/server"
     "proxies/subscribe-a/server1/port"
     "proxies/subscribe-a/common/method"
     "proxies/subscribe-a/common/password"
     "proxies/subscribe-a/common/plugin"
     "proxies/subscribe-a/common/plugin_opts"
+
+    "proxies/subscribe-b/server1/addr"
+    "proxies/subscribe-b/common/port"
+    "proxies/subscribe-b/common/method"
+    "proxies/subscribe-b/common/password"
   ];
 
   sops.templates."${configFile}" = {

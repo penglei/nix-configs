@@ -51,4 +51,9 @@ replace_from_secrets "proxies/subscribe-a/common/password"
 replace_from_secrets "proxies/subscribe-a/common/plugin"
 replace_from_secrets "proxies/subscribe-a/common/plugin_opts"
 
+replace_from_secrets "proxies/subscribe-b/server1/addr"
+rawreplace_from_secrets "proxies/subscribe-b/common/port"
+replace_from_secrets "proxies/subscribe-b/common/method"
+replace_from_secrets "proxies/subscribe-b/common/password"
+
 echo "render completed."

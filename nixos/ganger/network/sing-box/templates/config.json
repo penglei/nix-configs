@@ -140,7 +140,8 @@
         "out-hk-alpha-ss-on-shadowtls",
         "out-sv-alpha-ss-on-shadowtls",
         "out-sv-alpha-ss",
-        "out-subscribe-a"
+        "out-subscribe-a",
+        "out-clashcloud-ss"
       ],
       "tag": "dynamic-proxy",
       "type": "selector"
@@ -225,6 +226,14 @@
       "server": "<PLACEHOLDER:proxies/subscribe-a/common/server>",
       "server_port": "<RAW-PLACEHOLDER:proxies/subscribe-a/server1/port>",
       "tag": "out-subscribe-a",
+      "type": "shadowsocks"
+    },
+    {
+      "method": "<PLACEHOLDER:proxies/subscribe-b/common/method>",
+      "password": "<PLACEHOLDER:proxies/subscribe-b/common/password>",
+      "server": "<PLACEHOLDER:proxies/subscribe-b/server1/addr>",
+      "server_port": "<RAW-PLACEHOLDER:proxies/subscribe-b/common/port>",
+      "tag": "out-clashcloud-ss",
       "type": "shadowsocks"
     }
   ],
