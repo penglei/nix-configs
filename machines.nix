@@ -28,7 +28,7 @@
       microvm.nixosModules.host
 
       #a nix binary cache service
-      attic.nixosModules.atticd
+      #attic.nixosModules.atticd
     ];
     hm-modules = profiles.hm.base.modules;
   };
