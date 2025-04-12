@@ -1,41 +1,54 @@
-{ hostname, username, pkgs, ... }:
-
-{
+{ config, pkgs, ... }: {
   imports = [
-    ../nix.nix
-    ../modules/configuration.nix
-    ../modules/programs.nix
-    ../modules/pam.nix
-    ../modules/openssh.nix
+    ./services/ddns.nix
+    ./services/kea.nix
+    ./services/mosdns.nix
+    ./services/pppoe-hooks.nix
+    ./services/radvd.nix
+    ./services/sing-box.nix
+    ./services/vpn-tailscale.nix
+    ./services/dhcpcd-pd.nix
+    ./services/miniupnpd.nix
+    ./services/p2p.nix
+    ./services/pppoe.nix
+    ./services/vpn-netbird.nix
+
+    ./network/br-lan.nix
+    ./network/br-wan.nix
+    ./network/netaddr.nix
+    ./network/firewall.nix
+    ./network/nat.nix
   ];
 
-  boot.initrd.availableKernelModules = [ "ahci" "usbhid" ];
+  environment.systemPackages = with pkgs; [ tcpdump bottom htop ];
 
-  boot.loader = {
-    grub.enable = true;
-    grub.devices = [ "/dev/sda" ];
-  };
+  #this also enable 'services.resolved', see also 'nixos/modules/system/boot/networkd.nix'.
+  systemd.network.enable = true;
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/nixos";
-    fsType = "ext4";
-  };
-
+  #disable network scripting configuration
+  #https://wiki.nixos.org/wiki/Systemd/networkd
+  #https://www.reddit.com/r/NixOS/comments/1fwh4f0/networkinginterfaces_vs_systemdnetworknetworks/
   networking = {
-    #使用 dhcpcd, resolvconf 管理网络配置，因此打开这两个配置。
-    dhcpcd.enable = true;
-    resolvconf.enable = true;
+    useNetworkd = true;
+    useDHCP = false;
+    nftables.enable = true;
+  };
 
-    useDHCP = true;
-    hostName = hostname;
+  # services.resolved.enable = false;
+  networking.nameservers =
+    [ config.netaddr.ipv4.dns ]; # configure nameservers manually
+
+  services.resolved = {
+    #disable llmnr
+    llmnr = "false";
+    #disable mdns
+    extraConfig = ''
+      MulticastDNS=false
+    '';
+    # domain = ".";
   };
-  users = {
-    mutableUsers = true;
-    users.${username}.hashedPassword =
-      "$6$hhh$QTt9LG93fOjTHzydcPGwX8IvXBPLQNpi/Pg.rX974mTqe7zQhHJgeqfIn/mRqeWs1KCn8hwH3YIvZ3Lc/jfre1";
+
+  systemd.services."systemd-networkd" = {
+    environment.SYSTEMD_LOG_LEVEL = "debug";
   };
-  environment.systemPackages = with pkgs; [ htop ];
-  services.timesyncd.enable = false;
-  system.stateVersion = "23.11";
 }
-

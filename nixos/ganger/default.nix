@@ -24,7 +24,7 @@
     ./network/firewall.nix
     ./network/ddns.nix
     ./network/miniupnpd.nix
-    ./network/torrent.nix
+    ./network/p2p.nix
 
     # lan ipv6
     ./network/dhcpcd-pd.nix

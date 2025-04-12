@@ -47,7 +47,7 @@
 
   router = {
     username = "penglei";
-    modules = [ ./nixos/router ];
+    modules = [ ./nixos/router/instance ];
     hm-modules = profiles.hm.slim.modules;
   };
 

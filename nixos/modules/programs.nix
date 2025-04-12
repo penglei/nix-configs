@@ -15,5 +15,6 @@
     neovim
     lsof
     tree
+    nixos-rebuild-ng
   ]; # merge syntatics
 }

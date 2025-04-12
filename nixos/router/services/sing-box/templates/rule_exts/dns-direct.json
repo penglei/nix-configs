@@ -1,0 +1,12 @@
+{
+  "rules": [
+    {
+      "domain_suffix": [
+        ".fc-sigma.xyz",
+        ".xyzcdn.net",
+        ".ruguoapp.com"
+      ]
+    }
+  ],
+  "version": 1
+}
