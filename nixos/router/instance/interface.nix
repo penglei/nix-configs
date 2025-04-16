@@ -1,4 +1,8 @@
 {
+  systemd.network.networks."01-trunk-eth" = {
+    matchConfig.Name = "enp3s0";
+    networkConfig = { VLAN = [ "lan.101" "wan.1195" ]; };
+  };
   systemd.network.netdevs."20-vlan.1195-wan" = {
     netdevConfig = {
       Name = "wan.1195";

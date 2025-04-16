@@ -7,7 +7,7 @@
     };
   };
 
-  systemd.network.networks."10-lan-bridge" = {
+  systemd.network.networks."01-br-lan" = {
     matchConfig.Name = "br-lan";
     networkConfig = {
       #Address = [config.netaddr.ipv4.subnet.all];
