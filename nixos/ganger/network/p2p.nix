@@ -2,7 +2,7 @@
   environment.systemPackages = [ pkgs.mediainfo ];
   services = {
     transmission = {
-      enable = false;
+      enable = true;
       webHome = pkgs.flood-for-transmission;
     };
     flood = {
