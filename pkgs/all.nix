@@ -71,7 +71,7 @@ in with pkgs; {
   nixos-installer = callPackage ./nixos-installer { };
   v2ray-plugin = callPackage ./networking/v2ray-plugin.nix { };
   sing-box-prebuilt = callPackage ./networking/sing-box.nix { };
-  chinadns-ng-prebuilt = callPackage ./networking/chinadns-ng.nix { };
+  chinadns-ng = callPackage ./networking/chinadns-ng.nix { };
   starlark-rust = callPackage ./starlark-rust.nix { };
   typst-prebuilt = callPackage ./darwin/typst.nix { };
   open-haskell-doc = callPackage ./darwin/scripts/open-haskell-doc.nix { };
@@ -87,4 +87,5 @@ in with pkgs; {
     callPackage ./linux/gnupg-socketdir.nix { };
 
   miniupnpc = callPackage ./miniupnpc.nix { };
+
 }

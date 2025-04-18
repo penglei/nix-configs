@@ -36,9 +36,15 @@
       begin = "192.168.101.101";
       end = "192.168.101.254";
     };
-    subnet.reservations = [{
-      hw-address = "70:85:c2:20:32:84";
-      ip-address = "192.168.101.1";
-    }];
+    subnet.reservations = [
+      {
+        hw-address = "70:85:c2:20:32:84";
+        ip-address = "192.168.101.1";
+      }
+      {
+        hw-address = "7a:9b:4f:16:27:94";
+        ip-address = "192.168.101.50"; # macos: fixpoint
+      }
+    ];
   };
 }

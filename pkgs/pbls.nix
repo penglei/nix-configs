@@ -1,5 +1,3 @@
-
-
 { lib, bash, stdenvNoCC, fetchurl }:
 
 let

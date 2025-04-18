@@ -1,14 +1,14 @@
 { lib, stdenvNoCC, fetchurl, ... }:
 
 let
-  version = "2024.12.22";
+  version = "2025.03.27";
 
   srcDownloads = lib.listToAttrs [{
     name = "x86_64-linux";
     value = fetchurl {
       url =
-        "https://github.com/zfl9/chinadns-ng/releases/download/${version}/chinadns-ng+wolfssl@x86_64-linux-musl@x86_64@fast+lto";
-      sha256 = "sha256-S5VIGRuFZpAYL5i3IVErmlAASYbs6/bu7XHLcJrL0fU=";
+        "https://github.com/zfl9/chinadns-ng/releases/download/${version}/chinadns-ng@x86_64-linux-musl@x86_64@fast+lto";
+      sha256 = "sha256-Laji0EkNrt6HZcHwO+miiv5bkn9ZJncdlZfAXtueWl4=";
     };
   }];
 
