@@ -16,7 +16,7 @@ let
       - tag: main_sequence
         type: sequence
         args:
-          - exec: cache 1024
+          - exec: cache 10240
           - exec: forward 127.0.0.1:29753  #sing-box dns server
 
       - tag: main_server

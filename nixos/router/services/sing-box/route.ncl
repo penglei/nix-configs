@@ -82,7 +82,7 @@
           ip_version = 6,
         }
       ],
-      outbound = "out-sv-ss-inner",
+      outbound = "out-sv-alpha-ss-on-shadowtls",
     },
 
     # 国外域名 and 非国内IP：走代理。

@@ -1,7 +1,6 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, hostname, ... }: {
   imports = [
-    ./network/br-lan.nix
-    ./network/br-wan.nix
+    ./network/interface.nix
     ./network/netaddr.nix
     ./network/firewall.nix
     ./network/nat.nix
@@ -12,8 +11,7 @@
     ./services/radvd.nix # ra服务，通过br-lan在局域网内广播ra消息
     ./services/mosdns.nix # dns
 
-    #dnsmasq可以同时提供: dhcpv4, ra, dns
-    ./services/dnsmasq.nix
+    ./services/dnsmasq.nix # dnsmasq可以同时提供: dhcpv4, ra, dns
     #}
 
     ./services/pppoe.nix
@@ -39,6 +37,13 @@
     useNetworkd = true;
     useDHCP = false;
     nftables.enable = true;
+  };
+
+  networking = {
+    #dhcpcd.enable = true; #for router, we diable it
+    #resolvconf.enable = true; #enabled by services.resolved 
+    #useDHCP = true; #for router, we disable it
+    hostName = hostname;
   };
 
   # services.resolved.enable = false;

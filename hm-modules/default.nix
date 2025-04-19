@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ pkgs, ... }: {
   # **************************installation****************************#
   # bootstrap tips:                                                   #
   #  first run `nix shell home-manager#home-manager`,                 #
@@ -33,5 +33,6 @@
 
     zoxide.enable = true;
   };
+  home.packages = [ pkgs.mynixcleaner ];
 }
 

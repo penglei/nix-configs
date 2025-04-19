@@ -2,7 +2,7 @@
 let deviface = "br-lan";
 in {
   services.dnsmasq = {
-    enable = true;
+    enable = false;
     settings = {
       interface = deviface;
       bind-interfaces = true; # Only bind to the specified interface
