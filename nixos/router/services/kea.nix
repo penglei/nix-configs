@@ -20,7 +20,7 @@
           interface = "br-lan";
           subnet = config.netaddr.ipv4.subnet.all;
           pools = with config.netaddr.ipv4.subnet.dhcp_pools; [{
-            pool = "${begin} - ${end}";
+            pool = "${start} - ${end}";
           }];
           option-data = [{
             name = "routers";

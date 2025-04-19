@@ -1,5 +1,9 @@
-{ lib, ... }: {
-  systemd.services.dhcpcd-pd.enable = lib.mkForce false;
-  services.kea.dhcp4.enable = lib.mkForce false;
-  systemd.services.ddns-go.enable = lib.mkForce false;
+{ lib, ... }:
+let False = lib.mkForce false;
+in {
+  services.kea.dhcp4.enable = False;
+  services.radvd.enable = False;
+  systemd.services.mosdns.enable = False;
+
+  systemd.services.ddns-go.enable = False;
 }

@@ -1,23 +1,30 @@
 { config, pkgs, ... }: {
   imports = [
-    ./services/ddns.nix
-    ./services/kea.nix
-    ./services/mosdns.nix
-    ./services/pppoe-hooks.nix
-    ./services/radvd.nix
-    ./services/sing-box.nix
-    ./services/vpn-tailscale.nix
-    ./services/dhcpcd-pd.nix
-    ./services/miniupnpd.nix
-    ./services/p2p.nix
-    ./services/pppoe.nix
-    ./services/vpn-netbird.nix
-
     ./network/br-lan.nix
     ./network/br-wan.nix
     ./network/netaddr.nix
     ./network/firewall.nix
     ./network/nat.nix
+    ./services/dhcpcd-pd.nix # 从wan申请pd并配置给br-lan
+
+    #{
+    ./services/kea.nix # dhcpv4
+    ./services/radvd.nix # ra服务，通过br-lan在局域网内广播ra消息
+    ./services/mosdns.nix # dns
+
+    #dnsmasq可以同时提供: dhcpv4, ra, dns
+    ./services/dnsmasq.nix
+    #}
+
+    ./services/pppoe.nix
+    ./services/pppoe-hooks.nix
+    ./services/miniupnpd.nix
+
+    ./services/sing-box.nix
+    ./services/vpn-tailscale.nix
+    ./services/p2p.nix
+    ./services/vpn-netbird.nix
+    ./services/ddns.nix
   ];
 
   environment.systemPackages = with pkgs; [ tcpdump bottom htop ];

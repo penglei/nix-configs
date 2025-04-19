@@ -1,4 +1,4 @@
-# dhcpcd-pd(Prefix Delegation) 从dhcpcd简化而来，只处理ipv6 pd
+# dhcpcd-pd(Prefix Delegation)，整个配置是从dhcpcd简化而来: 只处理ipv6 pd
 { config, lib, pkgs, ... }:
 
 let
@@ -22,17 +22,17 @@ let
 
     #Selects the interface identifier used for SLAAC generated IPv6 addresses.
     #  If private is used, a RFC 7217 address is generated.
-    #  If token token is used then the token is combined with the prefix to make the final address.
+    #  If token is used then the token is combined with the prefix to make the final address.
     #  The temporary directive will create a temporary address for the prefix as well.
     slaac private
 
-    #Use the interface connected to WAN
+    #request pd from the interface
     interface ${config.netaddr.iface.wan.name}
       # # Enable routing solicitation for current interface
       ipv6rs
 
       ## Set the Interface Association Identifier to iaid.
-      ## This option must be used in an interface block.
+      ## (This option must be used in an interface block).
       iaid 1
 
       ##Request a DHCPv6 Normal Address for iaid. iaid defaults to the iaid option as described above.

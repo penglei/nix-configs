@@ -33,8 +33,8 @@
     router = "192.168.101.1";
     subnet.all = "192.168.101.0/24";
     subnet.dhcp_pools = {
-      begin = "192.168.101.101";
-      end = "192.168.101.254";
+      start = "192.168.101.101";
+      end = "192.168.101.200";
     };
     subnet.reservations = [
       {

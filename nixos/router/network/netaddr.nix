@@ -32,9 +32,9 @@ in {
                   dhcp_pools = lib.mkOption {
                     type = lib.types.submodule {
                       options = {
-                        begin = lib.mkOption {
+                        start = lib.mkOption {
                           type = lib.types.str;
-                          description = "dhcp allocatable range begin";
+                          description = "dhcp allocatable range start";
                         };
                         end = lib.mkOption {
                           type = lib.types.str;

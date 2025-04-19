@@ -2,12 +2,12 @@
   environment.systemPackages = [ pkgs.mediainfo ];
   services = {
     transmission = {
-      enable = true;
+      enable = false;
       webHome = pkgs.flood-for-transmission;
     };
     flood = {
-      openFirewall = true;
       enable = true;
+      openFirewall = true;
       host = "::";
     };
   };
