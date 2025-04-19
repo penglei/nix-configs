@@ -55,6 +55,10 @@ in {
                           type = lib.types.str;
                           description = "ipv4 address";
                         };
+                        hostname = lib.mkOption {
+                          type = lib.types.str;
+                          description = "hostname";
+                        };
                       };
                     });
                     default = [ ];

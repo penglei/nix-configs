@@ -1,5 +1,4 @@
 {
-
   gen_mac = s:
     let
       hash = builtins.hashString "sha256" s;

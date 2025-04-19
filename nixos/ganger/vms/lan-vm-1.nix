@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 
-let utils = (import ../utils.nix);
+let utils = (import ../../utils.nix);
 in {
   systemd.network.networks."10-lan-vms" = {
     matchConfig.Name = [ "vm-*" ];

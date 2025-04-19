@@ -1,5 +1,12 @@
 { config, ... }: {
 
+  systemd.network.netdevs."01-br-wan" = {
+    netdevConfig = {
+      Name = "br-wan";
+      Kind = "bridge";
+    };
+  };
+
   systemd.network.netdevs."01-br-lan" = {
     netdevConfig = {
       Name = "br-lan";
@@ -31,4 +38,6 @@
 
   #❯ ip route list table all
   systemd.network.config.routeTables = { custom = 200; };
+
 }
+

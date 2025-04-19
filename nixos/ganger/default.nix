@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 {
   imports = [
@@ -6,29 +6,13 @@
     ../../secrets # common sops config
     ../modules/configuration.nix
     ../modules/programs.nix
-    ../modules/openssh.nix
     ../modules/pam.nix
-    # ../modules/sing-box-client.nix
+    ../modules/openssh.nix
 
-    ./netaddr.nix
-
-    ./interface/ops.nix
-    ./interface/pppoe.nix
-    ./interface/br-lan.nix
-    ./interface/lan-eno.nix
-
-    ./network/kea.nix
-    ./network/nat.nix
-    ./network/mosdns.nix
-    ./network/sing-box.nix
-    ./network/firewall.nix
-    ./network/ddns.nix
-    ./network/miniupnpd.nix
-    # ./network/p2p.nix
-
-    # lan ipv6
-    ./network/dhcpcd-pd.nix
-    ./network/radvd.nix
+    #{as router
+    ../router
+    ./network.nix
+    #}
 
     ./vms
   ];
@@ -59,37 +43,6 @@
   fileSystems."/" = {
     device = "/dev/disk/by-partlabel/disk-main-root";
     fsType = "ext4";
-  };
-
-  environment.systemPackages = with pkgs; [ tcpdump bottom htop ];
-
-  #this also enable 'services.resolved', see also 'nixos/modules/system/boot/networkd.nix'.
-  systemd.network.enable = true;
-
-  #disable network scripting configuration
-  #https://wiki.nixos.org/wiki/Systemd/networkd
-  #https://www.reddit.com/r/NixOS/comments/1fwh4f0/networkinginterfaces_vs_systemdnetworknetworks/
-  networking = {
-    useNetworkd = true;
-    useDHCP = false;
-    nftables.enable = true;
-  };
-
-  # services.resolved.enable = false;
-  networking.nameservers =
-    [ config.netaddr.ipv4.dns ]; # configure nameservers manually
-  services.resolved = {
-    #disable llmnr
-    llmnr = "false";
-    #disable mdns
-    extraConfig = ''
-      MulticastDNS=false
-    '';
-    # domain = ".";
-  };
-
-  systemd.services."systemd-networkd" = {
-    environment.SYSTEMD_LOG_LEVEL = "debug";
   };
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";

@@ -1,9 +1,23 @@
-{
+{ lib, ... }:
+(
+
+  let False = lib.mkForce false;
+  in {
+    services.dnsmasq.enable = lib.mkForce true;
+
+    services.kea.dhcp4.enable = False;
+    services.radvd.enable = False;
+    systemd.services.mosdns.enable = False;
+
+    systemd.services.ddns-go.enable = False;
+  }
+
+) // {
   systemd.network.networks."01-trunk-eth" = {
     matchConfig.Name = "enp3s0";
     networkConfig = { VLAN = [ "lan.101" "wan.1195" ]; };
   };
-  systemd.network.netdevs."20-vlan.1195-wan" = {
+  systemd.network.netdevs."02-vlan.1195-wan" = {
     netdevConfig = {
       Name = "wan.1195";
       Kind = "vlan";
@@ -11,7 +25,7 @@
     vlanConfig = { Id = 1195; };
   };
 
-  systemd.network.netdevs."20-vlan.101-lan" = {
+  systemd.network.netdevs."02-vlan.101-lan" = {
     netdevConfig = {
       Name = "lan.101";
       Kind = "vlan";
@@ -19,14 +33,29 @@
     vlanConfig = { Id = 101; };
   };
 
-  systemd.network.networks."21-join-lan-bridge" = {
+  systemd.network.networks."10-lan-iface" = {
     matchConfig.Name = "lan.101";
     networkConfig = { Bridge = "br-lan"; };
+    dhcpV4Config = {
+      UseDNS = false;
+      UseRoutes = false;
+      UseGateway = false;
+    };
   };
 
-  systemd.network.networks."21-join-wan-bridge" = {
+  systemd.network.networks."10-wan-iface" = {
     matchConfig.Name = "wan.1195";
     networkConfig = { Bridge = "br-wan"; };
+  };
+
+  systemd.network.networks."11-ops" = {
+    matchConfig.Name = "wan.1195";
+    networkConfig = { DHCP = "ipv4"; };
+    dhcpV4Config = {
+      UseDNS = false;
+      UseRoutes = false;
+      UseGateway = false;
+    };
   };
 
   netaddr.ipv4 = {
