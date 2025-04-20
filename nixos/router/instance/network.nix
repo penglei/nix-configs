@@ -6,7 +6,7 @@ in {
   services.dnsmasq.enable = False;
   services.kea.dhcp4.enable = False;
   services.radvd.enable = False;
-  systemd.services.mosdns.enable = False;
+  # systemd.services.mosdns.enable = False;
   systemd.services.ddns-go.enable = False;
   #}
 

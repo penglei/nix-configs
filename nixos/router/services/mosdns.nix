@@ -17,7 +17,17 @@ let
         type: sequence
         args:
           - exec: cache 10240
+          - matches:
+            - has_resp
+            exec: accept
           - exec: forward 127.0.0.1:29753  #sing-box dns server
+
+      - tag: cache
+        type: cache
+        args:
+          size: 10240
+          lazy_cache_ttl: 86400
+          dump_file: ./cache.dump
 
       - tag: main_server
         type: udp_server
