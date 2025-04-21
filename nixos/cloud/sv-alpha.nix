@@ -1,5 +1,4 @@
 {
-  imports = [ ((import ../modules/sing-box-server.nix) "sv-alpha") ];
   networking = { useNetworkd = true; };
 
   systemd.network.networks."20-eth" = {
@@ -7,7 +6,7 @@
 
     networkConfig = {
       DHCP = "ipv4";
-      Address = [ "240d:c000:f07f:8d00:acb8:fb6a:24fa:0" ];
+      Address = [ "240d:c000:f07f:8d00:acb8:fb6a:24fa:1" ];
     };
     routes = [{
       Destination = "::/0";

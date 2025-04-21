@@ -28,16 +28,10 @@
       microvm.nixosModules.host
 
       #a nix binary cache service
-      #attic.nixosModules.atticd
+      # attic.nixosModules.atticd
     ];
     hm-modules = profiles.hm.base.modules;
   };
-
-  # utm-vm = {
-  #   username = "penglei";
-  #   system = "aarch64-linux";
-  #   modules = [ ./nixos/utm-vm ];
-  # };
 
   tart-vm = {
     username = "penglei";
@@ -59,23 +53,21 @@
       ((import ./nixos/modules/sing-box-server.nix) {
         proxy_name = "hk-alpha";
       })
-    ];
-    hm-modules = profiles.hm.slim.modules;
-  };
 
-  sg-alpha = {
-    username = "penglei";
-    modules = [
-      ./nixos/cloud
-
-      ./nixos/modules/dnscrypt-proxy-server.nix
     ];
     hm-modules = profiles.hm.slim.modules;
   };
 
   sv-alpha = {
     username = "penglei";
-    modules = [ ./nixos/cloud ./nixos/cloud/sv-alpha0.nix ];
+    modules = [
+      ./nixos/cloud
+      ./nixos/cloud/sv-alpha.nix
+
+      ((import ./nixos/modules/sing-box-server.nix) {
+        proxy_name = "sv-alpha";
+      })
+    ];
     hm-modules = profiles.hm.slim.modules;
   };
 }
