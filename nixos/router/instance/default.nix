@@ -15,6 +15,7 @@
   boot.initrd.availableKernelModules = [ "ahci" "usbhid" ];
 
   boot.loader = {
+    timeout = 1;
     grub.enable = true;
     grub.devices = [ "/dev/sda" ];
   };
@@ -30,7 +31,6 @@
       "$6$hhh$QTt9LG93fOjTHzydcPGwX8IvXBPLQNpi/Pg.rX974mTqe7zQhHJgeqfIn/mRqeWs1KCn8hwH3YIvZ3Lc/jfre1";
   };
 
-  services.timesyncd.enable = false;
   system.stateVersion = "23.11";
 }
 

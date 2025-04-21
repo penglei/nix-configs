@@ -7,3 +7,4 @@ path+=/opt/dotnet-sdk/current
 path+=/opt/go/current/bin
 
 alias cs=csharprepl
+

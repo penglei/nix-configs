@@ -1,7 +1,7 @@
 { pkgs, config, ... }: {
   programs.git = {
     enable = true;
-    userEmail = "penglei@ybyte.org";
+    userEmail = "lambit@qq.com";
     userName = "penglei";
     aliases = {
       # Prettier `git log` https://git-scm.com/docs/pretty-formats

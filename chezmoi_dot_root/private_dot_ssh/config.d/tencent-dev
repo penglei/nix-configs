@@ -1,8 +1,22 @@
+
 Host cloud-dev
+    Hostname 9.135.73.231
+    Port 36000
+    User ubuntu
+    RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+
+Host nix-cloud-dev
+    Hostname 21.6.255.111
+    Port 36000
+    User ubuntu
+    RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+
+Host khaos-automaton
     Hostname 9.134.52.172
     Port 36000
     User ubuntu
     RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+
 
 Host team-khaos
     Hostname 9.134.191.144
@@ -13,17 +27,6 @@ Host team-khaos-arm64
     Hostname 9.135.90.233
     Port 36000
     User khaos
-
-Host khaos-sop-dev
-    Hostname 9.135.35.145
-    Port 36000
-    User ubuntu
-
-#Host khaos-argocd
-#    User lespeng
-#    Port 22
-#    ProxyCommand /usr/bin/nc -v -x 127.0.0.1:9050 %h %p
-#    StrictHostKeyChecking no
 
 Host jumper
     Hostname csig.mnet2.com

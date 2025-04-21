@@ -9,13 +9,14 @@ let
     #Disable routing solicitation defautly
     noipv6rs
 
+    #We only want to handle IPv6 with dhcpcd, the IPv4 is still done through pppd daemon
     ipv6only
 
     #Wait for an ipv6 address to be assigned before forking to the background
     waitip 6
 
-    #Don't run this hook script
-    #  resolv.conf: don't touch our DNS settings
+    #Don't run these hook scripts.
+    #  > resolv.conf: don't touch our DNS settings
     nohook resolv.conf, yp, hostname, ntp
 
     option rapid_commit
@@ -26,9 +27,9 @@ let
     #  The temporary directive will create a temporary address for the prefix as well.
     slaac private
 
-    #request pd from the interface
+    #Request pd from the interface
     interface ${config.netaddr.iface.wan.name}
-      # # Enable routing solicitation for current interface
+      # # Enable routing solicitation for current interface(we have disable sa defaultly above)
       ipv6rs
 
       ## Set the Interface Association Identifier to iaid.
@@ -53,7 +54,7 @@ in {
   environment.systemPackages = [ pkgs.dhcpcd ];
 
   systemd.services.dhcpcd-pd = {
-    enable = true;
+    enable = lib.mkDefault false;
     description = "DHCP Client configured for ipv6 only";
 
     wantedBy = [

@@ -1,6 +1,8 @@
 default:
 	@echo "please provide the target."
 
+SHELL=bash
+
 SYSTEM=$(shell nix eval --expr 'builtins.currentSystem' --impure --raw)
 
 pin-registry:
@@ -20,6 +22,10 @@ restore:
 	@./scripts/restore.sh
 
 apply:
+	@if [[ "$$NIX_PROFILES" == "" ]]; then \
+		echo "NIX_PROFILES is empty! (/etc/zshrc should be imported from /etc/zsh/zshrc manually in ubuntu)"; \
+		exit 1; \
+	fi; \
 	if [[ "$(SYSTEM)" == *darwin ]]; then \
 		chezmoi apply; \
 		home-manager switch --flake .#penglei.$(SYSTEM); \
@@ -27,7 +33,7 @@ apply:
 		if [[ "$$(uname -a)" == *NixOS* ]]; then \
 			sudo nixos-rebuild switch --flake .; \
 		else \
-			home-manager switch --flake .#penglei.$(SYSTEM); \
+			home-manager switch --flake .#$$USER.$(SYSTEM); \
 		fi \
 	fi
 
@@ -38,9 +44,14 @@ build:
 		if [[ "$$(uname -a)" == *NixOS* ]]; then \
 			sudo nixos-rebuild build --flake .; \
 		else \
-			home-manager build --flake .#penglei.$(SYSTEM); \
+			home-manager build --flake .#$$USER.$(SYSTEM); \
 		fi \
 	fi
+
+deploy-router:
+	nixos-rebuild-ng build --flake .#router
+	nix copy --to ssh://192.168.101.1 $(realpath ./result)
+	ssh root@192.168.101.1 $(realpath ./result)/bin/switch-to-configuration switch
 
 MACHINE ?= ganger
 rsync:

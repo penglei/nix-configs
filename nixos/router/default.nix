@@ -1,4 +1,4 @@
-{ config, pkgs, hostname, ... }: {
+{ config, pkgs, hostname, options, ... }: {
   imports = [
     ./network/interface.nix
     ./network/netaddr.nix
@@ -34,31 +34,41 @@
   #https://wiki.nixos.org/wiki/Systemd/networkd
   #https://www.reddit.com/r/NixOS/comments/1fwh4f0/networkinginterfaces_vs_systemdnetworknetworks/
   networking = {
+    hostName = hostname;
+
     useNetworkd = true;
     useDHCP = false;
     nftables.enable = true;
-  };
 
-  networking = {
-    #dhcpcd.enable = true; #for router, we diable it
-    #resolvconf.enable = true; #enabled by services.resolved 
-    #useDHCP = true; #for router, we disable it
-    hostName = hostname;
-  };
+    timeServers = options.networking.timeServers.default
+      ++ [ "ntp.ntsc.ac.cn" "ntp.aliyun.com" ];
 
-  # services.resolved.enable = false;
-  networking.nameservers =
-    [ config.netaddr.ipv4.dns ]; # configure nameservers manually
+    #diasble for router employed pppoe
+    #useDHCP = true; #disable for router
+    #dhcpcd.enable = true;
+
+    #has enabled by services.resolved
+    #resolvconf.enable = true;
+
+    # configure nameservers manually
+    nameservers = [ config.netaddr.ipv4.dns ];
+    search = [ "lan" ];
+  };
 
   services.resolved = {
+
     #disable llmnr
     llmnr = "false";
     #disable mdns
     extraConfig = ''
       MulticastDNS=false
+      ReadEtcHosts=no
     '';
     # domain = ".";
   };
+
+  # services.ntp.enable = true;
+  services.timesyncd.enable = true;
 
   systemd.services."systemd-networkd" = {
     environment.SYSTEMD_LOG_LEVEL = "debug";

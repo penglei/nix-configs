@@ -1,13 +1,16 @@
 { lib, ... }:
 
-let False = lib.mkForce false;
+let
+  False = lib.mkForce false;
+  True = lib.mkForce true;
 in {
   #{ developing & debug
-  services.dnsmasq.enable = False;
+  services.dnsmasq.enable = True;
   services.kea.dhcp4.enable = False;
   services.radvd.enable = False;
-  # systemd.services.mosdns.enable = False;
-  systemd.services.ddns-go.enable = False;
+  systemd.services.mosdns.enable = False;
+  systemd.services.dhcpcd-pd.enable = True;
+  # systemd.services.ddns-go.enable = False;
   #}
 
   systemd.network.networks."01-vlan-trunk" = {
@@ -55,13 +58,17 @@ in {
     };
     subnet.reservations = [
       {
-        hw-address = "70:85:c2:20:32:84";
-        ip-address = "192.168.101.1";
+        hw-address = "3e:22:25:a3:f9:4a";
+        ip-address = "192.168.101.190";
+        hostname = "fixpoint"; # m4pro
       }
       {
-        hw-address = "7a:9b:4f:16:27:94";
-        ip-address = "192.168.101.50"; # macos: fixpoint
+        hw-address = "74:e6:e2:fc:e3:2e";
+        ip-address = "192.168.101.199";
+        hostname = "idrac";
       }
+
     ];
   };
+  netaddr.ipv6 = { router = "fd00:1000:2000::1/64"; };
 }

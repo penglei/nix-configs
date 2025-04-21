@@ -73,7 +73,15 @@ in {
         default = { };
       };
       ipv6 = lib.mkOption {
-        type = lib.types.attrsOf lib.types.anything;
+        type = lib.types.submodule {
+          options = {
+            router = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              description = "IPv6 ULA address";
+              default = null;
+            };
+          };
+        };
         default = { };
       };
       iface = lib.mkOption {

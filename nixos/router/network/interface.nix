@@ -1,6 +1,6 @@
 # https://man.archlinux.org/man/systemd.network.5
 
-{ config, ... }: {
+{ config, lib, ... }: {
 
   systemd.network.netdevs."01-br-wan" = {
     netdevConfig = {
@@ -25,16 +25,20 @@
   systemd.network.networks."01-br-lan" = {
     matchConfig.Name = "br-lan";
     networkConfig = {
-      #Address = [config.netaddr.ipv4.subnet.all];
-      Address = [ "${config.netaddr.ipv4.router}/24" ];
+      #we must configure br-lan statically, to make service like dnsmasq dependent on network-online.target
+      Address = [ "${config.netaddr.ipv4.router}/24" ] ++
+        #ULA
+        (lib.optional (config.netaddr.ipv6.router != null)
+          [ config.netaddr.ipv6.router ]);
+
       #Specifying a gateway would add a default route unexpectly,
       #which is conflict with router.
       # Gateway = config.netaddr.ipv4.gateway;
 
-      #host-self is not a router, don't do work of router.
-      #IPMasquerade = "ipv4";
-      #IPv6SendRA = true;
-      #IPv4Forwarding = true;
+      ## Don't do work of router.
+      #IPv6SendRA = true;  #should do by radvd or dnsmasq
+      #IPv4Forwarding = true; #router basic configure, don't config by networkd.
+      #IPMasquerade = "ipv4"; #config in `networking.nat`
     };
     routes = [{
       Destination = config.netaddr.ipv4.subnet.all;

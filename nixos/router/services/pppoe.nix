@@ -52,6 +52,8 @@ in {
 
   sops.templates."${cdnetCfg}" = {
     content = ''
+      #docs: https://man.cx/pppd(1)
+
       debug
       nodetach      #don't fork to a daemon
       persist       #don't exit after a connection has been made
@@ -66,9 +68,13 @@ in {
       password "${config.sops.placeholder."network/pppoe/password"}"
       #file ... #Or read auth from a separate file.
 
-      # RA SLAAC /64 address
-      +ipv6
-      ipv6cp-use-persistent
+      +ipv6 #Enable IPv6 and IPv6CP without specifying interface identifiers.
+      ##Pv6控制协议（IPv6CP）是一种网络控制协议。IPv6CP主要负责在点对点链路终端双方上配置，可用及停用IPv6协议模块，可协商的参数包括接口ID和IPv6压缩协议。
+      ##IPv6CP使用与链路控制协议（LCP）相同的包交换机制。但只有在PPP达到网络层协议阶段时，IPv6CP包才可以被交换。在达到这种阶段前接收的IPv6CP包需要被丢弃。
+      ##目前，IPv6CP协商的选项只支持接口ID的协商，不支持IPv6压缩协议的协商。IPv6网络中，PPP用户与IPoE用户都需要使用ND协议或DHCPv6协议完成全球单播地址和
+      ##配置信息的分配，使用DHCPv6协议的IA_PD选项完成CPE路由模式下LAN口IPv6前缀的分配。
+
+      ipv6cp-use-persistent #Use uniquely-available persistent value for link local address.
 
       mtu 1492
       mru 1492

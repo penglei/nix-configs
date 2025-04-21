@@ -1,4 +1,7 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+
+let lease_file = "/var/lib/miniupnpd/upnp.leases";
+in {
   environment.systemPackages = [ pkgs.miniupnpc ];
   services.miniupnpd = {
     enable = true;
@@ -8,7 +11,7 @@
     appendConfig = ''
       uuid=bdbf76d0-7ed9-4589-841a-57db9f7ffe12
 
-      lease_file=/var/lib/miniupnpd/upnp.leases
+      lease_file=${lease_file}
 
       bitrate_down=8388608
       bitrate_up=4194304
@@ -32,6 +35,7 @@
     wants = [ "network-online.target" ];
     preStart = ''
       mkdir -p /var/lib/miniupnpd/
+      touch ${lease_file}
     '';
     #serviceconfig.ExecStart = "miniupnpd -d -vv -f miniupnpd.conf";
   };
