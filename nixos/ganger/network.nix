@@ -12,33 +12,12 @@ in {
         #IPv6AcceptRA = true;
         #IPv4Forwarding = true;
       };
-      #linkConfig.RequiredForOnline = "routable";
-      dhcpV4Config = {
-        UseDNS = false;
-        UseRoutes = true;
-        UseGateway = false;
-      };
     };
-
     networks."10-wan-iface" = {
       matchConfig.Name = "eno1";
-      networkConfig = {
-        DHCP = "ipv4"; # for ops lan (192.168.1.5/24)
-        Bridge = "br-wan";
-      };
+      networkConfig = { Bridge = "br-wan"; };
     };
 
-    networks."11-ops" = {
-      matchConfig.Name = "br-wan";
-      networkConfig = {
-        DHCP = "ipv4"; # for ops lan (192.168.1.5/24)
-      };
-      dhcpV4Config = {
-        UseDNS = false;
-        UseRoutes = true;
-        UseGateway = false;
-      };
-    };
   };
 
   ### network config ###

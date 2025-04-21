@@ -10,10 +10,18 @@ in {
   systemd.services.ddns-go.enable = False;
   #}
 
-  systemd.network.networks."01-trunk-eth" = {
-    matchConfig.Name = "enp3s0";
-    networkConfig = { VLAN = [ "lan.101" "wan.1195" ]; };
+  systemd.network.networks."01-vlan-trunk" = {
+    matchConfig = { Name = "enp3s0"; };
+    linkConfig = {
+      #Unmanaged = true;
+      RequiredForOnline = false;
+    };
+    networkConfig = {
+      VLAN = [ "lan.101" "wan.1195" ];
+      KeepMaster = true; # to make the link enter 'configured' state
+    };
   };
+
   systemd.network.netdevs."02-vlan.1195-wan" = {
     netdevConfig = {
       Name = "wan.1195";
@@ -21,7 +29,6 @@ in {
     };
     vlanConfig = { Id = 1195; };
   };
-
   systemd.network.netdevs."02-vlan.101-lan" = {
     netdevConfig = {
       Name = "lan.101";
@@ -33,26 +40,10 @@ in {
   systemd.network.networks."10-lan-iface" = {
     matchConfig.Name = "lan.101";
     networkConfig = { Bridge = "br-lan"; };
-    dhcpV4Config = {
-      UseDNS = false;
-      UseRoutes = false;
-      UseGateway = false;
-    };
   };
-
   systemd.network.networks."10-wan-iface" = {
     matchConfig.Name = "wan.1195";
     networkConfig = { Bridge = "br-wan"; };
-  };
-
-  systemd.network.networks."11-ops" = {
-    matchConfig.Name = "br-wan"; # Why this device? To bring up it!
-    networkConfig = { DHCP = "ipv4"; }; # TODO static ip?
-    dhcpV4Config = {
-      UseDNS = false;
-      UseRoutes = true;
-      UseGateway = false;
-    };
   };
 
   netaddr.ipv4 = {

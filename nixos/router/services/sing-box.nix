@@ -67,6 +67,7 @@ in {
   };
 
   environment.systemPackages = [ pkgs.sing-box-prebuilt ];
+
   systemd.packages = [ pkgs.sing-box-prebuilt templates ];
   systemd.services.sing-box = {
     after = [ "network-online.target" ];

@@ -349,7 +349,7 @@
       },
       {
         "mode": "and",
-        "outbound": "out-sv-ss-inner",
+        "outbound": "out-sv-alpha-ss-on-shadowtls",
         "rules": [
           {
             "invert": true,

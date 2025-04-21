@@ -1,6 +1,6 @@
 let addr = import "./addr.ncl" in
 let dns_debug_names = ["www.qq.com", "www.baidu.com", ] in
-let debug_client_subnet_rules = [
+let _debug_client_subnet_rules = [
   #debugging edns0-subnet
   {
     type = "logical",
@@ -26,7 +26,7 @@ in
 {
   #servers是特殊的dns outbound
   servers =
-    #debug_client_subnet_rules @ #
+    #_debug_client_subnet_rules @ #
     [
       {
         tag = "dns-cn",
