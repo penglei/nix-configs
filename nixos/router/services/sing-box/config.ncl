@@ -7,6 +7,6 @@
   experimental = import "./experimental.ncl",
   log = {
     timestamp = true,
-    level = "info",
+    level = "warn",
   },
 }

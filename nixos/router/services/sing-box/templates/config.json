@@ -44,7 +44,7 @@
     ],
     "servers": [
       {
-        "detour": "out-direct",
+        "path": "/dns-query",
         "server": "120.53.53.53",
         "server_port": 443,
         "tag": "dns-cn",
@@ -129,7 +129,7 @@
     }
   ],
   "log": {
-    "level": "info",
+    "level": "warn",
     "timestamp": true
   },
   "outbounds": [

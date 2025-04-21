@@ -33,16 +33,19 @@ in
         type = "https",
         server = "120.53.53.53", #"119.29.29.29"
         server_port = 443,
-        # path = "/dns-query", #default
-        detour = "out-direct",
+        path = "/dns-query", #default
+
+        ##detour to an empty direct outbound makes no sense
+        #detour = "out-direct",
       },
       {
         tag = "dns-abroad",
         type = "https",
-        server = "dns.google", #8.8.8.8, 8.8.4.4,2001:4860:4860::8888,2001:4860:4860::8844
+        server = "dns.google", #8.8.8.8,8.8.4.4,2001:4860:4860::8888,2001:4860:4860::8844
         server_port = 443,
         # path = "/dns-query", #default
         domain_resolver = "dns-cn", # 建连接前我自己的域名(dns.google)需要先解析好。
+
         detour = "dynamic-proxy", #dns请求本身走国外
       },
 
