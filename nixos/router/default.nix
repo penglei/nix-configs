@@ -18,6 +18,7 @@
     ./services/pppoe-hooks.nix
     ./services/miniupnpd.nix
 
+    ./services/chinadns.nix
     ./services/sing-box.nix
     ./services/vpn-tailscale.nix
     ./services/p2p.nix
