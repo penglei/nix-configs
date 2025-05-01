@@ -6,6 +6,8 @@
     ./network/nat.nix
     ./services/dhcpcd-pd.nix # 从wan申请pd并配置给br-lan
 
+    ./services/nft-rules.nix
+
     #{
     ./services/kea.nix # dhcpv4
     ./services/radvd.nix # ra服务，通过br-lan在局域网内广播ra消息
