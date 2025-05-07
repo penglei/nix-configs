@@ -21,13 +21,14 @@ in {
       # Should be set when dnsmasq is definitely the only DHCP server on a network
       dhcp-authoritative = false;
 
+      # `$cidr1,$cidr2` for both IPv4 and IPv6 requestors.
       add-subnet = let c = "222.211.224.1/24"; in "${c},${c}";
 
       # Upstream dns servers to which requests should be forwarded
       # debug upstream: dig +noedns +nocookie +retry=0 @127.0.0.1 -p 29753 www.google.com
       server = [
         #"127.0.0.1#29753" #sing-box
-        "127.0.0.1#5353" #chinadns
+        "127.0.0.1#5353" # chinadns
       ];
 
       dhcp-host = map (v4addr:

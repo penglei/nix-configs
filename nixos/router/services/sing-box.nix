@@ -95,11 +95,10 @@ in {
       StateDirectoryMode = "0700";
       RuntimeDirectory = "sing-box";
       RuntimeDirectoryMode = "0700";
-      ExecStart = [
-        ""
-        "${
-          lib.getExe pkgs.sing-box-prebuilt
-        } -D \${STATE_DIRECTORY} -C \${RUNTIME_DIRECTORY} run -c config.json"
+      ExecStart = let bin = lib.getExe pkgs.sing-box-prebuilt;
+      in [
+        "" # firstly, clean others definition
+        "${bin} -D \${STATE_DIRECTORY} -C \${RUNTIME_DIRECTORY} run -c config.json"
       ];
     };
     preStop = ''

@@ -28,7 +28,7 @@
     ./services/ddns.nix
   ];
 
-  environment.systemPackages = with pkgs; [ tcpdump bottom htop ];
+  environment.systemPackages = with pkgs; [ tcpdump iftop iotop bottom htop ];
 
   #this also enable 'services.resolved', see also 'nixos/modules/system/boot/networkd.nix'.
   systemd.network.enable = true;
