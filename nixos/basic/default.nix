@@ -14,10 +14,7 @@
   #  Run `nixos-generate-config` to determine the required modules.
   boot.initrd.availableKernelModules = [ ];
 
-  #TODO boot loader
-
-  #TOTO network
-
+  #see: <nixpkgs>/nixos/modules/tasks/filesystems.nix
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
     fsType = "ext4";

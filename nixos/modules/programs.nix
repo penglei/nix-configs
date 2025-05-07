@@ -16,5 +16,7 @@
     lsof
     tree
     nixos-rebuild-ng
+    iotop
+    iftop
   ]; # merge syntatics
 }

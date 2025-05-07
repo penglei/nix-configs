@@ -48,6 +48,7 @@
   hk-alpha = {
     username = "penglei";
     modules = [
+      ./secrets
       ./nixos/cloud
 
       ((import ./nixos/modules/sing-box-server.nix) {
@@ -61,6 +62,7 @@
   sv-alpha = {
     username = "penglei";
     modules = [
+      ./secrets
       ./nixos/cloud
       ./nixos/cloud/sv-alpha.nix
 
@@ -69,5 +71,16 @@
       })
     ];
     hm-modules = profiles.hm.slim.modules;
+  };
+
+  cloud-dev = {
+    username = "penglei";
+    hm-modules = profiles.hm.linux.modules;
+
+    modules = [
+      ./nixos/cloud
+
+      ./nixos/cloud-dev.nix
+    ];
   };
 }

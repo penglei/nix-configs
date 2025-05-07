@@ -30,9 +30,6 @@
 
   environment.systemPackages = with pkgs; [ tcpdump iftop iotop bottom htop ];
 
-  #this also enable 'services.resolved', see also 'nixos/modules/system/boot/networkd.nix'.
-  systemd.network.enable = true;
-
   #disable network scripting configuration
   #https://wiki.nixos.org/wiki/Systemd/networkd
   #https://www.reddit.com/r/NixOS/comments/1fwh4f0/networkinginterfaces_vs_systemdnetworknetworks/
@@ -58,6 +55,8 @@
     search = [ "lan" ];
   };
 
+  #this also enable 'services.resolved', see also 'nixpkgs/nixos/modules/system/boot/networkd.nix'.
+  systemd.network.enable = true;
   services.resolved = {
 
     #disable llmnr

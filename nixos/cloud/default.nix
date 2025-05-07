@@ -1,9 +1,8 @@
-{ modulesPath, ... }:
+{ modulesPath, lib, ... }:
 
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    ../../secrets # common sops config
     ../nix.nix
     ../modules/configuration.nix
     ../modules/programs.nix
@@ -28,5 +27,7 @@
 
   networking.firewall.enable = false;
 
-  system.stateVersion = "22.11";
+  system.stateVersion = lib.mkDefault "22.11";
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }
