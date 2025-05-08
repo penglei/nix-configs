@@ -1,10 +1,9 @@
-{ lib, hostname, ... }: {
+{ hostname, lib, pkgs, ... }: {
 
   fileSystems."/data" = {
     device = "/dev/disk/by-label/data";
     fsType = "btrfs";
   };
-  # boot.initrd.supportedFilesystems = [ "btrfs" ];
 
   networking = {
     hostName = hostname;
@@ -21,5 +20,6 @@
 
   services.timesyncd.enable = true;
 
+  environment.systemPackages = with pkgs; [ buildah skopeo podman iotop iftop ];
   system.stateVersion = "23.05";
 }
