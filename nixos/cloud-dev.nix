@@ -20,6 +20,13 @@
 
   services.timesyncd.enable = true;
 
-  environment.systemPackages = with pkgs; [ buildah skopeo podman iotop iftop ];
+  environment.systemPackages = with pkgs; [
+    python3
+    buildah
+    skopeo
+    podman
+    iotop
+    iftop
+  ];
   system.stateVersion = "23.05";
 }

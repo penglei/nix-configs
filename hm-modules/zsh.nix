@@ -43,8 +43,8 @@ in {
         src = pkgs.fetchFromGitHub {
           owner = "hlissner";
           repo = "zsh-autopair";
-          rev = "396c38a7468458ba29011f2ad4112e4fd35f78e6";
-          sha256 = "sha256-PXHxPxFeoYXYMOC29YQKDdMnqTO0toyA7eJTSCV6PGE=";
+          rev = "449a7c3d095bc8f3d78cf37b9549f8bb4c383f3d";
+          sha256 = "sha256-3zvOgIi+q7+sTXrT+r/4v98qjeiEL4Wh64rxBYnwJvQ=";
         };
       }
     ];
