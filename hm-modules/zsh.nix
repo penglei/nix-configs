@@ -49,23 +49,6 @@ in {
       }
     ];
     envExtra = "";
-    initExtra = ''
-      bindkey "^U" backward-kill-line
-      bindkey -M menuselect '^[[Z' reverse-menu-complete
-
-      setopt appendhistory
-      setopt INC_APPEND_HISTORY  
-
-      #unset PATH introduced by plugins
-      ${lib.concatStrings (map (plugin: ''
-        path[''${path[(I)$HOME/${zshcfg.pluginsDir}/${plugin.name}]}]=()
-      '') zshcfg.plugins)}
-
-      if [[ -f $HOME/.zshlocal ]]; then
-        source $HOME/.zshlocal
-      fi
-
-    '';
 
     #if NIX_PROFILES env is absent, completions wouldn't work.
     #initExtraBeforeCompInit = ''
@@ -74,12 +57,31 @@ in {
     #  fpath+=("${config.home.profileDirectory}"/share/zsh/site-functions "${config.home.profileDirectory}"/share/zsh/$ZSH_VERSION/functions "${config.home.profileDirectory}"/share/zsh/vendor-completions)
     #'';
 
-    #e.g. debug performance: zmodload zsh/zprof
-    initExtraFirst = ''
-      if [[ -f $HOME/.zshlocal-first ]]; then
-        source $HOME/.zshlocal-first
-      fi
-    '';
+    initContent = let
+      #e.g. debug performance: zmodload zsh/zprof
+      zshConfigEarlyInit = lib.mkOrder 500 ''
+        if [[ -f $HOME/.zshlocal-first ]]; then
+          source $HOME/.zshlocal-first
+        fi
+      '';
+      zshConfig = lib.mkOrder 1000 ''
+        bindkey "^U" backward-kill-line
+        bindkey -M menuselect '^[[Z' reverse-menu-complete
+
+        setopt appendhistory
+        setopt INC_APPEND_HISTORY  
+
+        #unset PATH introduced by plugins
+        ${lib.concatStrings (map (plugin: ''
+          path[''${path[(I)$HOME/${zshcfg.pluginsDir}/${plugin.name}]}]=()
+        '') zshcfg.plugins)}
+
+        if [[ -f $HOME/.zshlocal ]]; then
+          source $HOME/.zshlocal
+        fi
+      '';
+    in lib.mkMerge [ zshConfigEarlyInit zshConfig ];
+
   };
 }
 
