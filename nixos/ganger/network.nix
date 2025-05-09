@@ -45,7 +45,7 @@ in {
       hostname = "lan-vm-1";
     }];
   };
-  netaddr.ipv6 = { router = "fd00:1000:2000::100/64"; };
+  # netaddr.ipv6 = { router = "fd00:1000:2000::100/64"; };
 
   ### vpn
   services.netbird = { enable = true; };

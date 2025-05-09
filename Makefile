@@ -49,9 +49,10 @@ build:
 	fi
 
 deploy-router:
-	nixos-rebuild-ng build --flake .#router
-	nix copy --to ssh://192.168.101.1 $(realpath ./result)
-	ssh root@192.168.101.1 $(realpath ./result)/bin/switch-to-configuration switch
+	deploy .#router
+	# nixos-rebuild-ng build --flake .#router
+	# nix copy --to ssh://192.168.101.1 $(realpath ./result)
+	# ssh root@192.168.101.1 $(realpath ./result)/bin/switch-to-configuration switch
 
 MACHINE ?= ganger
 rsync:

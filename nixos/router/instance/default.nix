@@ -1,7 +1,8 @@
-{ username, ... }:
+{ username, pkgs, ... }:
 
 {
   imports = [
+    ../../../secrets
     ../../nix.nix
     ../../modules/configuration.nix
     ../../modules/programs.nix
@@ -30,7 +31,7 @@
     users.${username}.hashedPassword =
       "$6$hhh$QTt9LG93fOjTHzydcPGwX8IvXBPLQNpi/Pg.rX974mTqe7zQhHJgeqfIn/mRqeWs1KCn8hwH3YIvZ3Lc/jfre1";
   };
-
+  environment.systemPackages = [ pkgs.helix ];
   system.stateVersion = "23.11";
 }
 

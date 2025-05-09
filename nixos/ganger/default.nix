@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
@@ -23,7 +23,7 @@
   boot.initrd.availableKernelModules = [ "ahci" "megaraid_sas" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-
+  environment.systemPackages = [ pkgs.clang ];
   boot.loader = {
     timeout = 1;
 

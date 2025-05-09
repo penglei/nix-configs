@@ -154,8 +154,9 @@ in {
 
           #No IPv6 NAT is used, so there's no IPv6-based local area network, all nodes connect directly and we can't dinstict 'internal'.
           # However, as a router, we need to understand routing for home subnets.
-          # Directly using dynamic IPv6 PD (Prefix Delegation) for judgment would make rule maintenance cumbersome: we need reload after pppd restarted.
-          # Therefore, we take a simplified approach - assuming all internal Ethernet networks can connect directly without requiring forwarding.
+          # Directly using dynamic IPv6 PD (Prefix Delegation) for judgment would make rule maintenance cumbersome:
+          # reload after pppd restarted is required. Therefore, we take a simplified approach - assuming all internal Ethernet networks
+          # can connect directly without requiring forwarding.
           meta nfproto ipv6 oifname != "${OUT_INTERFACE}" accept;
 
           fib daddr type local \

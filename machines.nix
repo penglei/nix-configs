@@ -36,7 +36,7 @@
   tart-vm = {
     username = "penglei";
     system = "aarch64-linux";
-    modules = [ ./nixos/tart-vm ];
+    modules = [ ./secrets ./nixos/tart-vm ];
   };
 
   router = {

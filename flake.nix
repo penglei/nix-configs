@@ -80,18 +80,10 @@
         };
       in {
         #nix run github:serokell/deploy-rs -- .#ganger
-        deploy = {
-          # sshUser = "penglei";
-          magicRollback = false;
-          nodes."ganger" = {
-            hostname = "192.168.1.5";
-            profiles.system = {
-              user = "root";
-              path = deployPkgs.deploy-rs.lib.activate.nixos
-                self.nixosConfigurations."ganger";
-            };
-          };
-        };
+        deploy = (import ./nix/deploy-rs.nix {
+          inherit self;
+          deploy-rs = deployPkgs.deploy-rs;
+        });
         # This is highly advised, and will prevent many possible mistakes
         checks =
           builtins.mapAttrs (_: deployLib: deployLib.deployChecks self.deploy)

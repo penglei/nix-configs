@@ -46,8 +46,11 @@ let
   configFilePath = config.sops.templates."${configFile}".path;
 
 in {
-  sops-keys =
-    [ "sing-box/${proxy}/address" "sing-box/${proxy}/shadowtls/server_name" ];
+  sops-keys = [
+    "main-password"
+    "sing-box/${proxy}/address"
+    "sing-box/${proxy}/shadowtls/server_name"
+  ];
 
   sops.templates."${configFile}" = {
     content = builtins.toJSON cfg;

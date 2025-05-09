@@ -70,5 +70,5 @@ in {
 
     ];
   };
-  netaddr.ipv6 = { router = "fd00:1000:2000::1/64"; };
+  # netaddr.ipv6 = { router = "fd00:1000:2000::1/64"; };
 }
