@@ -50,13 +50,32 @@ in {
           }
         }
 
+        set src_bypass6 {
+          typeof ip6 saddr
+          flags interval
+          auto-merge
+          elements = {
+            fe80::/10 #link local address
+          }
+        }
+
         set dst_bypass6 {
           typeof ip6 daddr
           flags interval
           auto-merge
           elements = {
-            ::1/128, ::/128, ::ffff:0:0/96, 64:ff9b:1::/48, 100::/64,
-            2001:2::/48, 2001:db8::/32, fe80::/10, 2001::/23, fc00::/7,
+            ::/127,
+            ::ffff:0.0.0.0/96,
+            64:ff9b:1::/48,
+            100::/64,
+            2001::/23,
+            2001:db8::/32,
+            fc00::/7,
+            fe80::/10,
+            ff01::1-ff01::2,
+            ff02::1-ff02::e,
+            ff02::1:1-ff02::1:2,
+            ff02::1:ff00:0/104
           }
         }
 
@@ -113,12 +132,14 @@ in {
           #  tproxy ip6 to [::1]:${TPROXY_PORT} \
           #  counter \
           #  accept
-          udp dport 53 accept #放通更多必要的udp流量?
+          udp dport 53 accept
+          udp dport { netbios-ns, netbios-dgm, netbios-ssn, dhcpv6-client, dhcpv6-server } accept comment "bypass: ports"
 
 
           ip daddr @dst_bypass accept comment "bypass prerouting: dst ipv4."
           ip6 daddr @dst_bypass6 accept comment "bypass prerouting: dst ipv6."
           ip saddr @src_bypass accept comment "bypass prerouting: src ipv4"
+          ip6 saddr @src_bypass6 accept comment "bypass prerouting: src ipv6"
 
 
           ##拦截流量:
@@ -176,8 +197,10 @@ in {
           ip daddr @chnroute accept comment "bypass: chnroute "
           ip6 daddr @dst_bypass6 accept comment "bypass: dst ipv6: "
           ip6 daddr @chnroute6 accept comment "bypass: chnroute6 "
+          ip saddr @src_bypass accept comment "bypass: src ipv4"
+          ip6 saddr @src_bypass6 accept comment "bypass: src ipv6"
 
-          udp dport { netbios-ns, netbios-dgm, netbios-ssn } accept comment "bypass: nbns ports: "
+          udp dport { netbios-ns, netbios-dgm, netbios-ssn, dhcpv6-client, dhcpv6-server } accept comment "bypass: ports"
 
           #
           #meta mark $OUT_MARK \
