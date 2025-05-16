@@ -1,6 +1,5 @@
 let lib = import "../lib.ncl" in
 [
-  #不支持IPv6
   {
     type = "shadowsocks",
     tag = "flowercloud-ss",
@@ -10,10 +9,6 @@ let lib = import "../lib.ncl" in
     password = lib.placeholder "proxies/subscribe-a/common/password",
     plugin = lib.placeholder "proxies/subscribe-a/common/plugin",
     plugin_opts = lib.placeholder "proxies/subscribe-a/common/plugin_opts",
-    domain_resolver = {
-      server = "dns-internal-ipv4",
-      rewrite_ttl = 60,
-    },
   },
   {
     type = "shadowsocks",
@@ -22,9 +17,5 @@ let lib = import "../lib.ncl" in
     server_port = lib.rawplaceholder "proxies/subscribe-b/common/port",
     method = lib.placeholder "proxies/subscribe-b/common/method",
     password = lib.placeholder "proxies/subscribe-b/common/password",
-    #domain_resolver = {
-    #  server = "dns-internal-ipv4",
-    #  rewrite_ttl = 60,
-    #},
   },
 ]

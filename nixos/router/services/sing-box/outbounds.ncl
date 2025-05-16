@@ -1,5 +1,5 @@
 let lib = import "lib.ncl" in
-let hk-alpha-link = {
+let hk-alpha-site = {
   type = "shadowtls",
   version = 3,
   server = lib.placeholder "sing-box/hk-alpha/address",
@@ -9,10 +9,10 @@ let hk-alpha-link = {
     enabled = true,
     server_name = lib.placeholder "sing-box/hk-alpha/shadowtls/server_name",
     utls = { enabled = true, fingerprint = "chrome", },
-  }
+  },
 }
 in
-let sv-alpha-link = {
+let sv-alpha-site = {
   type = "shadowtls",
   version = 3,
   server = lib.placeholder "sing-box/sv-alpha/address",
@@ -22,7 +22,7 @@ let sv-alpha-link = {
     enabled = true,
     server_name = lib.placeholder "sing-box/sv-alpha/shadowtls/server_name",
     utls = { enabled = true, fingerprint = "chrome", },
-  }
+  },
 }
 in
 let ss-wrapper = {
@@ -91,7 +91,7 @@ in
     tag = "_chain-hk-alpha-shadowtls",
     detour = "subscribes-relay",
   }
-  & hk-alpha-link,
+  & hk-alpha-site,
 
   ##sv-alpha
   ##debug❯
@@ -107,7 +107,7 @@ in
     tag = "_chain-sv-alpha-shadowtls",
     detour = "subscribes-relay",
   }
-  & sv-alpha-link,
+  & sv-alpha-site,
   ##}
 
   ##hk-alpha provides ipv4 only {
@@ -118,7 +118,7 @@ in
     }
     & ss-wrapper
   ),
-  ({ tag = "_out-hk-alpha-shadowtls" } & hk-alpha-link),
+  ({ tag = "_out-hk-alpha-shadowtls" } & hk-alpha-site),
   ##}
 
   ##sv-alpha provides ipv6 {
@@ -129,7 +129,7 @@ in
     }
     & ss-wrapper
   ),
-  ({ tag = "_out-sv-alpha-shadowtls" } & sv-alpha-link),
+  ({ tag = "_out-sv-alpha-shadowtls" } & sv-alpha-site),
   {
     tag = "sv-alpha-ss",
     type = "shadowsocks",
