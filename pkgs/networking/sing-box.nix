@@ -1,7 +1,7 @@
 { lib, stdenvNoCC, bash, fetchurl, }:
 
 let
-  version = "1.12.0-beta.13";
+  version = "1.12.0-beta.14";
 
   srcDownloads = lib.listToAttrs [
     {
@@ -9,7 +9,7 @@ let
       value = fetchurl {
         url =
           "https://github.com/SagerNet/sing-box/releases/download/v${version}/sing-box-${version}-linux-amd64.tar.gz";
-        sha256 = "sha256-YWB1JRB3I6SaG7EP6oVBg7/PeiqLt3Shjpf6kxa0XmU=";
+        sha256 = "sha256-x3oD5iaImywp1LjS89+r3+Po5D8aFo7CsIQ/PZAUkzg=";
       };
     }
     {

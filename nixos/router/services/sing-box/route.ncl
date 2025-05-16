@@ -128,8 +128,8 @@
   #默认为出站连接设置路由标记，如果设置了 `outbound.routing_mark` 设置，则不生效。
   default_mark = 666,
 
-  ##default dial `domain_resolver` field. See Dial Fields for details.
-  #default_domain_resolver = "dns-internal",
+  #default dial `domain_resolver` field. See Dial Fields for details.
+  default_domain_resolver = "cn-dns",
 
   #Bind outbound connections to the default NIC by default to prevent routing loops under tun.
   auto_detect_interface = true,
