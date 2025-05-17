@@ -34,14 +34,14 @@
     type = "remote",
     format = "binary",
     url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
-    download_detour = "dynamic-proxy"
+    download_detour = "bootstrap-proxy"
   },
   {
     tag = "geosite-cn",
     type = "remote",
     format = "binary",
     url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
-    download_detour = "dynamic-proxy"
+    download_detour = "bootstrap-proxy"
   },
   {
     tag = "geosite-geolocation-cn",
@@ -49,7 +49,7 @@
     format = "binary",
     url = "https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-geolocation-cn.srs",
     update_interval = "2d",
-    download_detour = "dynamic-proxy"
+    download_detour = "bootstrap-proxy"
   },
   {
     tag = "geosite-geolocation-!cn",
@@ -57,7 +57,7 @@
     format = "binary",
     url = "https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-geolocation-!cn.srs",
     update_interval = "2d",
-    download_detour = "dynamic-proxy"
+    download_detour = "bootstrap-proxy"
   },
   {
     tag = "geosite-category-ads-all",
@@ -65,7 +65,7 @@
     format = "binary",
     url = "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-ads-all.srs",
     update_interval = "10d",
-    download_detour = "dynamic-proxy",
+    download_detour = "bootstrap-proxy",
   }
 ]
 # more rules

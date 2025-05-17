@@ -4,6 +4,17 @@
 # (source_geoip || source_ip_cidr || source_ip_is_private) &&
 # (source_port || source_port_range) &&
 # other fields
+let proxy_rules = {
+  type = "logical",
+  mode = "or",
+  rules = [
+    #非国内域名、明确指定的域名或IP
+    { rule_set = ["geosite-geolocation-!cn", "site-proxy", "ip-proxy"] },
+    #非国内IP
+    { rule_set = "geoip-cn", invert = true },
+  ],
+}
+in
 {
   rules = [
     #Action
@@ -16,6 +27,13 @@
     #  "resolve"          #resolve request destination from carried domain to IP addresse
     #  "direct"           #direct
     #
+
+    # ##for developing
+    # {
+    #   inbound = "mixed-proxy",
+    #   outbound = "relay-to-sv-alpha",
+    # },
+
     #performs protocol, domain and client sniffing
     #大部分流量都能嗅探出域名，所以其实很少需要reverse_mapping 来resolve连接的域名。
     { action = "sniff" },
@@ -37,12 +55,6 @@
       ],
       action = "hijack-dns" #The dns request will be routed by dns.route.
     },
-    { protocol = "bittorrent", outbound = "out-direct" },
-
-    #兼容clash控制面板，选择“直连”时，出站流量走“out-direct”
-    { clash_mode = "direct", outbound = "out-direct" },
-    # #兼容clash控制面板，选择“全局”时，出站流量走“out-proxy”，即全部走代理
-    # { clash_mode = "global", outbound = "xxx" }, #的路由器上没必要支持
 
     # Maybe we can override destination ip to ipv6 for geo determination
     # #Internally resolve destination from domain to IP addresses.
@@ -53,75 +65,57 @@
     # {
     #   action = "resolve",
     #   strategy = "ipv4_only", #"prefer_ipv4",   #dns.strategy will be used by default
-    #   server = "dns-internal-ipv4",
+    #   server = "dns-internal",
     # },
-    {
-      inbound = "mixed-proxy", #for developing
-      outbound = "relay-to-sv-alpha",
-    },
-
-    #快速跳出指定的直连site/ip
-    {
-      rule_set = ["site-direct", "ip-direct"],
-      outbound = "out-direct"
-    },
 
     ###split traffic
 
-    # rule_set数据源不准确，里面很多google的域名
-    # #国内IP or 国内域名：直连
-    # {
-    #   #type = "default", #default
-    #   ip_is_private = true,
-    #   rule_set = [
-    #     #如果这些rule set下载失败则不会生效。下载会受DNS影响。如果机器上的DNS异常，也没法下载成功。
-    #     #最好的做法还是单独下载一份放到本地
-    #     "geoip-cn",
-    #     "geosite-cn"
-    #   ],
+    #clash控制面板(路由器上没必要支持):
+    #   不选择直连时，全部不代理;
+    #   选择“全局”代理时，全部走指定代理
+    # { clash_mode = "direct", outbound = "out-direct" },
+    # { clash_mode = "global", outbound = "MY-XXX-PROXY" },
 
-    #   action = "route",
-    #   outbound = "out-direct",
-    #   #action = "direct"
-    # },
-
-    #非国内域名，走代理
-    {
-      rule_set = ["geosite-geolocation-!cn"],
-      outbound = "dynamic-proxy",
-    },
-
-    #国外域名 and 非国内IP and IPv6：走支持IPv6的代理
+    #特殊的站点、协议直连
     {
       type = "logical",
-      mode = "and",
+      mode = "or",
       rules = [
-        # { rule_set = "geosite-geolocation-!cn" },
-        { rule_set = "geoip-cn", invert = true },
-        { ip_version = 6, }
-      ],
-      outbound = "ipv6-proxy",
-    },
-
-    # 国外域名 and 非国内IP：走代理。
-    {
-      type = "logical",
-      mode = "and",
-      rules = [
-        # {
-        #   rule_set = "geosite-geolocation-!cn"
-        # },
         {
-          rule_set = "geoip-cn",
-          invert = true
-        }
+          rule_set = [
+            "site-direct",
+            "ip-direct"
+
+            # 数据源不准确，e.g. 包含了很多google的域名
+            # "geoip-cn", "geosite-cn"
+          ]
+        },
+        { protocol = ["bittorrent"] },
       ],
-      outbound = "dynamic-proxy"
+      outbound = "out-direct"
     },
+
+    #代理IPv4
     {
-      rule_set = ["site-proxy", "ip-proxy"],
-      outbound = "dynamic-proxy"
-    }
+      type = "logical",
+      mode = "and",
+      rules = [
+        { ip_version = 4 },
+        proxy_rules,
+      ],
+      outbound = "ipv4-proxy"
+    },
+
+    #代理 IPv6
+    {
+      type = "logical",
+      mode = "and",
+      rules = [
+        { ip_version = 6 },
+        proxy_rules,
+      ],
+      outbound = "ipv6-proxy"
+    },
   ],
   final = "out-direct", #Default outbound tag. the first outbound will be used if empty.
 

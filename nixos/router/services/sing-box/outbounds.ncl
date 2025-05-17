@@ -36,7 +36,27 @@ let ss-wrapper = {
 in
 [
   {
-    tag = "dynamic-proxy",
+    #internal bootstrap proxy, e.g. download rule_set from github
+    tag = "bootstrap-proxy",
+    type = "selector",
+    outbounds = [
+      "relay-to-hk-alpha",
+      "hk-alpha-ss-on-shadowtls",
+      "subscribes",
+    ],
+    default = "relay-to-hk-alpha",
+  },
+  {
+    tag = "dns-proxy",
+    type = "selector",
+    outbounds = [
+      "relay-to-hk-alpha",
+      "subscribes",
+    ],
+    default = "relay-to-hk-alpha",
+  },
+  {
+    tag = "ipv4-proxy",
     type = "selector",
     outbounds = [
       #chains
@@ -58,16 +78,6 @@ in
     interrupt_exist_connections = false,
   },
   {
-    tag = "subscribes-relay",
-    type = "selector",
-    outbounds = [
-      "flowercloud-ss",
-      "clashcloud-ss",
-    ],
-    default = "clashcloud-ss",
-    interrupt_exist_connections = false,
-  },
-  {
     tag = "ipv6-proxy",
     type = "selector",
     outbounds = [
@@ -77,6 +87,16 @@ in
       "sv-alpha-ss",
     ],
     default = "relay-to-hk-alpha",
+    interrupt_exist_connections = false,
+  },
+  {
+    tag = "subscribes",
+    type = "selector",
+    outbounds = [
+      "flowercloud-ss",
+      "clashcloud-ss",
+    ],
+    default = "clashcloud-ss",
     interrupt_exist_connections = false,
   },
 
@@ -89,7 +109,7 @@ in
   & ss-wrapper,
   {
     tag = "_chain-hk-alpha-shadowtls",
-    detour = "subscribes-relay",
+    detour = "subscribes",
   }
   & hk-alpha-site,
 
@@ -105,7 +125,7 @@ in
   & ss-wrapper,
   {
     tag = "_chain-sv-alpha-shadowtls",
-    detour = "subscribes-relay",
+    detour = "subscribes",
   }
   & sv-alpha-site,
   ##}
