@@ -46,7 +46,6 @@ in {
   systemd.services.chinadns = {
     description = "chinadns daemon";
     wantedBy = [ ]; # 禁用默认启动
-    # after = [ "pppd-pppoe.service" ];
 
     path = with pkgs; [ coreutils ];
     preStart = ''
@@ -58,8 +57,10 @@ in {
       : > ${statedir}/proxy-list.txt
       cat ${./data/gfw.txt} >> ${statedir}/proxy-list.txt
       cat ${configFile} > ${statedir}/chinadns-ng.conf
-      chinaservers=$(cat ${PPPoEDNSServersFile} | tr '\\\n' ',')
-      echo "china-dns ''${chinaservers}" >> ${statedir}/chinadns-ng.conf
+      chinaservers=$(cat ${PPPoEDNSServersFile} | tr '\n' ',')
+      if [ -n "$chinaservers" ];then
+        echo "china-dns ''${chinaservers}" >> ${statedir}/chinadns-ng.conf
+      fi
     '';
     # unitConfig = { ConditionPathExists = PPPoEDNSServersFile; }; # **only active** if the file exists(not expected)
     serviceConfig = {
@@ -74,13 +75,11 @@ in {
   systemd.paths.pppoe-chinadns-trigger = {
     description = "Monitor pppoe dns servers file to start chinadns";
     wantedBy = [ "multi-user.target" ];
-    after = [ "pppd-pppoe.service" ]; # 确保在 PPPoE 服务之后启动
 
     pathConfig = {
       PathExists = PPPoEDNSServersFile;
       Unit = "chinadns.service";
       MakeDirectory = false; # 不自动创建目录
-      DirectoryNotEmpty = false;
     };
   };
 
@@ -88,6 +87,7 @@ in {
   systemd.paths.pppoe-chinadns-restart-trigger = {
     description = "Trigger restarting chinadns when pppoe dns servers changes";
     wantedBy = [ "multi-user.target" ];
+
     pathConfig = {
       PathChanged = PPPoEDNSServersFile; # 内容或元数据变化时触发
       Unit = "chinadns-restart.service"; # 指向重启服务

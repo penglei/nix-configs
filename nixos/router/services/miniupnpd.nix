@@ -1,10 +1,10 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let lease_file = "/var/lib/miniupnpd/upnp.leases";
 in {
   environment.systemPackages = [ pkgs.miniupnpc ];
   services.miniupnpd = {
-    enable = true;
+    enable = lib.mkDefault false;
     externalInterface = config.netaddr.iface.wan.name;
     internalIPs = [ "br-lan" ];
     natpmp = true;
@@ -38,5 +38,15 @@ in {
       touch ${lease_file}
     '';
     #serviceconfig.ExecStart = "miniupnpd -d -vv -f miniupnpd.conf";
+  };
+
+  networking.nftables.tables.miniupnpd = {
+    family = "inet";
+    content = ''
+      chain forward {
+        type filter hook forward priority filter; policy accept;
+        jump miniupnpd
+      }
+    '';
   };
 }

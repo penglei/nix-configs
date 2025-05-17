@@ -36,9 +36,7 @@ in {
     systemd.paths.pppoe-ddns-address-trigger = {
       enable = lib.mkDefault true;
       description = "Trigger to update ddns while pppoe has started";
-
       wantedBy = [ "multi-user.target" ];
-      after = [ "pppd-pppoe.service" ]; # 确保在 PPPoE 服务之后启动
 
       pathConfig = {
         PathExists = PPPoELocalAddrIPv4;
@@ -50,6 +48,7 @@ in {
     systemd.paths.pppoe-ddns-update-trigger = {
       description = "Trigger to update ddns while pppoe address has changed";
       wantedBy = [ "multi-user.target" ];
+
       pathConfig = {
         PathChanged = PPPoELocalAddrIPv4;
         Unit = "ddns.service";
@@ -63,7 +62,6 @@ in {
       description = "Update dns address";
 
       wantedBy = [ ]; # 禁用默认启动
-      # after = [ "pppd-pppoe.service" ];
 
       path = with pkgs; [ bash gawk curl ];
       serviceConfig = let entrypoint = config.sops.templates."ddns.sh".path;

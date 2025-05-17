@@ -22,7 +22,6 @@
 
     ./services/pppoe.nix
     ./services/pppoe-hooks.nix
-    ./services/miniupnpd.nix
 
     ./services/chinadns.nix
     ./services/sing-box.nix
@@ -45,7 +44,7 @@
     nftables.enable = true;
 
     timeServers = options.networking.timeServers.default
-      ++ [ "ntp.ntsc.ac.cn" "ntp.aliyun.com" ];
+      ++ [ "ntp.aliyun.com" ];
 
     #diasble for router employed pppoe
     #useDHCP = true; #disable for router

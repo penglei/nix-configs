@@ -2,12 +2,23 @@
 let
   deviface = "br-lan";
   ipv4-addrs = config.netaddr.ipv4.subnet.reservations;
+  cfg = config.services.dnsmasq;
+
 in {
-  systemd.services.dnsmasq = {
-    wants = [ "network-online.target" ]; # delcare dependencies
-    after = [ "network-online.target" ]; # start order
-    requires = [ "sys-subsystem-net-devices-br-lan.device" ];
-  };
+  imports = [
+
+    ({
+      config = lib.mkIf cfg.enable {
+        systemd.services.dnsmasq = {
+          wants = [ "network-online.target" ]; # delcare dependencies
+          after = [ "network-online.target" ]; # start order
+          requires = [ "sys-subsystem-net-devices-br-lan.device" ];
+        };
+      };
+    })
+
+  ];
+
   services.dnsmasq = {
     enable = lib.mkDefault false;
 
@@ -67,12 +78,12 @@ in {
       dhcp-rapid-commit = true; # Faster DHCP negotiation for IPv4
 
       no-hosts = true; # don't read /etc/hosts
-      no-resolv = true; #don't read /etc/resolv.conf as upstream
+      no-resolv = true; # don't read /etc/resolv.conf as upstream
 
       # Accept DNS queries only from hosts whose address is on a local subnet
       local-service = true;
 
-      log-queries = false; #"extra"; # Log results of all DNS queries
+      log-queries = false; # "extra"; # Log results of all DNS queries
 
       # Don't forward requests for the local address ranges (192.168.x.x etc) to upstream nameservers
       bogus-priv = true;

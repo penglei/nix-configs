@@ -75,7 +75,6 @@ in {
   systemd.packages = [ pkgs.sing-box-prebuilt templates ];
   systemd.services.sing-box = {
     wantedBy = [ ]; # 禁用默认启动
-    # after = [ "pppd-pppoe.service" ];
 
     path = with pkgs; [ iproute2 nftables bash ];
     #preStart = ''
@@ -126,13 +125,11 @@ in {
   systemd.paths.pppoe-sing-box-trigger = {
     description = "Monitor pppoe dns servers file to start sing-box";
     wantedBy = [ "multi-user.target" ];
-    after = [ "pppd-pppoe.service" ]; # 确保在 PPPoE 服务之后启动
 
     pathConfig = {
       PathExists = PPPoEDNSServersFile;
       Unit = "sing-box.service";
       MakeDirectory = false; # 不自动创建目录
-      DirectoryNotEmpty = false;
     };
   };
 

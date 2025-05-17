@@ -25,15 +25,5 @@
     filterForward = false;
     checkReversePath = false;
   };
-
-  networking.nftables.tables.miniupnpd = {
-    family = "inet";
-    content = ''
-      chain forward {
-        type filter hook forward priority filter; policy accept;
-        jump miniupnpd
-      }
-    '';
-  };
 }
 
