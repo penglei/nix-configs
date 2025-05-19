@@ -5,6 +5,8 @@
     fsType = "btrfs";
   };
 
+  boot.kernelModules = [ "wireguard" ];
+
   networking = {
     hostName = hostname;
     useDHCP = lib.mkDefault true;
@@ -21,6 +23,8 @@
   services.timesyncd.enable = true;
 
   environment.systemPackages = with pkgs; [
+    wireguard-tools
+    tcpdump
     python3
     buildah
     skopeo
