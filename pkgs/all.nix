@@ -84,8 +84,7 @@ in with pkgs; {
 
   ### linux
   zsh-vi-mode = callPackage ./zsh-vi-mode.nix { };
-  create-ssh-session-gnupg-socketdir =
-    callPackage ./linux/gnupg-socketdir.nix { };
+  prepare-session = callPackage ./linux/prepare-session.nix { };
 
   miniupnpc = callPackage ./miniupnpc.nix { };
 
