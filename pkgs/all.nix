@@ -51,6 +51,7 @@ in with pkgs; {
   #     Carbon Cocoa CoreWLAN DisplayServices SkyLight;
   #   inherit (apple_sdk_extend.frameworks) MediaRemote;
   # };
+
   presentation = callPackage ./darwin/presentation.nix { };
   adobe-reader = callPackage ./darwin/adobe-reader.nix { };
   keycastr = callPackage ./darwin/keycastr.nix { };
@@ -60,10 +61,10 @@ in with pkgs; {
   alttab = callPackage ./darwin/alttab.nix { };
   snipaste = callPackage ./darwin/snipaste.nix { };
 
-  yabai = darwin.apple_sdk_11_0.callPackage ./darwin/yabai.nix {
-    inherit (darwin.apple_sdk_11_0.frameworks)
-      SkyLight Cocoa Carbon ScriptingBridge;
-  };
+  # yabai = darwin.apple_sdk.callPackage ./darwin/yabai.nix {
+  #   inherit (apple_sdk.frameworks) SkyLight Cocoa Carbon ScriptingBridge;
+  # };
+  yabai = callPackage ./darwin/yabai.nix { };
 
   shiori = callPackage ./shiori.nix { };
   passage = callPackage ./passage.nix { };

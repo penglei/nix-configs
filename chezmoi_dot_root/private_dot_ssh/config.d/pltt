@@ -9,3 +9,8 @@ Host router.ops
   HostKeyAlgorithms = +ssh-rsa
   PubkeyAcceptedAlgorithms = +ssh-rsa
 
+#ssh -o ProxyCommand='nc -X 5 -x 127.0.0.1:29090 %h %p' $HOST
+
+Host pltt-ganger
+  Hostname 192.168.101.100
+  ProxyCommand ssh -W %h:%p pltt.ybyte.org

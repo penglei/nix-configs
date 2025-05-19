@@ -2,7 +2,7 @@
 
 let
   pname = "yabai";
-  version = "7.1.6";
+  version = "7.1.15";
 in {
   aarch64-darwin = stdenvNoCC.mkDerivation {
     inherit pname version;
@@ -10,7 +10,7 @@ in {
     src = fetchurl {
       url =
         "https://github.com/koekeishiya/yabai/releases/download/v${version}/yabai-v${version}.tar.gz";
-      sha256 = "sha256-HSuZ9TwkBWgUy0kSzrqJ6lTQlaMtq7EJZ3FlDFn231w=";
+      sha256 = "sha256-hlAJqlwcUmNbW2gFY0zldAgM1YEQHepO8SgHOcNLjwI=";
     };
 
     buildInputs = [ bash ];

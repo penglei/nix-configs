@@ -1,15 +1,6 @@
-
 Host cloud-dev
     Hostname 9.135.73.231
-    Port 36000
-    User ubuntu
-    RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
-
-Host nix-cloud-dev
-    Hostname 21.6.255.111
-    Port 36000
-    User ubuntu
-    RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+    RemoteForward /run/user/penglei/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
 
 Host khaos-automaton
     Hostname 9.134.52.172
