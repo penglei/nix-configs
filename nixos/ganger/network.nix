@@ -4,8 +4,6 @@ in {
   #{ develop and debug router
   services.coredns.enable = true;
 
-  #vpn
-  services.netbird.enable = true;
   #}
 
   ### interfaces ###
@@ -42,5 +40,12 @@ in {
     }];
   };
   # netaddr.ipv6 = { router = "fd00:1000:2000::100/64"; };
+
+  ## vpn
+  # services.netbird.enable = true;
+  # netbird(client)增加如下的路由规则
+  #❯ ip rule show
+  # 100:	from all lookup main suppress_prefixlength 0
+  # 110:	not from all fwmark 0x1bd00 lookup 7120
 
 }

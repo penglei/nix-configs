@@ -25,13 +25,19 @@
 
     ./services/chinadns.nix
     ./services/sing-box.nix
-    ./services/vpn-tailscale.nix
     ./services/p2p.nix
-    ./services/vpn-netbird.nix
     ./services/ddns.nix
   ];
 
-  environment.systemPackages = with pkgs; [ tcpdump iftop iotop bottom htop ];
+  boot.kernelModules = [ "wireguard" ];
+  environment.systemPackages = with pkgs; [
+    wireguard-tools
+    tcpdump
+    iftop
+    iotop
+    bottom
+    htop
+  ];
 
   #disable network scripting configuration
   #https://wiki.nixos.org/wiki/Systemd/networkd
