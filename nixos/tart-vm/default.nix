@@ -16,6 +16,7 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
+    timeout = 1;
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
@@ -29,6 +30,9 @@
     device = "/dev/disk/by-partlabel/disk-main-root";
     fsType = "ext4";
   };
+
+  #This is important for vscode server
+  programs.nix-ld.enable = true;
 
   networking = { useDHCP = lib.mkDefault true; };
   environment.systemPackages = with pkgs; [ htop wireguard-tools ];

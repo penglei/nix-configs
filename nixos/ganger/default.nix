@@ -45,6 +45,8 @@
     fsType = "ext4";
   };
 
+  programs.nix-ld.enable = true;
+
   i18n.extraLocaleSettings = {
     # date command support "en_CN.UTF-8", but glibc-locales doesn't
     LC_TIME = "zh_CN.UTF-8";

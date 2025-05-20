@@ -1,10 +1,12 @@
 { hostname, lib, pkgs, ... }: {
 
+  imports = [ ./modules/keeping.nix ];
   fileSystems."/data" = {
     device = "/dev/disk/by-label/data";
     fsType = "btrfs";
   };
 
+  boot.loader.timeout = 1;
   boot.kernelModules = [ "wireguard" ];
 
   networking = {
@@ -21,6 +23,9 @@
   systemd.services."systemd-networkd" = {
     environment.SYSTEMD_LOG_LEVEL = "debug";
   };
+
+  #This is important for vscode server
+  programs.nix-ld.enable = true;
 
   services.timesyncd.enable = true;
 

@@ -8,6 +8,8 @@ in {
     vimAlias = true;
   };
 
+  # programs.nix-ld.enable = true; # TODO enable!
+
   # Set your time zone.
   time.timeZone = lib.mkDefault "Asia/Shanghai";
 
