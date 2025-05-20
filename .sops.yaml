@@ -11,7 +11,8 @@ keys:
 - &sv-alpha age1df6sr7f9y78dlp5gzd0asa538v7t39w90kqevue6pza3lhqxmqrs2373eq #ssh host key
 - &sg-alpha age1ae2dhtv5pryg54q478sll79wyp6rxqakan5ack6fxyylyyqandqq4v79q0 #ssh host key
 - &router age15qecyeuqlwzm3vnw09zp0rdyhg3ehxnswmr5cymyettmvmqswf5sk2la8k #ssh host key
-#- &utm-vm age18dj4cksrurn7qfetmqr70psz68fgaruf02xam3yl2veje8rr654q5rtrep #ssh host key
+- &tart-vm age18dj4cksrurn7qfetmqr70psz68fgaruf02xam3yl2veje8rr654q5rtrep #ssh host key
+# - &utm-vm age18dj4cksrurn7qfetmqr70psz68fgaruf02xam3yl2veje8rr654q5rtrep #ssh host key
 creation_rules:
 - path_regex: secrets/secrets.yaml$
   key_groups:
@@ -25,6 +26,7 @@ creation_rules:
     - *sg-alpha
     - *hk-alpha
     - *sv-alpha
+    - *tart-vm
 - path_regex: secrets/[^/]+\.yaml$
   key_groups:
   - pgp:

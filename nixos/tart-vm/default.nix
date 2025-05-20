@@ -10,6 +10,7 @@
     ../modules/sing-box-client.nix
   ];
 
+  boot.kernelModules = [ "wireguard" ];
   boot.initrd.availableKernelModules =
     [ "nvme" "virtio_pci" "xhci_pci" "usbhid" "virtiofs" ];
 
@@ -30,7 +31,7 @@
   };
 
   networking = { useDHCP = lib.mkDefault true; };
-  environment.systemPackages = with pkgs; [ htop ];
+  environment.systemPackages = with pkgs; [ htop wireguard-tools ];
   services.timesyncd.enable = false;
   system.stateVersion = "23.11";
 }
