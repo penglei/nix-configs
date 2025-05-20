@@ -14,6 +14,8 @@
     nftables.enable = true;
   };
 
+  services.openssh = { ports = [ 22 36000 ]; };
+
   #this also enable 'services.resolved'
   systemd.network.enable = true;
   systemd.services."systemd-networkd" = {

@@ -71,7 +71,19 @@
 
   cloud-dev = {
     username = "penglei";
-    hm-modules = profiles.hm.linux.modules;
+    hm-modules = profiles.hm.linux.modules ++ [
+      ({ pkgs, ... }: {
+        home.packages = with pkgs; [
+          kubectl
+          k9s
+          #kustomize
+          #krew
+          kubectl-kubectx
+          kubectl-kubecm
+          kubectl-nodeshell
+        ];
+      })
+    ];
 
     modules = [
       ./nixos/cloud
