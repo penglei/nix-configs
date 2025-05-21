@@ -29,6 +29,7 @@
     ./services/ddns.nix
   ];
 
+  boot.loader.timeout = 1;
   boot.kernelModules = [ "wireguard" ];
   environment.systemPackages = with pkgs; [
     wireguard-tools
