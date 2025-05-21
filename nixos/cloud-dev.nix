@@ -38,6 +38,9 @@
     podman
     iotop
     iftop
+
+    unzip
+    clang
   ];
   system.stateVersion = "23.05";
 }

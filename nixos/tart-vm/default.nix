@@ -35,7 +35,7 @@
   programs.nix-ld.enable = true;
 
   networking = { useDHCP = lib.mkDefault true; };
-  environment.systemPackages = with pkgs; [ htop wireguard-tools ];
+  environment.systemPackages = with pkgs; [ htop wireguard-tools fd ];
   services.timesyncd.enable = false;
   system.stateVersion = "23.11";
 }
