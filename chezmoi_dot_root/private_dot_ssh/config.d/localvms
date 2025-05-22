@@ -1,7 +1,7 @@
-Match Host "192.168.66.*" User penglei
-  RemoteForward /run/user/penglei/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
-  #gpg 命令无法配置使用别的路径
-  #RemoteForward /home/penglei/.gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+Host tart-vm
+  Hostname 192.168.64.2
 
-Match Host "192.168.65.*" User penglei
+Match Host "192.168.64.*" User penglei
+  #RemoteForward /home/penglei/.gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+  #gpg 命令无法配置使用别的socket路径，只能放在XDG_RUNTIME_DIR
   RemoteForward /run/user/penglei/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra

@@ -1,5 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   systemd.services.keeping = {
+    enable = lib.mkDefault false;
     description = "Keep network connections alive";
     after = [ "network.target" ];
     path = with pkgs; [ bash iputils wireguard-tools ];
@@ -11,5 +12,4 @@
       ExecStart = ../../scripts/keeping.sh;
     };
   };
-
 }

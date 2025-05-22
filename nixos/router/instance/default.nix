@@ -26,6 +26,8 @@
     fsType = "ext4";
   };
 
+  programs.nix-ld.enable = true;
+
   users = {
     mutableUsers = true;
     users.${username}.hashedPassword =

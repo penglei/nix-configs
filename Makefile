@@ -48,10 +48,11 @@ build:
 		fi \
 	fi
 
+ROUTER?=192.168.101.1
 update-router:
 	nixos-rebuild-ng build --flake .#router
-	nix copy --to ssh://192.168.101.1 $(realpath ./result)
-	ssh root@192.168.101.1 $(realpath ./result)/bin/switch-to-configuration switch;
+	nix copy --to ssh://$$ROUTER $(realpath ./result)
+	ssh root@$$ROUTER $(realpath ./result)/bin/switch-to-configuration switch;
 
 deploy-router:
 	nix run nixpkgs#deploy-rs -- .#router
@@ -60,3 +61,4 @@ SERVER ?= ganger
 rsync:
 	rsync -avh . $(SERVER):/data/nix-configs \
 	--exclude .direnv --include='**.gitignore' --filter=':- .gitignore' --delete-after
+
