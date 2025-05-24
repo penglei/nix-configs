@@ -49,13 +49,22 @@ build:
 	fi
 
 ROUTER?=192.168.101.1
+#nixos-rebuild-ng switch --flake .#router --target-host root@$$ROUTER
+#nix run nixpkgs#deploy-rs -- .#router --hostname=$$ROUTER
 update-router:
 	nixos-rebuild-ng build --flake .#router
-	nix copy --to ssh://$$ROUTER $(realpath ./result)
-	ssh root@$$ROUTER $(realpath ./result)/bin/switch-to-configuration switch;
+	sleep 3
+	export pathToConfig=$$(realpath ./result); \
+	echo pathToConfig: $$pathToConfig; \
+	nix copy --to ssh://$$ROUTER $$pathToConfig; \
+	ssh root@$$ROUTER \
+		nix-env -p /nix/var/nix/profiles/system --set $$pathToConfig; \
+	ssh root@$$ROUTER \
+		systemd-run -E LOCALE_ARCHIVE -E NIXOS_INSTALL_BOOTLOADER= \
+		--collect --no-ask-password --pipe --quiet --service-type=exec \
+		--unit=nixos-rebuild-switch-to-configuration --wait \
+		/nix/var/nix/profiles/system/bin/switch-to-configuration switch;
 
-deploy-router:
-	nix run nixpkgs#deploy-rs -- .#router
 
 SERVER ?= ganger
 rsync:

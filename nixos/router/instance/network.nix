@@ -57,6 +57,12 @@
         hostname = "idrac";
       }
 
+      {
+        hw-address = "00:e0:70:6b:b0:59";
+        ip-address = "192.168.101.189";
+        hostname = "router2";
+      }
+
     ];
   };
   # netaddr.ipv6 = { router = "fd00:1000:2000::1/64"; };
