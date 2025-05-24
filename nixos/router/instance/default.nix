@@ -27,13 +27,12 @@
   };
 
   programs.nix-ld.enable = true;
-
   users = {
     mutableUsers = true;
     users.${username}.hashedPassword =
       "$6$hhh$QTt9LG93fOjTHzydcPGwX8IvXBPLQNpi/Pg.rX974mTqe7zQhHJgeqfIn/mRqeWs1KCn8hwH3YIvZ3Lc/jfre1";
   };
-  environment.systemPackages = [ pkgs.helix ];
+  environment.systemPackages = [ pkgs.zellij ];
   system.stateVersion = "23.11";
 }
 
