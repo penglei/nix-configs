@@ -37,7 +37,7 @@ Then, do initialize:
 
 #### Replace zsh's nix env injection
 
-In a flake directory, we can employ [direnv](https://github.com/direnv/direnv) to automatically initialize the shell using `use flake`.
+In a flake directory, we can employ [direnv](https://github.com/direnv/direnv) to initialize the shell using `use flake` automatically.
 However, subsequently adding packages temporarily by `nix shell ...` does not take effect in this shell.
 The reason is that the path priority in its PATH variable is incorrect, and the fundamental cause is that
 subshells reinitialize by reading configurations (such as zshrc) are not reentrant.
@@ -46,10 +46,14 @@ The following configuration can solve this problem:
 ```
 XDG_DATA_DIRS=${XDG_DATA_DIRS:-/usr/local/share:/usr/share}
 export NIX_PROFILES="/nix/var/nix/profiles/default $HOME/.nix-profile"
+
 setopt local_options shwordsplit
+export NIX_SSL_CERT_FILE=/etc/ssl/cert.pem
 for i in $NIX_PROFILES; do
-  if [ -e "$i/etc/ssl/certs/ca-bundle.crt" ]; then
-    export NIX_SSL_CERT_FILE=$i/etc/ssl/certs/ca-bundle.crt
+  if [ ! -e "$NIX_SSL_CERT_FILE" ]; then
+    if [ -e "$i/etc/ssl/certs/ca-bundle.crt" ]; then
+      export NIX_SSL_CERT_FILE=$i/etc/ssl/certs/ca-bundle.crt
+    fi
   fi
 
   #if ! (($path[(I)$i/bin])); #zsh style
@@ -66,6 +70,29 @@ for i in $NIX_PROFILES; do
 done
 unset i
 ```
+
+
+The nix installer initialize shell env by:
+> ```
+> # Nix
+> if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+>  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+> fi
+> # End Nix
+> ```
+
+
+If ssl has been broken (e.g. run `nix profile remove cacert` ), set env explicitly:
+
+```
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+ . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+if [ ! -e "$NIX_SSL_CERT_FILE" ]; then
+  export NIX_SSL_CERT_FILE=/etc/ssl/cert.pem
+fi
+```
+
 
 #### config sudo
 
