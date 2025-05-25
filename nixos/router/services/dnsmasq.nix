@@ -13,6 +13,12 @@ in {
           wants = [ "network-online.target" ]; # delcare dependencies
           after = [ "network-online.target" ]; # start order
           requires = [ "sys-subsystem-net-devices-br-lan.device" ];
+          preStart = ''
+            #/var/lib/$STATE_DIRECTORY/tftp
+
+            mkdir -p /var/lib/dnsmasq/tftp
+            chown dnsmasq /var/lib/dnsmasq/tftp
+          '';
         };
       };
     })
@@ -28,6 +34,9 @@ in {
     settings = {
       interface = deviface;
       bind-interfaces = true; # Only bind to the specified interface
+
+      log-queries = false; # "extra"; # Log results of all DNS queries
+      log-dhcp = false;
 
       # Should be set when dnsmasq is definitely the only DHCP server on a network
       dhcp-authoritative = false;
@@ -57,9 +66,25 @@ in {
         "/${config.networking.hostName}.lan/${config.netaddr.ipv4.gateway}"
       ];
 
+      dhcp-match = [
+        "set:efi-x86_64,option:client-arch,7"
+        "set:efi-x86_64,option:client-arch,9"
+        "set:bios,option:client-arch,0"
+      ];
+      dhcp-boot = [
+        #https://netboot.xyz/downloads
+        ''tag:ipxe,"netboot.xyz.kpxe"''
+        ''tag:!ipxe,tag:bios,"netboot.xyz.efi"''
+      ];
+      enable-tftp = true;
+      tftp-root = "/var/lib/dnsmasq/tftp";
+
       dhcp-option = [
-        #Address of the gateway, i.e. your router
+        #Gateway address, i.e. your router
         "option:router,${config.netaddr.ipv4.gateway}"
+
+        #Send a literal IP address as TFTP server name
+        ''66,"${config.netaddr.ipv4.gateway}"''
       ];
 
       dhcp-range = with config.netaddr.ipv4.subnet.dhcp_pools; [
@@ -82,8 +107,6 @@ in {
 
       # Accept DNS queries only from hosts whose address is on a local subnet
       local-service = true;
-
-      log-queries = false; # "extra"; # Log results of all DNS queries
 
       # Don't forward requests for the local address ranges (192.168.x.x etc) to upstream nameservers
       bogus-priv = true;
