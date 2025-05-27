@@ -177,7 +177,7 @@ in {
       '';
 
       programs.bash.initExtra = mkIf cfg.enableBashIntegration gpgInitStr;
-      programs.zsh.initExtra = mkIf cfg.enableZshIntegration gpgInitStr;
+      programs.zsh.initContent = mkIf cfg.enableZshIntegration gpgInitStr;
       programs.fish.interactiveShellInit = mkIf cfg.enableFishIntegration ''
         set -gx GPG_TTY (tty)
       '';

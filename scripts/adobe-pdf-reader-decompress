@@ -2,7 +2,7 @@ result=0
 path_epp="$(dirname "$PWD")" 
 ##
 # extract the (de) compressor
-Z=7za
+Z=7zz
 rm -rf setX.txt    # remove old copy of setX.txt
 rm -rf $Z          # remove old copy of 7za
 unzip  $Z.zip      # unzip a new copy of 7za
@@ -12,7 +12,7 @@ unzip  $Z.zip      # unzip a new copy of 7za
 for folder in MacOS AcroCEF Plugins Helpers Frameworks Plug-ins Resources Services Support; do
 	if [ $result == 0 ]; then 
 		echo decompressing $folder/
-		./$Z  x -y $folder.7z	# extracts $folder/ from $folder.7z
+		./$Z  x -y -snld $folder.7z	# extracts $folder/ from $folder.7z
 		result=$?				# remember if we failed!
 		rm -rf     $folder.7z	# remove the compressed archive
         if [ "$folder" = "MacOS" ]; then

@@ -21,7 +21,7 @@ in {
     # Ctrl+K to delete text from the cursor to the end of the line, and so on.
 
     #this plugin should init between `bindkey -e` and fzf plugin initialization that order is 200.
-    programs.zsh.initExtra = mkOrder 199 ''
+    programs.zsh.initContent = mkOrder 199 ''
 
       ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
 

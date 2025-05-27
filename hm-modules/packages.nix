@@ -105,10 +105,13 @@
       chafa # converts image data suitable for display in a terminal
 
       netnewswire
-      preview_open
       # isabelle_app
+
+      preview_open # script wrapper for Preview.app
       koodo-reader
+      skimpdf
       #adobe-reader
+
       #bitwarden-desktop
       #rar #NIXPKGS_ALLOW_UNFREE=1 nix profile install nixpkgs#rar --impure
       p7zip
