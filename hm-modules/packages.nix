@@ -98,7 +98,6 @@
       # presentation
 
       mpv
-      rio
       tart # vm hypervisor
       yazi # terminal file explorer
       unar # yazi lsar plugin requires it

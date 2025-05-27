@@ -1,11 +1,17 @@
-{ pkgs, ... }: {
+{ config, pkgs, lib, ... }:
+let cfg = config.programs.rio;
+in {
 
-  home.file = {
-    ".config/rio/themes".source = ../files/dotfiles/_config/rio/themes;
-  };
+  imports = [{
+    config = lib.mkIf cfg.enable {
+      home.file = {
+        ".config/rio/themes".source = ../files/dotfiles/_config/rio/themes;
+      };
+    };
+  }];
 
   programs.rio = {
-    enable = true;
+    enable = false;
     settings = {
       theme = "catppuccin-macchiato";
       "option-as-alt" = "left";

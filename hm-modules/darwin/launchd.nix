@@ -7,11 +7,7 @@ in {
   options = {
     launch_agent_common.paths = mkOption {
       type = with types; listOf str;
-      default = [
-        "${homePath ".nix-profile/bin"}"
-        "${homePath ".local/bin"}"
-        "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-      ];
+      default = [ ];
     };
     launch_agent_common.path_env = mkOption {
       default = null;
@@ -20,6 +16,11 @@ in {
     };
   };
   config = {
+    launch_agent_common.paths = [
+      "${homePath ".nix-profile/bin"}"
+      "${homePath ".local/bin"}"
+      "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+    ];
     launch_agent_common.path_env = strings.concatStringsSep ":" cfg.paths;
   };
 }
