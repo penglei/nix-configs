@@ -5,31 +5,27 @@
     slim.modules = [
       ./hm-modules/default.nix
       ./hm-modules/zsh.nix
-      ./hm-modules/fzf.nix
+      ./hm-modules/fuzzyfilter.nix # fzf or skim
       ./hm-modules/starship.nix
     ];
-    base.modules = [
-      ./hm-modules/default.nix
+    base.modules = slim.modules ++ [
       ./hm-modules/packages.nix
-      ./hm-modules/zsh.nix
-      ./hm-modules/fzf.nix
       ./hm-modules/zshvimode.nix
       ./hm-modules/git.nix
       ./hm-modules/tig.nix
-      ./hm-modules/starship.nix
       ./hm-modules/neovim.nix
       ./hm-modules/helix.nix
       ./hm-modules/misc.nix
-    ];
-    router.modules = slim.modules ++ [
-      ./hm-modules/tig.nix
-      ./hm-modules/neovim.nix
-      { home.sessionVariables = { LC_TIME = "en_CN.UTF-8"; }; }
     ];
     linux.modules = base.modules ++ [{
       # The compatibility between zsh-vi-mode and autopairs plugins is not good.
       zsh-vi-mode.enable = false;
     }];
+    router.modules = slim.modules ++ [
+      ./hm-modules/tig.nix
+      ./hm-modules/neovim.nix
+      { home.sessionVariables = { LC_TIME = "en_CN.UTF-8"; }; }
+    ];
     darwin.modules = base.modules ++ [
       sops-nix.homeManagerModule
       ./secrets
