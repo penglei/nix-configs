@@ -117,9 +117,13 @@ M.basic = {
 
   -- Plugin: toggleterm
   ["t|<Esc><Esc>"] = map_cmd([[<C-\><C-n>]]):with_noremap():with_silent(),
-  ["n|<A-i>"] = map_cr([[execute v:count . "ToggleTerm direction=float"]]):with_noremap():with_silent():with_desc("terminal: Toggle float"),
-  ["i|<A-i>"] = map_cmd("<Esc><Cmd>ToggleTerm direction=float<CR>"):with_noremap():with_silent():with_desc("terminal: Toggle float"),
-  ["t|<A-i>"] = map_cmd("<Esc><Cmd>ToggleTerm<CR>"):with_noremap():with_silent():with_desc("terminal: Toggle float"),
+
+  -- ["n|<A-i>"] = map_cr([[execute v:count . "ToggleTerm direction=float"]]):with_noremap():with_silent():with_desc("terminal: Toggle float"),
+  ["n|<C-'>"] = map_cr([[execute v:count . "ToggleTerm direction=float"]]):with_noremap():with_silent():with_desc("terminal: Toggle float"),
+  -- ["i|<A-i>"] = map_cmd("<Esc><Cmd>ToggleTerm direction=float<CR>"):with_noremap():with_silent():with_desc("terminal: Toggle float"),
+  ["i|<C-'>"] = map_cmd("<Esc><Cmd>ToggleTerm direction=float<CR>"):with_noremap():with_silent():with_desc("terminal: Toggle float"),
+  -- ["t|<A-i>"] = map_cmd("<Esc><Cmd>ToggleTerm<CR>"):with_noremap():with_silent():with_desc("terminal: Toggle float"),
+  ["t|<C-'>"] = map_cmd("<Esc><Cmd>ToggleTerm<CR>"):with_noremap():with_silent():with_desc("terminal: Toggle float"),
 
   -- Plugin: trouble
   --["n|gt"] = map_cr("TroubleToggle"):with_noremap():with_silent():with_desc("lsp: Toggle trouble list"),
