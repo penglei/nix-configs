@@ -66,7 +66,7 @@ in with pkgs; {
   # };
   yabai = callPackage ./darwin/yabai.nix { };
 
-  # shiori = callPackage ./shiori.nix { };
+  shiori = callPackage ./shiori.nix { };
   passage = callPackage ./passage.nix { };
 
   nixos-installer = callPackage ./nixos-installer { };

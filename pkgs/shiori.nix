@@ -1,46 +1,26 @@
-{ lib, buildGoModule, fetchFromGitHub, nixosTests, installShellFiles, stdenv, }:
+{ lib, stdenv, ... }:
 
-buildGoModule rec {
-  pname = "shiori";
-  version = "1.7.4";
-
-  vendorHash = "sha256-RTnaDAl79LScbeKKAGJOI/YOiHEwwlxS2CmNhw80KL0=";
+stdenv.mkDerivation rec {
+  pname = "shiori-dev";
+  version = "local";
 
   doCheck = false;
+  dontUnpack = true;
 
-  src = fetchFromGitHub {
-    owner = "go-shiori";
-    repo = pname;
-    rev = "v${version}";
-    sha256 = "sha256-T4EFwvejLgNkcykPjSHU8WXJwqSqYPFaAD+9JX+uiJU=";
-  };
-
-  unpackPhase = ''
-    echo "------------"
-    pwd
-    echo "------------"
+  src = ../stuff/pre-builtis/darwin/arm64/shiori;
+  installPhase = ''
+    runHook preInstall
+    mkdir -p $out/bin
+    install -Dm755 ${src} $out/bin/shiori
+    runHook postInstall
   '';
-
-  ldflags =
-    [ "-X main.version=${version}" "-X main.commit=nixpkgs-${src.rev}" ];
-
-  nativeBuildInputs = [ installShellFiles ];
-  postInstall =
-    lib.optionalString (stdenv.hostPlatform != stdenv.buildPlatform) ''
-      installShellCompletion --cmd shiori \
-        --bash <($out/bin/shiori completion bash) \
-        --fish <($out/bin/shiori completion fish) \
-        --zsh <($out/bin/shiori completion zsh)
-    '';
-
-  passthru.tests.smoke-test = nixosTests.shiori;
 
   meta = with lib; {
     description = "Simple bookmark manager built with Go";
     mainProgram = "shiori";
     homepage = "https://github.com/go-shiori/shiori";
     license = licenses.mit;
-    maintainers = with maintainers; [ minijackson CaptainJawZ ];
+    platforms = platforms.darwin;
   };
 }
 
