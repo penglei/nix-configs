@@ -1,3 +1,0 @@
-repository mirror
-  url: https://mirrors.tuna.tsinghua.edu.cn/hackage
-  secure: True

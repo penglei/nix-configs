@@ -13,6 +13,7 @@
         "https://mirrors.ustc.edu.cn/nix-channels/store"
         "https://cache.nixos.org"
       ];
+      allow-import-from-derivation = true;
     };
   };
 
