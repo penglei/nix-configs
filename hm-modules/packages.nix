@@ -1,7 +1,8 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs;
+  home.packages =
+    with pkgs;
     [
       fortune
       coreutils-full
@@ -17,10 +18,6 @@
       ascii
       libiconv
       gnumake
-      m4
-      libtool
-      autoconf
-      automake
       cmake
       ninja
       openssh
@@ -75,7 +72,8 @@
 
       mynixcleaner
 
-    ] ++ lib.optionals stdenvNoCC.isDarwin [
+    ]
+    ++ lib.optionals stdenvNoCC.isDarwin [
       bashInteractive
       git-cliff
       lazygit
@@ -185,24 +183,32 @@
       typstyle
       tinymist
 
-    ] ++ lib.optionals stdenvNoCC.isLinux [
+    ]
+    ++ lib.optionals stdenvNoCC.isLinux [
+      m4
+      libtool
+      autoconf
+      automake
+
       #binutils #`ld` is not recommended installing globally.
 
       #(gnupg.override {
       #  enableMinimal = true;
       #  guiSupport = false;
       #})
-      (gnupg.overrideAttrs (finalAttrs: previousAttrs: {
-        postInstall = ''
-          # add gpg2 symlink to make sure git does not break when signing commits
-          ln -s $out/bin/gpg $out/bin/gpg2
+      (gnupg.overrideAttrs (
+        finalAttrs: previousAttrs: {
+          postInstall = ''
+            # add gpg2 symlink to make sure git does not break when signing commits
+            ln -s $out/bin/gpg $out/bin/gpg2
 
-          # Make libexec tools available in PATH
-          for f in $out/libexec/; do
-            if [[ "$(basename $f)" == "gpg-wks-client" ]]; then continue; fi
-            ln -s $f $out/bin/$(basename $f)
-          done
-        '';
-      }))
+            # Make libexec tools available in PATH
+            for f in $out/libexec/; do
+              if [[ "$(basename $f)" == "gpg-wks-client" ]]; then continue; fi
+              ln -s $f $out/bin/$(basename $f)
+            done
+          '';
+        }
+      ))
     ];
 }
