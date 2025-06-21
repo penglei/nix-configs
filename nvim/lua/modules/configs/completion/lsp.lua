@@ -72,5 +72,16 @@ return function()
   end
   -- lspconfig.tsserver.setup{}
 
+  setup_lsp("purescriptls", {
+    settings = {
+      purescript = {
+        addSpagoSources = true, -- e.g. any purescript language-server config here
+      },
+    },
+    flags = {
+      debounce_text_changes = 150,
+    },
+  })
+
   vim.api.nvim_command("LspStart") -- Start LSPs
 end

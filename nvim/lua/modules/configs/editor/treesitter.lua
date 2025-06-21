@@ -27,6 +27,7 @@ return vim.schedule_wrap(function()
       "scheme",
       "elvish",
       "vimdoc",
+      "purescript",
     },
 
     highlight = {
