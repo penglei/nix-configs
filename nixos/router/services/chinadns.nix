@@ -12,7 +12,7 @@ let
 
     # 可信上游
     #udp://127.0.0.1#29753,tcp://8.8.8.8
-    trust-dns tcp://9.9.9.9
+    trust-dns udp://8.8.8.8,tcp://9.9.9.9
 
     # 域名列表，用于分流(https://github.com/Loyalsoldier/v2ray-rules-dat)
     #https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt
@@ -51,7 +51,7 @@ in
     path = with pkgs; [ coreutils ];
     preStart = ''
       mkdir -p ${statedir}
-        if [ ! -d ${statedir}/dirty.lock ];then
+      if [ ! -f ${statedir}/dirty.lock ];then
 
         : > ${statedir}/direct-list.txt
         cat ${./data/china-list.txt} >> ${statedir}/direct-list.txt
