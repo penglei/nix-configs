@@ -96,7 +96,7 @@ in
       "flowercloud-ss",
       "clashcloud-ss",
     ],
-    default = "clashcloud-ss",
+    default = "flowercloud-ss",
     interrupt_exist_connections = false,
   },
 
