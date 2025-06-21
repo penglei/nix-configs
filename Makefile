@@ -69,5 +69,5 @@ update-router:
 SERVER ?= ganger
 rsync:
 	rsync -avh . $(SERVER):/data/nix-configs \
-	--exclude .direnv --include='**.gitignore' --filter=':- .gitignore' --delete-after
+	--exclude .direnv --exclude .git/config --exclude .git/hooks --include='**.gitignore' --filter=':- .gitignore' --delete-after
 

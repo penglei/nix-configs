@@ -1,10 +1,15 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
 
   configFile = "sing-box-client/config.json";
   configFilePath = config.sops.templates."${configFile}".path;
   #`pkg.writeText` will store sensitive data in `/nix/store`, which is accessible to everyone.
-  #configFilePath = pkgs.writeText "config.json" (builtins.toJSON cfg); 
+  #configFilePath = pkgs.writeText "config.json" (builtins.toJSON cfg);
   sops_replace_py = ''
     import re, hashlib, sys
     print(
@@ -14,34 +19,38 @@ let
           "<SOPS:"+hashlib.sha256((m.group(1) or m.group(2)).encode()).hexdigest()+":PLACEHOLDER>",
         open(sys.argv[1]).read()), end="")
   '';
-  templates = pkgs.runCommand "sing-box-config-template" {
-    src = ./sing-box;
-    buildInputs = [
-      pkgs.bash
-      pkgs.coreutils-full
+  templates =
+    pkgs.runCommand "sing-box-config-template"
+      {
+        src = ./sing-box;
+        buildInputs = [
+          pkgs.bash
+          pkgs.coreutils-full
 
-      #nickel renders configuration in first stage:
-      # render to json that contains custom key placeholder: <PLACEHOLDER:keypath>
-      pkgs.nickel
+          #nickel renders configuration in first stage:
+          # render to json that contains custom key placeholder: <PLACEHOLDER:keypath>
+          pkgs.nickel
 
-      #python renders configuration in second stage:
-      # replace custom key placeholer to sops key placeholder: <PLACEHOLDER:key's sha256>
-      pkgs.python3Minimal
-    ];
-  } ''
-    export GATEWAY_ADDR=${config.netaddr.ipv4.gateway}
-    export CHINA_DNS_SERVER="<CHINA-DNS-SERVER>"
+          #python renders configuration in second stage:
+          # replace custom key placeholer to sops key placeholder: <PLACEHOLDER:key's sha256>
+          pkgs.python3Minimal
+        ];
+      }
+      ''
+        export GATEWAY_ADDR=${config.netaddr.ipv4.gateway}
+        export CHINA_DNS_SERVER="<CHINA-DNS-SERVER>"
 
-    # Run by bash command instead of run build.sh directly,
-    # because the build environment(chroot) doesn't provide the /usr/bin/env
-    bash $src/hack/build.sh $out
+        # Run by bash command instead of run build.sh directly,
+        # because the build environment(chroot) doesn't provide the /usr/bin/env
+        bash $src/hack/build.sh $out
 
-    python3 -c '${sops_replace_py}' $out/config.json > config.json
-    mv config.json $out/
-    cp $out/config.json $out/template.txt
-  '';
+        python3 -c '${sops_replace_py}' $out/config.json > config.json
+        mv config.json $out/
+        cp $out/config.json $out/template.txt
+      '';
   PPPoEDNSServersFile = "/var/lib/pppoe/dns-servers";
-in {
+in
+{
 
   sops-keys = [
     "main-password"
@@ -72,11 +81,18 @@ in {
 
   environment.systemPackages = [ pkgs.sing-box-prebuilt ];
 
-  systemd.packages = [ pkgs.sing-box-prebuilt templates ];
+  systemd.packages = [
+    pkgs.sing-box-prebuilt
+    templates
+  ];
   systemd.services.sing-box = {
     wantedBy = [ ]; # 禁用默认启动
 
-    path = with pkgs; [ iproute2 nftables bash ];
+    path = with pkgs; [
+      iproute2
+      nftables
+      bash
+    ];
     #preStart = ''
     #  echo "working directory: $(pwd)"
     #  echo "RUNTIME_DIRECTORY: $RUNTIME_DIRECTORY"
@@ -90,7 +106,13 @@ in {
 
       #TODO PathModified: https://systemd-book.junmajinlong.com/systemd_path.html
       CHINA_DNS_SERVER="$(head -n 1 ${PPPoEDNSServersFile} | tr -d \\\n)"
-      cat ${configFilePath} | sed "s/<CHINA-DNS-SERVER>/''${CHINA_DNS_SERVER:-119.29.29.29}/" > $STATE_DIRECTORY/config.json
+      dirty_lock_file="$STATE_DIRECTORY/dirty.lock"
+      if [ -f "$dirty_lock_file" ]; then
+        echo "$dirty_lock_file exist, config.json is not overrided."
+      else
+        sed "s/<CHINA-DNS-SERVER>/''${CHINA_DNS_SERVER:-119.29.29.29}/" \
+            ${configFilePath} > $STATE_DIRECTORY/config.json
+      fi
     '';
     postStart = ''
       # setup route and nftables
@@ -102,14 +124,17 @@ in {
       StateDirectoryMode = "0700";
       RuntimeDirectory = "sing-box";
       RuntimeDirectoryMode = "0700";
-      ExecStart = let bin = lib.getExe pkgs.sing-box-prebuilt;
-      in [
-        # firstly, clean others definition
-        ""
+      ExecStart =
+        let
+          bin = lib.getExe pkgs.sing-box-prebuilt;
+        in
+        [
+          # firstly, clean others definition
+          ""
 
-        # '-C /run/sing-box' specify merge-able json config files (array append, map key ignore...)
-        "${bin} -D \${STATE_DIRECTORY} -C \${RUNTIME_DIRECTORY} run -c config.json"
-      ];
+          # '-C /run/sing-box' specify merge-able json config files (array append, map key ignore...)
+          "${bin} -D \${STATE_DIRECTORY} -C \${RUNTIME_DIRECTORY} run -c config.json"
+        ];
       Restart = "on-failure";
       RestartSec = "10s";
     };
@@ -148,9 +173,7 @@ in {
     description = "Restart sing-box on pppoe dns servers change";
     serviceConfig = {
       Type = "oneshot";
-      ExecStart =
-        "${config.systemd.package}/bin/systemctl restart sing-box.service";
+      ExecStart = "${config.systemd.package}/bin/systemctl restart sing-box.service";
     };
   };
 }
-

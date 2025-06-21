@@ -1,7 +1,17 @@
 {
   "rules": [
     {
-      "domain": []
+      "domain": [
+        "api.netbird.io",
+        "signal.netbird.io",
+        "turn.netbird.io",
+        "stun.netbird.io",
+        "relay.netbird.io"
+      ],
+      "domain_suffix": [
+        ".cn",
+        ".relay.netbird.io"
+      ]
     }
   ],
   "version": 1

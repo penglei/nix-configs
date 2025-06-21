@@ -42,7 +42,8 @@ let
     # verbose
   '';
   PPPoEDNSServersFile = "/var/lib/pppoe/dns-servers";
-in {
+in
+{
   systemd.services.chinadns = {
     description = "chinadns daemon";
     wantedBy = [ ]; # 禁用默认启动
@@ -50,22 +51,24 @@ in {
     path = with pkgs; [ coreutils ];
     preStart = ''
       mkdir -p ${statedir}
-      : > ${statedir}/direct-list.txt
-      cat ${./data/china-list.txt} >> ${statedir}/direct-list.txt
-      cat ${./data/china-list-manual.txt} >> ${statedir}/direct-list.txt
+        if [ ! -d ${statedir}/dirty.lock ];then
 
-      : > ${statedir}/proxy-list.txt
-      cat ${./data/gfw.txt} >> ${statedir}/proxy-list.txt
-      cat ${configFile} > ${statedir}/chinadns-ng.conf
-      chinaservers=$(cat ${PPPoEDNSServersFile} | tr '\n' ',')
-      if [ -n "$chinaservers" ];then
-        echo "china-dns ''${chinaservers}" >> ${statedir}/chinadns-ng.conf
+        : > ${statedir}/direct-list.txt
+        cat ${./data/china-list.txt} >> ${statedir}/direct-list.txt
+        cat ${./data/china-list-manual.txt} >> ${statedir}/direct-list.txt
+
+        : > ${statedir}/proxy-list.txt
+        cat ${./data/gfw.txt} >> ${statedir}/proxy-list.txt
+        cat ${configFile} > ${statedir}/chinadns-ng.conf
+        chinaservers=$(cat ${PPPoEDNSServersFile} | tr '\n' ',')
+        if [ -n "$chinaservers" ];then
+          echo "china-dns ''${chinaservers}" >> ${statedir}/chinadns-ng.conf
+        fi
       fi
     '';
     # unitConfig = { ConditionPathExists = PPPoEDNSServersFile; }; # **only active** if the file exists(not expected)
     serviceConfig = {
-      ExecStart =
-        "${pkgs.chinadns-ng}/bin/chinadns-ng -C ${statedir}/chinadns-ng.conf";
+      ExecStart = "${pkgs.chinadns-ng}/bin/chinadns-ng -C ${statedir}/chinadns-ng.conf";
       Restart = "on-failure";
       RestartSec = "10s";
     };
@@ -100,8 +103,7 @@ in {
     description = "Restart chinadns on pppoe dns servers change";
     serviceConfig = {
       Type = "oneshot";
-      ExecStart =
-        "${config.systemd.package}/bin/systemctl restart chinadns.service";
+      ExecStart = "${config.systemd.package}/bin/systemctl restart chinadns.service";
     };
   };
 

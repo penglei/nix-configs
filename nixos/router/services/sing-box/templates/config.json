@@ -1,31 +1,26 @@
 {
   "dns": {
     "cache_capacity": 50000,
-    "client_subnet": "222.211.224.1/24",
+    "client_subnet": "222.210.108.0/24",
     "disable_cache": false,
-    "final": "dns-abroad",
+    "final": "abroad-dns",
     "reverse_mapping": true,
     "rules": [
       {
         "action": "route",
         "rule_set": "dns-direct",
-        "server": "dns-cn"
+        "server": "cn-dns"
       },
       {
         "rule_set": "site-proxy",
-        "server": "dns-abroad"
-      },
-      {
-        "action": "reject",
-        "method": "default",
-        "rule_set": "geosite-category-ads-all"
+        "server": "abroad-dns"
       },
       {
         "rule_set": [
           "geosite-cn",
           "geosite-geolocation-cn"
         ],
-        "server": "dns-cn"
+        "server": "cn-dns"
       },
       {
         "mode": "and",
@@ -38,30 +33,28 @@
             "rule_set": "geoip-cn"
           }
         ],
-        "server": "dns-abroad",
+        "server": "abroad-dns",
         "type": "logical"
       }
     ],
     "servers": [
       {
-        "path": "/dns-query",
         "server": "120.53.53.53",
-        "server_port": 443,
-        "tag": "dns-cn",
-        "type": "https"
+        "tag": "cn-dns",
+        "type": "udp"
       },
       {
-        "detour": "dynamic-proxy",
-        "domain_resolver": "dns-cn",
-        "server": "dns.google",
+        "detour": "dns-proxy",
+        "domain_resolver": "cn-dns",
+        "server": "dns.quad9.net",
         "server_port": 443,
-        "tag": "dns-abroad",
+        "tag": "abroad-dns",
         "type": "https"
       },
       {
         "server": "127.0.0.1",
         "server_port": 29753,
-        "tag": "dns-internal-ipv4",
+        "tag": "dns-internal",
         "type": "udp"
       }
     ],
@@ -74,7 +67,7 @@
     "clash_api": {
       "external_controller": "0.0.0.0:18180",
       "external_ui": "ui",
-      "external_ui_download_detour": "dynamic-proxy",
+      "external_ui_download_detour": "bootstrap-proxy",
       "external_ui_download_url": "https://github.com/MetaCubeX/Yacd-meta/archive/gh-pages.zip"
     }
   },
@@ -131,6 +124,25 @@
   "outbounds": [
     {
       "default": "relay-to-hk-alpha",
+      "outbounds": [
+        "relay-to-hk-alpha",
+        "hk-alpha-ss-on-shadowtls",
+        "subscribes"
+      ],
+      "tag": "bootstrap-proxy",
+      "type": "selector"
+    },
+    {
+      "default": "relay-to-hk-alpha",
+      "outbounds": [
+        "relay-to-hk-alpha",
+        "subscribes"
+      ],
+      "tag": "dns-proxy",
+      "type": "selector"
+    },
+    {
+      "default": "relay-to-hk-alpha",
       "interrupt_exist_connections": false,
       "outbounds": [
         "relay-to-hk-alpha",
@@ -141,7 +153,19 @@
         "sv-alpha-ss-on-shadowtls",
         "sv-alpha-ss"
       ],
-      "tag": "dynamic-proxy",
+      "tag": "ipv4-proxy",
+      "type": "selector"
+    },
+    {
+      "default": "relay-to-hk-alpha",
+      "interrupt_exist_connections": false,
+      "outbounds": [
+        "relay-to-hk-alpha",
+        "relay-to-sv-alpha",
+        "sv-alpha-ss-on-shadowtls",
+        "sv-alpha-ss"
+      ],
+      "tag": "ipv6-proxy",
       "type": "selector"
     },
     {
@@ -151,18 +175,7 @@
         "flowercloud-ss",
         "clashcloud-ss"
       ],
-      "tag": "subscribes-relay",
-      "type": "selector"
-    },
-    {
-      "default": "relay-to-sv-alpha",
-      "interrupt_exist_connections": false,
-      "outbounds": [
-        "relay-to-sv-alpha",
-        "sv-alpha-ss-on-shadowtls",
-        "sv-alpha-ss"
-      ],
-      "tag": "ipv6-proxy",
+      "tag": "subscribes",
       "type": "selector"
     },
     {
@@ -176,7 +189,7 @@
       "type": "shadowsocks"
     },
     {
-      "detour": "subscribes-relay",
+      "detour": "subscribes",
       "password": "<PLACEHOLDER:main-password>",
       "server": "<PLACEHOLDER:sing-box/hk-alpha/address>",
       "server_port": 443,
@@ -203,7 +216,7 @@
       "type": "shadowsocks"
     },
     {
-      "detour": "subscribes-relay",
+      "detour": "subscribes",
       "password": "<PLACEHOLDER:main-password>",
       "server": "<PLACEHOLDER:sing-box/sv-alpha/address>",
       "server_port": 443,
@@ -288,10 +301,6 @@
       "type": "direct"
     },
     {
-      "domain_resolver": {
-        "rewrite_ttl": 60,
-        "server": "dns-internal-ipv4"
-      },
       "method": "<PLACEHOLDER:proxies/subscribe-a/common/method>",
       "password": "<PLACEHOLDER:proxies/subscribe-a/common/password>",
       "plugin": "<PLACEHOLDER:proxies/subscribe-a/common/plugin>",
@@ -312,6 +321,7 @@
   ],
   "route": {
     "auto_detect_interface": true,
+    "default_domain_resolver": "cn-dns",
     "default_mark": 666,
     "final": "out-direct",
     "rule_set": [
@@ -346,21 +356,21 @@
         "type": "local"
       },
       {
-        "download_detour": "dynamic-proxy",
+        "download_detour": "bootstrap-proxy",
         "format": "binary",
         "tag": "geoip-cn",
         "type": "remote",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs"
       },
       {
-        "download_detour": "dynamic-proxy",
+        "download_detour": "bootstrap-proxy",
         "format": "binary",
         "tag": "geosite-cn",
         "type": "remote",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs"
       },
       {
-        "download_detour": "dynamic-proxy",
+        "download_detour": "bootstrap-proxy",
         "format": "binary",
         "tag": "geosite-geolocation-cn",
         "type": "remote",
@@ -368,7 +378,7 @@
         "url": "https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-geolocation-cn.srs"
       },
       {
-        "download_detour": "dynamic-proxy",
+        "download_detour": "bootstrap-proxy",
         "format": "binary",
         "tag": "geosite-geolocation-!cn",
         "type": "remote",
@@ -376,7 +386,7 @@
         "url": "https://github.com/SagerNet/sing-geosite/raw/refs/heads/rule-set/geosite-geolocation-!cn.srs"
       },
       {
-        "download_detour": "dynamic-proxy",
+        "download_detour": "bootstrap-proxy",
         "format": "binary",
         "tag": "geosite-category-ads-all",
         "type": "remote",
@@ -390,67 +400,97 @@
       },
       {
         "action": "hijack-dns",
-        "protocol": "dns"
+        "mode": "and",
+        "rules": [
+          {
+            "mode": "or",
+            "rules": [
+              {
+                "inbound": "in-dnsserver(127.0.0.1)"
+              },
+              {
+                "inbound": "in-dnsserver(::1)"
+              }
+            ],
+            "type": "logical"
+          },
+          {
+            "protocol": "dns"
+          }
+        ],
+        "type": "logical"
       },
       {
+        "mode": "or",
         "outbound": "out-direct",
-        "protocol": "bittorrent"
+        "rules": [
+          {
+            "rule_set": [
+              "site-direct",
+              "ip-direct"
+            ]
+          },
+          {
+            "protocol": [
+              "bittorrent"
+            ]
+          }
+        ],
+        "type": "logical"
       },
       {
-        "clash_mode": "direct",
-        "outbound": "out-direct"
-      },
-      {
-        "inbound": "mixed-proxy",
-        "outbound": "relay-to-sv-alpha"
-      },
-      {
-        "outbound": "out-direct",
-        "rule_set": [
-          "site-direct",
-          "ip-direct"
-        ]
-      },
-      {
-        "action": "route",
-        "ip_is_private": true,
-        "outbound": "out-direct",
-        "rule_set": [
-          "geoip-cn",
-          "geosite-cn"
-        ]
+        "mode": "and",
+        "outbound": "ipv4-proxy",
+        "rules": [
+          {
+            "ip_version": 4
+          },
+          {
+            "mode": "or",
+            "rules": [
+              {
+                "rule_set": [
+                  "geosite-geolocation-!cn",
+                  "site-proxy",
+                  "ip-proxy"
+                ]
+              },
+              {
+                "invert": true,
+                "rule_set": "geoip-cn"
+              }
+            ],
+            "type": "logical"
+          }
+        ],
+        "type": "logical"
       },
       {
         "mode": "and",
         "outbound": "ipv6-proxy",
         "rules": [
           {
-            "invert": true,
-            "rule_set": "geoip-cn"
+            "ip_version": 6
           },
           {
-            "ip_version": 6
+            "mode": "or",
+            "rules": [
+              {
+                "rule_set": [
+                  "geosite-geolocation-!cn",
+                  "site-proxy",
+                  "ip-proxy"
+                ]
+              },
+              {
+                "invert": true,
+                "rule_set": "geoip-cn"
+              }
+            ],
+            "type": "logical"
           }
         ],
         "type": "logical"
-      },
-      {
-        "mode": "and",
-        "outbound": "dynamic-proxy",
-        "rules": [
-          {
-            "invert": true,
-            "rule_set": "geoip-cn"
-          }
-        ],
-        "type": "logical"
-      },
-      {
-        "outbound": "dynamic-proxy",
-        "rule_set": [
-          "site-proxy",
-          "ip-proxy"
-        ]
       }
     ]
   }
