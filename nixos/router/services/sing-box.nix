@@ -100,16 +100,15 @@ in
     #  ln -sf ${./templates/rule_exts} $STATE_DIRECTORY/rule_exts
     #'';
     preStart = ''
-      rm -f ''${STATE_DIRECTORY}/rule_exts;
-      ln -sf ${templates}/rule_exts $STATE_DIRECTORY/rule_exts
-      rm -f $STATE_DIRECTORY/config.json
-
       #TODO PathModified: https://systemd-book.junmajinlong.com/systemd_path.html
-      CHINA_DNS_SERVER="$(head -n 1 ${PPPoEDNSServersFile} | tr -d \\\n)"
       dirty_lock_file="$STATE_DIRECTORY/dirty.lock"
       if [ -f "$dirty_lock_file" ]; then
         echo "$dirty_lock_file exist, config.json is not overrided."
       else
+        rm -f ''${STATE_DIRECTORY}/rule_exts;
+        ln -sf ${templates}/rule_exts $STATE_DIRECTORY/rule_exts
+        rm -f $STATE_DIRECTORY/config.json
+        CHINA_DNS_SERVER="$(head -n 1 ${PPPoEDNSServersFile} | tr -d \\\n)"
         sed "s/<CHINA-DNS-SERVER>/''${CHINA_DNS_SERVER:-119.29.29.29}/" \
             ${configFilePath} > $STATE_DIRECTORY/config.json
       fi

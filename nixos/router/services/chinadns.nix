@@ -12,7 +12,8 @@ let
 
     # 可信上游
     #udp://127.0.0.1#29753,tcp://8.8.8.8
-    trust-dns udp://8.8.8.8,tcp://9.9.9.9
+    #trust-dns tcp://8.8.8.8
+    trust-dns tcp://43.135.87.60#15353?count=0?life=0
 
     # 域名列表，用于分流(https://github.com/Loyalsoldier/v2ray-rules-dat)
     #https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt

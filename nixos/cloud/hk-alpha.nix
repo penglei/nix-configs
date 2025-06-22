@@ -1,16 +1,30 @@
-{ lib, hostname, pkgs, ... }: {
+{
+  lib,
+  hostname,
+  pkgs,
+  ...
+}:
+{
 
   imports = [
     (import ./default.nix)
     ((import ../modules/sing-box-server.nix) { proxy_name = "hk-alpha"; })
+    (import ../modules/coredns-ruf.nix)
   ];
 
-  swapDevices = [{
-    device = "/swapfile";
-    size = 2048; # 2GB
-  }];
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 4096; # 2GB
+    }
+  ];
 
-  environment.systemPackages = with pkgs; [ tcpdump ftop iotop iftop ];
+  environment.systemPackages = with pkgs; [
+    tcpdump
+    ftop
+    iotop
+    iftop
+  ];
 
   networking = {
     hostName = hostname;
@@ -32,11 +46,13 @@
       DHCP = "ipv4"; # must
       IPv6AcceptRA = true;
     };
-    routes = [{
-      Destination = "::/0"; # IPv6 默认路由
-      Gateway = "fe80::feee:ffff:feff:ffff";
-      GatewayOnLink = true; # 网关在本地链路
-    }];
+    routes = [
+      {
+        Destination = "::/0"; # IPv6 默认路由
+        Gateway = "fe80::feee:ffff:feff:ffff";
+        GatewayOnLink = true; # 网关在本地链路
+      }
+    ];
   };
 
   nix.settings.substituters = lib.mkForce [ "https://cache.nixos.org" ];

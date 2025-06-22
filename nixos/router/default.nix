@@ -1,4 +1,11 @@
-{ config, pkgs, hostname, options, ... }: {
+{
+  config,
+  pkgs,
+  hostname,
+  options,
+  ...
+}:
+{
   imports = [
     ./network/interface.nix
     ./network/netaddr.nix
@@ -14,7 +21,7 @@
 
     #dns
     #./services/mosdns.nix
-    ./services/coredns.nix
+    #./services/coredns.nix
 
     ./services/dnsmasq.nix # dnsmasq可以同时提供: dhcpv4, ra, dns
 
@@ -50,8 +57,7 @@
     useDHCP = false;
     nftables.enable = true;
 
-    timeServers = options.networking.timeServers.default
-      ++ [ "ntp.aliyun.com" ];
+    timeServers = options.networking.timeServers.default ++ [ "ntp.aliyun.com" ];
 
     #diasble for router employed pppoe
     #useDHCP = true; #disable for router
