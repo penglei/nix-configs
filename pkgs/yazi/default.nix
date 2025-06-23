@@ -1,20 +1,22 @@
 { pkgs, ... }:
 with pkgs;
 
-(callPackage ./officials.nix { }) // {
+(callPackage ./officials.nix { })
+// {
 
   bookmarks = fetchFromGitHub {
     owner = "dedukun";
     repo = "bookmarks.yazi";
-    rev = "20ece7e1ef3c8180f199cc311f187b662662bc87";
-    hash = "sha256-CpoHpYAeMuSn5Sfaq30vzTj/ukrUjtXI0zZioJLnWqw=";
+    rev = "fbb7c00b6f887d5c0d78367bd4763ea8dff53459";
+    hash = "sha256-Ry3V29T7lij5JR68gTINXtOEgbrYPwd5zQDEa2kfpTA=";
+
   };
 
   fg = fetchFromGitHub {
     owner = "lpnh";
     repo = "fg.yazi";
-    rev = "9bba7430dbcd30995deea600499b069fe6067a3e";
-    hash = "sha256-3VjTL/q4gSDIHyPXwUIQA/26bbhWya+01EZbxSKzzQo=";
+    rev = "6d5e4693e486c564f57491cb9afdf7bf813ae874";
+    hash = "sha256-M4idc573oSlX9XMI4Hfzo7gOMFDV91yKOvYmm5rRdio=";
   };
   #more:
   #https://github.com/h-hg/yamb.yazi

@@ -1,25 +1,34 @@
-{ stdenvNoCC, fetchFromGitHub, }:
+{ stdenvNoCC, fetchFromGitHub }:
 
 let
   src = fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
-    rev = "8ed253716c60f3279518ce34c74ca053530039d8";
-    hash = "sha256-xY2yVCLLcXRyFfnmyP6h5Fw+4kwOZhEOCWVZrRwXnTA=";
+    rev = "e5f00e2716fd177b0ca0d313f1a6e64f01c12760";
+    hash = "sha256-Ry3V29T7lij5JR68gTINXtOEgbrYPwd5zQDEa2kfpTA=";
   };
 
-in builtins.listToAttrs (map (pname: {
-  name = pname;
-  value = stdenvNoCC.mkDerivation {
-    inherit pname src;
-    version = "main";
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out
-      cp -r ${pname}.yazi/* $out
-      runHook postInstall
-    '';
+in
+builtins.listToAttrs (
+  map
+    (pname: {
+      name = pname;
+      value = stdenvNoCC.mkDerivation {
+        inherit pname src;
+        version = "main";
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out
+          cp -r * $out
+          runHook postInstall
+        '';
 
-  };
-}) [ "full-border" "git" "max-preview" "lsar" ])
-
+      };
+    })
+    [
+      "full-border"
+      "git"
+      "max-preview"
+      "lsar"
+    ]
+)

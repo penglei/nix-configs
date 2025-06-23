@@ -1,0 +1,4 @@
+collapse_simple_statement = "Always"
+indent_type = "Tabs"
+no_call_parentheses = false
+column_width = 150

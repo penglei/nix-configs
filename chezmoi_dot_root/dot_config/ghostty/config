@@ -1,0 +1,28 @@
+# Font configuration:
+font-family = "MonaspiceNe Nerd Font"
+font-family-italic = "Cartograph CF Italic"
+adjust-cell-width = -5%
+adjust-cell-height = 20%
+adjust-underline-position = 6
+adjust-underline-thickness = 40%
+adjust-cursor-thickness = 150%
+
+# Color theme:
+theme = catppuccin-frappe
+
+# Cursor:
+cursor-color = F8F8F2
+cursor-style-blink = false
+cursor-text = 000000
+shell-integration-features = no-cursor
+
+# Splits:
+unfocused-split-opacity = 0.4
+split-divider-color = A7DFEF
+
+# Let me close stuff in peace:
+confirm-close-surface = false
+
+# Include OS-specific configurations.
+config-file = ?config-macos
+config-file = ?config-linux
