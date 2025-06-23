@@ -2,7 +2,9 @@ local M = {}
 
 M["neovim/nvim-lspconfig"] = {
   lazy = true,
-  event = { "BufReadPost", "BufAdd", "BufNewFile" },
+  -- event = { "BufReadPost", "BufAdd", "BufNewFile" },
+  event = { "BufReadPre", "BufNewFile" },
+
   config = require("completion.lsp"),
 }
 
@@ -26,8 +28,9 @@ M["penglei/nvim-cmp"] = {
   dependencies = {
     {
       "L3MON4D3/LuaSnip",
-      dependencies = { "rafamadriz/friendly-snippets" },
+      build = "make install_jsregexp",
       config = require("completion.luasnip"),
+      dependencies = { "rafamadriz/friendly-snippets" },
     },
     { "rafamadriz/friendly-snippets" },
     { "lukas-reineke/cmp-under-comparator" },

@@ -1,4 +1,8 @@
 return function()
+  local WIDTH_RATIO = 0.3
+  local HEIGHT_RATIO = 0.8
+  local OFFSET = 3
+
   local icons = {
     diagnostics = require("modules.utils.icons").get("diagnostics"),
     documents = require("modules.utils.icons").get("documents"),
@@ -62,24 +66,44 @@ return function()
     end,
 
     view = {
-      adaptive_size = true,
-      centralize_selection = false,
-      width = 35,
-      side = "left",
+      adaptive_size = false,
+      centralize_selection = true,
+      -- width = 40,
+      width = function()
+        return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
+      end,
+      side = "right",
       preserve_window_proportions = false,
       number = false,
       relativenumber = false,
       signcolumn = "yes",
       float = {
         enable = false,
-        open_win_config = {
-          relative = "editor",
-          border = "rounded",
-          width = 30,
-          height = 30,
-          row = 1,
-          col = 1,
-        },
+        open_win_config = function()
+          local screen_w = vim.opt.columns:get()
+          local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
+          local window_w = screen_w * WIDTH_RATIO
+          local window_h = screen_h * HEIGHT_RATIO
+          local window_w_int = math.floor(window_w)
+          local window_h_int = math.floor(window_h)
+
+          -- adjust for the offset
+          local col_right_aligned = screen_w - window_w_int - OFFSET
+          local row_offset = OFFSET - 3
+
+          return {
+            relative = "editor",
+            border = "rounded",
+            -- width = 40,
+            -- height = 50,
+            -- row = 1,
+            -- col = 1,
+            row = row_offset,
+            col = col_right_aligned,
+            width = window_w_int,
+            height = window_h_int,
+          }
+        end,
       },
     },
     renderer = {

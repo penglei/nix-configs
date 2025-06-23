@@ -82,6 +82,4 @@ return function()
       debounce_text_changes = 150,
     },
   })
-
-  vim.api.nvim_command("LspStart") -- Start LSPs
 end

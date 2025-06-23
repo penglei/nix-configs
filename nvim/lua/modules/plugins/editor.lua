@@ -116,25 +116,27 @@ M["nvim-treesitter/nvim-treesitter"] = {
       vim.api.nvim_command("TSUpdate")
     end
   end,
-  event = { "CursorHold", "CursorHoldI" },
-  -- event = { "BufReadPost" },
+  event = { "BufReadPre", "CursorHold", "CursorHoldI" },
   config = require("editor.treesitter"),
   dependencies = {
-    { "andymass/vim-matchup" },
     { "mfussenegger/nvim-treehopper" },
     { "nvim-treesitter/nvim-treesitter-textobjects" },
+    {
+      "andymass/vim-matchup",
+      init = require("editor.matchup"),
+    },
     {
       "windwp/nvim-ts-autotag",
       config = require("editor.autotag"),
     },
     {
-      "NvChad/nvim-colorizer.lua",
-      config = require("editor.colorizer"),
-    },
-    {
       "hiphish/rainbow-delimiters.nvim",
       -- url = "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git",
       config = require("editor.rainbow_delims"),
+    },
+    {
+      "NvChad/nvim-colorizer.lua",
+      config = require("editor.colorizer"),
     },
     -- { "nvim-treesitter/nvim-treesitter-context" }, #head line show syntax block context
     {
