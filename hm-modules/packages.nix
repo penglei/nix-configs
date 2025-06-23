@@ -32,6 +32,7 @@
       zstd
       rhash
       ripgrep
+      ast-grep
       fd
       jq
       yq-go

@@ -66,7 +66,7 @@
       ];
     };
 
-    keymap.manager.prepend_keymap = [
+    keymap.mgr.prepend_keymap = [
       # Smart paste plugin
       {
         on = "p";
@@ -74,14 +74,14 @@
       }
 
       # File navigation wraparound plugin
-      {
-        on = "k";
-        run = "plugin arrow --args=-1";
-      }
-      {
-        on = "j";
-        run = "plugin arrow --args=1";
-      }
+      # {
+      #   on = "k";
+      #   run = "plugin arrow --args=-1";
+      # }
+      # {
+      #   on = "j";
+      #   run = "plugin arrow --args=1";
+      # }
 
       # Max preview
       {
@@ -90,25 +90,25 @@
       }
 
       # Bookmarks
-      {
-        on = "m";
-        run = "plugin bookmarks --args=save";
-      }
-      {
-        on = "'";
-        run = "plugin bookmarks --args=jump";
-      }
-      {
-        on = "`";
-        run = "plugin bookmarks --args=jump";
-      }
-      {
-        on = [
-          "b"
-          "d"
-        ];
-        run = "plugin bookmarks --args=delete";
-      }
+      # {
+      #   on = "m";
+      #   run = "plugin bookmarks --args=save";
+      # }
+      # {
+      #   on = "'";
+      #   run = "plugin bookmarks --args=jump";
+      # }
+      # {
+      #   on = "`";
+      #   run = "plugin bookmarks --args=jump";
+      # }
+      # {
+      #   on = [
+      #     "b"
+      #     "d"
+      #   ];
+      #   run = "plugin bookmarks --args=delete";
+      # }
 
       #fg
       {
@@ -143,11 +143,11 @@
         git
         max-preview
         lsar
-        bookmarks
+        # bookmarks
         fg
         ;
       "smart-paste" = ../files/dotfiles/_config/yazi/plugins/smart-paste.yazi;
-      "arrow" = ../files/dotfiles/_config/yazi/plugins/arrow.yazi;
+      # "arrow" = ../files/dotfiles/_config/yazi/plugins/arrow.yazi;
     };
   };
 }
