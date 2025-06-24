@@ -19,13 +19,14 @@ return function()
 
   local current_model = chat_models[4] -- "deepseek/deepseek-r1:free"
   local current_chat_model = current_model
-  local secret_key = vim.fn.getenv("AI_SECRET_KEY") or ""
 
-  return require("codecompanion").setup({
-    opts = {
-      language = "English",
-    },
-    strategies = {
+  vim.env["DEEPSEEK_API_KEY"] = "sk-445e21b2c6b049609c5aafd8e64e4c11"
+
+  local strategies = {
+    openrouter = {
+      inline = {
+        adapter = "openrouter",
+      },
       chat = {
         adapter = "openrouter",
         roles = {
@@ -45,16 +46,26 @@ return function()
           },
         },
       },
-      inline = {
-        adapter = "openrouter",
-      },
     },
+    deepseek = { -- env:DEEPSEEK_API_KEY
+      chat = { adapter = "deepseek" },
+      inline = { adapter = "deepseek" },
+    },
+  }
+
+  return require("codecompanion").setup({
+    opts = {
+      language = "汉语",
+      log_level = "DEBUG",
+    },
+    strategies = strategies.deepseek,
+
     adapters = {
       openrouter = function()
         return require("codecompanion.adapters").extend("openai_compatible", {
           env = {
             url = "https://openrouter.ai/api",
-            api_key = secret_key,
+            api_key = "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", --vim.fn.getenv("OPENROUTER_API_KEY") or ,
             chat_url = "/v1/chat/completions",
           },
           schema = {

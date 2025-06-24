@@ -21,29 +21,45 @@ M["nvimdev/lspsaga.nvim"] = {
   dependencies = { "nvim-tree/nvim-web-devicons" },
 }
 
-M["penglei/nvim-cmp"] = {
-  lazy = true,
+-- M["penglei/nvim-cmp"] = {
+--   lazy = true,
+--   event = "InsertEnter",
+--   config = require("completion.cmp"),
+--   dependencies = {
+--     {
+--       "L3MON4D3/LuaSnip",
+--       build = "make install_jsregexp",
+--       config = require("completion.luasnip"),
+--       dependencies = { "rafamadriz/friendly-snippets" },
+--     },
+--     { "rafamadriz/friendly-snippets" },
+--     { "lukas-reineke/cmp-under-comparator" },
+--     { "saadparwaiz1/cmp_luasnip" },
+--     { "hrsh7th/cmp-nvim-lsp" },
+--     { "hrsh7th/cmp-nvim-lua" },
+--     -- { "andersevenrud/cmp-tmux" },
+--     { "hrsh7th/cmp-path" },
+--     { "f3fora/cmp-spell" },
+--     { "hrsh7th/cmp-buffer" },
+--     { "kdheepak/cmp-latex-symbols" },
+--     { "ray-x/cmp-treesitter" },
+--   },
+-- }
+
+M["saghen/blink.cmp"] = {
+  lazy = false,
   event = "InsertEnter",
-  config = require("completion.cmp"),
   dependencies = {
+    "rafamadriz/friendly-snippets",
     {
       "L3MON4D3/LuaSnip",
       build = "make install_jsregexp",
       config = require("completion.luasnip"),
       dependencies = { "rafamadriz/friendly-snippets" },
     },
-    { "rafamadriz/friendly-snippets" },
-    { "lukas-reineke/cmp-under-comparator" },
-    { "saadparwaiz1/cmp_luasnip" },
-    { "hrsh7th/cmp-nvim-lsp" },
-    { "hrsh7th/cmp-nvim-lua" },
-    -- { "andersevenrud/cmp-tmux" },
-    { "hrsh7th/cmp-path" },
-    { "f3fora/cmp-spell" },
-    { "hrsh7th/cmp-buffer" },
-    { "kdheepak/cmp-latex-symbols" },
-    { "ray-x/cmp-treesitter" },
   },
+  version = "1.*",
+  config = require("completion.blink"),
 }
 
 M["stevearc/conform.nvim"] = {
@@ -53,7 +69,8 @@ M["stevearc/conform.nvim"] = {
   config = require("completion.conform"),
 }
 
--- completion["dense-analysis/ale"] = {
+-- -- Asynchronous Lint Engine
+-- M["dense-analysis/ale"] = {
 -- 	lazy = true,
 -- 	event = { "BufReadPost",},
 -- }

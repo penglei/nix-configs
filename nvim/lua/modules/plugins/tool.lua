@@ -81,10 +81,10 @@ M["ahmedkhalf/project.nvim"] = {
 M["olimorris/codecompanion.nvim"] = {
   lazy = true,
   event = "VeryLazy",
-  config = require("tool.codecompanion"),
   dependencies = {
     { "ravitemer/codecompanion-history.nvim" },
   },
+  config = require("tool.codecompanion"),
 }
 -----------------------------
 

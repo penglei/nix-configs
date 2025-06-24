@@ -206,8 +206,10 @@ M.buf = function(buf)
     ["n|,d<CR>"] = map_cr("Lspsaga show_cursor_diagnostics"):with_noremap():with_silent():with_desc("Lspsaga: Show cusor diagnostics"),
     ["n|,db"] = map_cr("Lspsaga show_buf_diagnostics"):with_noremap():with_silent():with_desc("Lspsaga: Show cusor diagnostics"),
 
-    ["n|,t<CR>"] = map_cr("NeotestRun"):with_buffer(buf):with_noremap():with_silent():with_desc("Run cursor nearest test"),
-    ["n|,to"] = map_cr("ShowTestOutput"):with_buffer(buf):with_noremap():with_silent():with_desc("neotest: show cursor test output"),
+    ["n|<C-t>"] = map_cr("NeotestRun"):with_buffer(buf):with_noremap():with_silent():with_desc("Run cursor nearest test"),
+    ["n|<leader>t<CR>"] = map_cr("NeotestRun"):with_buffer(buf):with_noremap():with_silent():with_desc("Run cursor nearest test"),
+    ["n|<leader>ts"] = map_cr("ToggleNeotestSummar"):with_buffer(buf):with_noremap():with_silent():with_desc("Neotest: tooglle test summary"),
+    ["n|<leader>to"] = map_cr("ShowTestOutput"):with_buffer(buf):with_noremap():with_silent():with_desc("Neotest: show cursor test output"),
   }
 
   return plug_map

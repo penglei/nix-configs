@@ -23,7 +23,7 @@ return function()
 
       -- All the patterns used to detect root dir, when **"pattern"** is in
       -- detection_methods
-      patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn" },
+      patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "go.mod" },
 
       -- Table of lsp clients to ignore by name
       -- eg: { "efm", ... }

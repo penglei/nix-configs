@@ -12,9 +12,7 @@ return function()
     update_in_insert = false,
   })
 
-  local common_opts = {
-    capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-  }
+  local common_opts = {}
 
   local get_server_opts = function(lsp_name)
     local ok, server_opts = pcall(require, "completion.servers." .. lsp_name)
