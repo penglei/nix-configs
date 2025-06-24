@@ -37,9 +37,15 @@ M["iamcco/markdown-preview.nvim"] = {
   ft = { "markdown" },
   init = function()
     vim.g.mkdp_filetypes = { "markdown" }
-    vim.g.mkdp_browser = "Safari"
+    vim.g.mkdp_browser = "Google Chrome" --or "Safari"
   end,
   build = ":call mkdp#util#install()",
+}
+
+M["MeanderingProgrammer/render-markdown.nvim"] = {
+  lazy = true,
+  ft = { "markdown", "codecompanion" },
+  config = require("lang.render-markdown"),
 }
 
 M["chomosuke/typst-preview.nvim"] = {

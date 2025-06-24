@@ -48,11 +48,12 @@ M["akinsho/toggleterm.nvim"] = {
   },
   config = require("tool.toggleterm"),
 }
-M["folke/trouble.nvim"] = {
-  lazy = true,
-  cmd = { "Trouble", "TroubleToggle", "TroubleRefresh" },
-  config = require("tool.trouble"),
-}
+
+-- M["folke/trouble.nvim"] = {
+--   lazy = true,
+--   cmd = { "Trouble", "TroubleToggle", "TroubleRefresh" },
+--   config = require("tool.trouble"),
+-- }
 
 -- Automatically provides suggestions as you type ':'(command mode) or '/'(search mode)
 M["gelguy/wilder.nvim"] = {
@@ -75,6 +76,17 @@ M["ahmedkhalf/project.nvim"] = {
   event = "BufReadPost",
   config = require("tool.project"),
 }
+
+---------- AI ----------------
+M["olimorris/codecompanion.nvim"] = {
+  lazy = true,
+  event = "VeryLazy",
+  config = require("tool.codecompanion"),
+  dependencies = {
+    { "ravitemer/codecompanion-history.nvim" },
+  },
+}
+-----------------------------
 
 ----------------------------------------------------------------------
 --                        Telescope Plugins                         --
