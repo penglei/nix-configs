@@ -179,12 +179,6 @@ M.buf = function(buf)
     --["n|g["] = map_cr("Lspsaga diagnostic_jump_prev"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Prev diagnostic"),
     --["n|g]"] = map_cr("Lspsaga diagnostic_jump_next"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Next diagnostic"),
     -- ["n|<leader>sl"] = map_cr("Lspsaga show_line_diagnostics"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Line diagnostic"),
-    ["n|,s"] = map_callback(function()
-        vim.lsp.buf.signature_help()
-      end)
-      :with_noremap()
-      :with_silent()
-      :with_desc("lsp: Signature help"),
     ["n|,r"] = map_cr("Lspsaga rename"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Rename in file range"),
     ["n|,R"] = map_cr("Lspsaga rename ++project"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Rename in project range"),
     -- ["n|K"] = map_cr("Lspsaga hover_doc"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Show doc"),

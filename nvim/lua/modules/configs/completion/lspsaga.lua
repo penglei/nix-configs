@@ -26,6 +26,9 @@ return function()
   set_sidebar_icons()
 
   require("lspsaga").setup({
+    outline = {
+      win_width = math.floor(vim.opt.columns:get() * 0.3),
+    },
     -- Breadcrumbs: https://nvimdev.github.io/lspsaga/breadcrumbs/
     symbol_in_winbar = {
       enable = true,
