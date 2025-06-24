@@ -55,7 +55,7 @@ return function()
 
   return require("codecompanion").setup({
     opts = {
-      language = "汉语",
+      language = "中文",
       log_level = "DEBUG",
     },
     strategies = strategies.deepseek,

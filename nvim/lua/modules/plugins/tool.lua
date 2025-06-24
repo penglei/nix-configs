@@ -77,7 +77,7 @@ M["ahmedkhalf/project.nvim"] = {
   config = require("tool.project"),
 }
 
----------- AI ----------------
+---------- AI ------------
 M["olimorris/codecompanion.nvim"] = {
   lazy = true,
   event = "VeryLazy",
@@ -86,7 +86,8 @@ M["olimorris/codecompanion.nvim"] = {
   },
   config = require("tool.codecompanion"),
 }
------------------------------
+
+-- https://github.com/milanglacier/minuet-ai.nvim
 
 ----------------------------------------------------------------------
 --                        Telescope Plugins                         --
