@@ -92,8 +92,8 @@ M["rcarriga/nvim-notify"] = {
 -- 	enabled = false,
 -- }
 
-M["kevinhwang91/nvim-bqf"] = {
-  ft = "qf",
-}
+-- M["kevinhwang91/nvim-bqf"] = {
+--   ft = "qf",
+-- }
 
 return M

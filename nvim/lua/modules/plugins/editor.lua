@@ -107,6 +107,17 @@ M["ggandor/leap.nvim"] = { -- s{first char}{second char}{Leap Hit}
   end,
 }
 
+M["nvim-neotest/neotest"] = {
+  dependencies = {
+    "nvim-neotest/nvim-nio",
+    "nvim-lua/plenary.nvim",
+    "antoinemadec/FixCursorHold.nvim",
+    "nvim-treesitter/nvim-treesitter",
+    { "fredrikaverpil/neotest-golang", version = "*" }, -- Installation
+  },
+  config = require("editor.neotest"),
+}
+
 ----------------------------------------------------------------------
 --                  :treesitter related plugins                    --
 ----------------------------------------------------------------------

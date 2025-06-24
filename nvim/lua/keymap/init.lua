@@ -125,11 +125,6 @@ M.basic = {
   -- ["t|<A-i>"] = map_cmd("<Esc><Cmd>ToggleTerm<CR>"):with_noremap():with_silent():with_desc("terminal: Toggle float"),
   ["t|<C-'>"] = map_cmd("<Esc><Cmd>ToggleTerm<CR>"):with_noremap():with_silent():with_desc("terminal: Toggle float"),
 
-  -- Plugin: trouble
-  --["n|gt"] = map_cr("TroubleToggle"):with_noremap():with_silent():with_desc("lsp: Toggle trouble list"),
-  -- ["n|<leader>r"] = map_cr("Trouble lsp_references"):with_noremap():with_silent():with_desc("lsp: Show lsp references"),
-  ["n|,d"] = map_cr("Trouble diagnostics"):with_noremap():with_silent():with_desc("lsp: Show document diagnostics"),
-
   -- ["n|<leader>tq"] = map_cr("Trouble quickfix")
   -- 	:with_noremap()
   -- 	:with_silent()
@@ -138,22 +133,22 @@ M.basic = {
 
   -- Plugin: telescope
   -- ["n|<leader>fc"] = map_cmd("<Cmd>Telescope commands<CR>"):with_silent():with_desc("tool: Toggle commands panel"),
-  ["n|<leader>m"] = map_callback(function()
-      -- command panel
-      require("telescope.builtin").keymaps({
-        lhs_filter = function(lhs)
-          return not string.find(lhs, "Þ")
-        end,
-        layout_config = {
-          width = 0.6,
-          height = 0.7,
-          prompt_position = "top",
-        },
-      })
-    end)
-    :with_noremap()
-    :with_silent()
-    :with_desc("tool: Toggle key-map command panel"),
+  -- ["n|<leader>m"] = map_callback(function()
+  --     -- command panel
+  --     require("telescope.builtin").keymaps({
+  --       lhs_filter = function(lhs)
+  --         return not string.find(lhs, "Þ")
+  --       end,
+  --       layout_config = {
+  --         width = 0.6,
+  --         height = 0.7,
+  --         prompt_position = "top",
+  --       },
+  --     })
+  --   end)
+  --   :with_noremap()
+  --   :with_silent()
+  --   :with_desc("tool: Toggle key-map command panel"),
   ["n|<leader>u"] = map_callback(function()
       require("telescope").extensions.undo.undo()
     end)
@@ -168,10 +163,11 @@ M.basic = {
     :with_desc("find: Word in project"),
   ["n|<leader>n"] = map_cu(":enew"):with_noremap():with_silent():with_desc("buffer: New"),
   ["n|<leader>f"] = map_cu("Telescope find_files previewer=false"):with_noremap():with_silent():with_desc("find: File in project"),
-  ["n|<leader>z"] = map_cu("Telescope zoxide list"):with_noremap():with_silent():with_desc("edit: Change current direrctory by zoxide"),
+  ["n|<leader>c"] = map_cu("Telescope commands"):with_noremap():with_silent():with_desc("Telescope: show all commands"),
+  -- ["n|<leader>z"] = map_cu("Telescope zoxide list"):with_noremap():with_silent():with_desc("edit: Change current direrctory by zoxide"),
   ["n|<leader>b"] = map_cu("Telescope buffers previewer=false"):with_noremap():with_silent():with_desc("find: Buffer opened"),
-  ["n|<leader>j"] = map_cu("Telescope jumplist previewer=false"):with_noremap():with_silent():with_desc("show jumplist"),
-  ["n|<leader>t"] = map_cu("Telescope tagstack previewer=false"):with_noremap():with_silent():with_desc("show tagstack"),
+  -- ["n|<leader>j"] = map_cu("Telescope jumplist previewer=false"):with_noremap():with_silent():with_desc("show jumplist"),
+  -- ["n|<leader>t"] = map_cu("Telescope tagstack previewer=false"):with_noremap():with_silent():with_desc("show tagstack"),
   ["n|<leader>q"] = map_cu("exit"):with_noremap():with_silent():with_desc("exit"),
   ["n|<leader>d"] = map_cu("Bdelete"):with_desc("delete current buffer"),
 }
@@ -183,7 +179,6 @@ M.buf = function(buf)
     --["n|g["] = map_cr("Lspsaga diagnostic_jump_prev"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Prev diagnostic"),
     --["n|g]"] = map_cr("Lspsaga diagnostic_jump_next"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Next diagnostic"),
     -- ["n|<leader>sl"] = map_cr("Lspsaga show_line_diagnostics"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Line diagnostic"),
-    ["n|ge"] = map_cr("Lspsaga show_cursor_diagnostics"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Cursor diagnostic"),
     ["n|,s"] = map_callback(function()
         vim.lsp.buf.signature_help()
       end)
@@ -207,8 +202,18 @@ M.buf = function(buf)
     ["n|gD"] = map_cr("Lspsaga peek_definition"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Preview definition"),
     ["n|gd"] = map_cr("Lspsaga goto_definition"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Goto definition"),
     ["n|gr"] = map_cr("Lspsaga finder"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Show reference"),
-    ["n|gI"] = map_cr("Lspsaga incoming_calls"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Show all incoming calls on the cursor symbol"),
+    ["n|gI"] = map_cr("Lspsaga incoming_calls"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Show all incoming calls on the cursor"),
     ["n|go"] = map_cr("Lspsaga outgoing_calls"):with_buffer(buf):with_noremap():with_silent():with_desc("lsp: Show outgoing calls"),
+
+    -- Plugin: trouble or lspsaga diagnostics
+    --["n|gt"] = map_cr("TroubleToggle"):with_noremap():with_silent():with_desc("lsp: Toggle trouble list"),
+    -- ["n|<leader>r"] = map_cr("Trouble lsp_references"):with_noremap():with_silent():with_desc("lsp: Show lsp references"),
+    -- ["n|,d"] = map_cr("Trouble diagnostics"):with_noremap():with_silent():with_desc("Trouble: Show document diagnostics"),
+    ["n|,d<CR>"] = map_cr("Lspsaga show_cursor_diagnostics"):with_noremap():with_silent():with_desc("Lspsaga: Show cusor diagnostics"),
+    ["n|,db"] = map_cr("Lspsaga show_buf_diagnostics"):with_noremap():with_silent():with_desc("Lspsaga: Show cusor diagnostics"),
+
+    ["n|,t<CR>"] = map_cr("NeotestRun"):with_buffer(buf):with_noremap():with_silent():with_desc("Run cursor nearest test"),
+    ["n|,to"] = map_cr("ShowTestOutput"):with_buffer(buf):with_noremap():with_silent():with_desc("neotest: show cursor test output"),
   }
 
   return plug_map

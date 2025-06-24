@@ -1,9 +1,12 @@
 local function switch_source_header_splitcmd(bufnr, splitcmd)
-  bufnr = require("lspconfig").util.validate_bufnr(bufnr)
-  local clangd_client = require("lspconfig").util.get_active_client_by_name(bufnr, "clangd")
-  local params = { uri = vim.uri_from_bufnr(bufnr) }
+  -- bufnr = require("lspconfig").util.validate_bufnr(bufnr)
+  bufnr = bufnr == 0 and vim.api.nvim_get_current_buf() or bufnr
+  -- local clangd_client = require("lspconfig").util.get_active_client_by_name(bufnr, "clangd")
+  local clangd_client = vim.lsp.get_clients({ bufnr = bufnr, name = "clangd" })[0]
   if clangd_client then
-    clangd_client.request("textDocument/switchSourceHeader", params, function(err, result)
+    local method = "textDocument/switchSourceHeader"
+    local params = { uri = vim.uri_from_bufnr(bufnr) }
+    local handler = function(err, result)
       if err then
         error(tostring(err))
       end
@@ -12,7 +15,8 @@ local function switch_source_header_splitcmd(bufnr, splitcmd)
         return
       end
       vim.api.nvim_command(splitcmd .. " " .. vim.uri_to_fname(result))
-    end)
+    end
+    clangd_client.request(method, params, handler)
   else
     vim.notify("Method textDocument/switchSourceHeader is not supported by any active server on this buffer", vim.log.levels.ERROR, { title = "LSP Error!" })
   end
