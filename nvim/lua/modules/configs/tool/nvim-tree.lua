@@ -1,5 +1,5 @@
 return function()
-  local WIDTH_RATIO = 0.3
+  local WIDTH_RATIO = 0.2
   local HEIGHT_RATIO = 0.8
   local OFFSET = 3
 
@@ -72,7 +72,7 @@ return function()
       width = function()
         return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
       end,
-      side = "right",
+      side = "left",
       preserve_window_proportions = false,
       number = false,
       relativenumber = false,

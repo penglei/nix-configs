@@ -84,27 +84,29 @@ M.basic = {
   --	:with_desc("edit: Align with delimiter"),
 
   ["n|,w"] = map_cu("Telescope grep_string"):with_noremap():with_silent():with_desc("find: Current word"),
+
   -- Plugin: hop
-  ["n|gw"] = map_cu("HopWord"):with_noremap():with_desc("jump: Goto word"),
+  ["n|gw"] = map_cu("HopWord"):with_noremap():with_desc("hop: jump to end of a word in any window: {gw}??"),
   ["v|gw"] = map_callback(function()
     require("hop").hint_words()
-  end):with_desc("select range to a word by hop jump"),
-  ["n|gl"] = map_cu("HopLine"):with_noremap():with_desc("jump: Goto line"),
+  end):with_desc("hop: select range to a word by hop jump"),
+  ["n|gl"] = map_cu("HopLine"):with_noremap():with_desc("hop: jump to line"),
   ["vn|gs"] = map_callback(function()
     require("hop").hint_char2()
-  end):with_desc("jump in all windows"),
+  end):with_desc("hop: jump to word in any window with hint char2: {gs}xyY"),
+  -- Plugin: leap
   ["n|s"] = map_callback(function()
     require("leap").leap({
       target_windows = require("leap.user").get_focusable_windows(),
     })
-  end):with_desc("leap jump in all windows"),
+  end):with_desc("leap: jump in all windows {s}xx?"),
 
   -- Plugin: nvim-treehopper
-  -- o: Operator-pending mode. 先按了操作，进入等待范围选择，比如 y(复制),d(删除),c(修改)
-  --    这是因为vim是先输入要做的操作，再输入范围。
+  -- o: Operator-pending mode. 先按了操作(e.g.  y(复制),d(删除),c(修改))进入等待范围选择，
+  --    这是因为vim的操作习惯是先输入的[操作]，再输入[范围]。
   ["o|m"] = map_cu("lua require('tsht').nodes()"):with_silent():with_desc("Operator-pending: motion syntax tree"),
   -- xnoremap <silent> m :lua require('tsht').nodes()<CR>
-  ["n|gm"] = map_cu("lua require('tsht').nodes()"):with_silent():with_desc("visual select with motion syntax tree"),
+  ["n|gm"] = map_cu("lua require('tsht').nodes()"):with_silent():with_desc("treehopper: visual select with motion syntax tree"),
 
   -- Plugin: nvim-tree
   ["n|<leader>e"] = map_cr("NvimTreeFindFile"):with_noremap():with_silent():with_desc("nvim-tree: Find file"),

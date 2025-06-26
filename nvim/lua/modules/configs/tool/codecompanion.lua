@@ -1,4 +1,18 @@
+local autocmds = function()
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = {
+      "codecompanion",
+    },
+    callback = function(event)
+      vim.bo[event.buf].buflisted = false
+      vim.api.nvim_buf_set_keymap(event.buf, "n", "q", "<CMD>close<CR>", { silent = true })
+    end,
+  })
+end
+
 return function()
+  autocmds()
+
   local icons = { aichat = require("modules.utils.icons").get("aichat", true) }
 
   local chat_models = {
