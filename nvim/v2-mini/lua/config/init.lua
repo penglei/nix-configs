@@ -61,6 +61,8 @@ now(function()
 		-- Supply dependencies near target plugin
 		-- depends = { },
 	})
+
+	require("config.lang.lsp")
 end)
 
 later(function()

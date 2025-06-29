@@ -41,7 +41,7 @@ function keymap_options:map_cu(cmd_string)
 	return self
 end
 
-function keymap_options:callback(callback)
+function keymap_options:map_callback(callback)
 	self.cmd = ""
 	self.options.callback = callback
 	return self

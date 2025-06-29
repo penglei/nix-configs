@@ -89,7 +89,7 @@ util.bind:new():load(require("config.keymaps.global"))
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 	callback = function(event)
-		util.bind:new(event.buf).load(require("config.keymaps.buffer"))
+		util.bind:new(event.buf):load(require("config.keymaps.buffer"))
 	end,
 })
 
