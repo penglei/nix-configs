@@ -28,6 +28,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 -- auto close some filetype with <q>
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {
+    "alpha",
     "qf",
     "help",
     "man",
@@ -43,6 +44,7 @@ vim.api.nvim_create_autocmd("FileType", {
     "fugitive",
     "sagarename",
     "lspsagacallhierarchy",
+    "lspsagaoutline",
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
@@ -56,18 +58,18 @@ vim.filetype.add({
   },
 })
 
-local function create_filetype_map(ft, mode, lhs, rhs)
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = { ft },
-    callback = function(event)
-      vim.bo[event.buf].buflisted = false
-      vim.api.nvim_buf_set_keymap(event.buf, mode, lhs, rhs, { silent = true })
-    end,
-  })
-end
-create_filetype_map("alpha", "n", "q", "<CMD>q<CR>")
-create_filetype_map("lspsagaoutline", "n", "<C-o>", "q")
-create_filetype_map("Outline", "n", "<C-o>", "q")
+-- local function create_filetype_map(ft, mode, lhs, rhs)
+--   vim.api.nvim_create_autocmd("FileType", {
+--     pattern = { ft },
+--     callback = function(event)
+--       vim.bo[event.buf].buflisted = false
+--       vim.api.nvim_buf_set_keymap(event.buf, mode, lhs, rhs, { silent = true })
+--     end,
+--   })
+-- end
+-- create_filetype_map("alpha", "n", "q", "<CMD>q<CR>")
+-- create_filetype_map("lspsagaoutline", "n", "<C-o>", "q")
+-- create_filetype_map("Outline", "n", "<C-o>", "q")
 
 -- Fix fold issue of files opened by telescope
 vim.api.nvim_create_autocmd("BufRead", {
@@ -81,10 +83,10 @@ vim.api.nvim_create_autocmd("BufRead", {
 
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("FixTerraformCommentString", { clear = true }),
+  pattern = { "terraform", "hcl" },
   callback = function(ev)
     vim.bo[ev.buf].commentstring = "# %s"
   end,
-  pattern = { "terraform", "hcl" },
 })
 
 function autocmd.load_autocmds()

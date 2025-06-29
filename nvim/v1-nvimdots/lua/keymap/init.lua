@@ -13,11 +13,14 @@ vim.cmd([[
 :nnoremap { :<C-u>execute "keepjumps norm! " . v:count1 . "{"<CR>
 ]])
 
-vim.keymap.set({ "n", "x", "o" }, "ga", function()
+vim.keymap.set({ "n", "x", "o" }, "so", function()
   require("leap.treesitter").select()
-end)
+end, { desc = "leap: select treesitter object text ranged by leaping" })
 -- Linewise.
-vim.keymap.set({ "n", "x", "o" }, "gA", 'V<cmd>lua require("leap.treesitter").select()<cr>')
+-- vim.keymap.set({ "n", "x", "o" }, "sO", 'V<cmd>lua require("leap.treesitter").select()<cr>', { desc = "" })
+-- vim.keymap.set({ "n", "x", "o" }, "sO", function()
+--   return require("leap.treesitter").select()
+-- end, { desc = "" })
 
 M.core = {
   ["n|<Tab>"] = map_cr("BufferLineCycleNext"):with_noremap():with_silent():with_desc("goto next buffer"),
@@ -91,15 +94,23 @@ M.basic = {
     require("hop").hint_words()
   end):with_desc("hop: select range to a word by hop jump"),
   ["n|gl"] = map_cu("HopLine"):with_noremap():with_desc("hop: jump to line"),
-  ["vn|gs"] = map_callback(function()
+  ["n|gs"] = map_callback(function()
     require("hop").hint_char2()
   end):with_desc("hop: jump to word in any window with hint char2: {gs}xyY"),
+  ["v|gs"] = map_callback(function()
+    require("hop").hint_char2({
+      multi_windows = false,
+    })
+  end):with_desc("hop: select to word with hint char2: {gs}xyY"),
+
   -- Plugin: leap
   ["n|s"] = map_callback(function()
-    require("leap").leap({
-      target_windows = require("leap.user").get_focusable_windows(),
-    })
-  end):with_desc("leap: jump in all windows {s}xx?"),
+      require("leap").leap({
+        target_windows = require("leap.user").get_focusable_windows(),
+      })
+    end)
+    :with_noremap()
+    :with_desc("leap: jump in all windows {s}xx?"),
 
   -- Plugin: nvim-treehopper
   -- o: Operator-pending mode. 先按了操作(e.g.  y(复制),d(删除),c(修改))进入等待范围选择，
@@ -107,6 +118,7 @@ M.basic = {
   ["o|m"] = map_cu("lua require('tsht').nodes()"):with_silent():with_desc("Operator-pending: motion syntax tree"),
   -- xnoremap <silent> m :lua require('tsht').nodes()<CR>
   ["n|gm"] = map_cu("lua require('tsht').nodes()"):with_silent():with_desc("treehopper: visual select with motion syntax tree"),
+  ["n|m"] = map_cu("lua require('tsht').nodes()"):with_silent():with_desc("treehopper: visual select with motion syntax tree"),
 
   -- Plugin: nvim-tree
   ["n|<leader>e"] = map_cr("NvimTreeFindFile"):with_noremap():with_silent():with_desc("nvim-tree: Find file"),
