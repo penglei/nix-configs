@@ -12,6 +12,11 @@ miniclue.setup({
 		-- '[' and ']' keys
 		{ mode = "n", keys = "[" },
 		{ mode = "n", keys = "]" },
+		{ mode = "x", keys = "[" },
+		{ mode = "x", keys = "]" },
+		{ mode = "x", keys = "a" },
+		{ mode = "x", keys = "i" },
+		{ mode = "x", keys = "s" },
 
 		-- Built-in completion
 		{ mode = "i", keys = "<C-x>" },

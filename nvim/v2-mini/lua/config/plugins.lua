@@ -18,8 +18,19 @@ end)
 now(function() require("mini.icons").setup() end)
 now(function() require("mini.statusline").setup() end)
 now(function() require("config.ui.mini.starter") end)
+
 now(function()
-	-- require("mini.tabline").setup() --- mini.tabline doesn't export api, so we can't do key binding.
+	add({
+		source = "folke/noice.nvim",
+		depends = {
+			"MunifTanjim/nui.nvim",
+			"folke/snacks.nvim", -- optional
+		},
+	})
+	require("config.ui.noice")
+end)
+now(function()
+	-- require("mini.tabline").setup() --- mini.tabline doesn't export api, and so we can't do key binding...
 	add({ source = "akinsho/bufferline.nvim" })
 	require("config.ui.bufferline")
 end)
@@ -30,40 +41,21 @@ later(function()
 	add({ source = "nvim-tree/nvim-web-devicons" })
 	require("nvim-web-devicons").setup()
 end)
-later(function()
-	add({ source = "saghen/blink.cmp", depends = { "rafamadriz/friendly-snippets" }, checkout = "v1.4.1", monitor = "main" })
-	require("config.editing.completion")
-end)
-later(function()
-	add({
-		source = "folke/noice.nvim",
-		depends = {
-			"MunifTanjim/nui.nvim",
-			"folke/snacks.nvim", -- optional
-		},
-	})
-	require("config.ui.noice")
-end)
-later(function()
-	add({ source = "smjonas/inc-rename.nvim" })
-	---@diagnostic disable-next-line: missing-parameter
-	require("inc_rename").setup()
-end)
-later(function() require("config.editing.comment") end)
--- later(function() require("mini.ai").setup() end)
+
+later(function() require("config.lang.filetypes") end)
+
+now(function() require("mini.ai").setup() end)
 later(function() require("mini.align").setup() end)
 later(function() require("mini.surround").setup() end)
--- later(function() require("mini.operators").setup() end)
 later(function() require("mini.pairs").setup() end) -- autoclose pairs
 later(function() require("mini.splitjoin").setup() end)
 later(function() require("mini.visits").setup() end)
 later(function() require("mini.bracketed").setup() end)
--- later(function() require("mini.jump").setup() end) -- extend f, F, t, T. -- not compatible with `.` repeat
+-- later(function() require("mini.jump").setup() end) -- extend f, F, t, T. -- it's not compatible with `.` repeat occasionally ?
 later(function() require("mini.extra").setup() end)
-later(function()
-	-- 	require("mini.bufremove").setup() -- Not well implemented
-	add({ source = "famiu/bufdelete.nvim" })
-end)
+-- later(function() require("mini.operators").setup() end)
+
+later(function() require("config.keymaps.clue") end)
 later(function()
 	-- 方案0
 	-- key changed in every step, feel bad... and it's not integrated with treesitter
@@ -75,35 +67,35 @@ later(function()
 	-- add({ source = "mfussenegger/nvim-treehopper" , depends = { { source = "nvim-treesitter/nvim-treesitter" } }})
 	-- require("config.editing.motion.hop")
 
-	-- 方案2
-	-- 使用leap，既能满足全局motion，也支持局部基于treesitter语法的 motion和section
+	-- 方案2 leap
+	-- 既能满足全局motion，也支持局部基于treesitter语法的 motion和section，
+	-- 但是在单纯的跳转中存在window抖动的问题。
 	add({ source = "ggandor/leap.nvim", depends = { { source = "nvim-treesitter/nvim-treesitter" } } })
 	require("config.editing.motion.leap")
+	-- 方案3 flash
+	-- 有一些缺陷，不能支持按visual模式下调整?
+	add({ source = "folke/flash.nvim" })
+	require("config.editing.motion.flash")
+
+	-- 因此，综合方案2和方案3实现
 end)
-later(function() require("config.ui.mini.clue") end)
-later(function() require("config.tool.mini.pick") end)
-later(function() require("config.ui.mini.animate") end)
 
 later(function()
 	add({ source = "neovim/nvim-lspconfig" })
 	require("config.editing.lsp")
 end)
+later(function()
+	add({ source = "saghen/blink.cmp", depends = { "rafamadriz/friendly-snippets" }, checkout = "v1.4.1", monitor = "main" })
+	require("config.editing.completion")
+end)
 
+later(function() require("config.editing.comment") end)
 later(function()
 	add({
-		source = "rachartier/tiny-code-action.nvim",
-		depends = {
-			{ source = "nvim-lua/plenary.nvim" },
-
-			-- { source = "ibhagwan/fzf-lua" },
-			{ source = "folke/snacks.nvim" },
-			-- { source = "nvim-telescope/telescope.nvim" },
-		},
+		source = "sustech-data/wildfire.nvim",
+		depends = { { source = "nvim-treesitter/nvim-treesitter" } },
 	})
-	require("tiny-code-action").setup({
-		backend = "difftastic",
-		picker = "snacks", -- "telescope",
-	})
+	require("wildfire").setup()
 end)
 
 later(function()
@@ -136,30 +128,11 @@ later(function()
 
 	require("config.editing.treesitter")
 end)
+
 later(function()
-	add({ source = "lewis6991/hover.nvim" })
-	require("config.tool.hover")
+	-- 	require("mini.bufremove").setup() -- Not well implemented
+	-- add({ source = "famiu/bufdelete.nvim" }) -- replaced by Snacks.bufdelete()
 end)
-
--- later(function()
--- 	add({ source = "andymass/vim-matchup", depends = { "nvim-treesitter/nvim-treesitter" } })
--- 	vim.g.matchup_transmute_enabled = 1
--- 	vim.g.matchup_surround_enabled = 1
--- 	vim.g.matchup_matchparen_offscreen = { method = "popup" }
--- end)
-
-later(function() add({ source = "hiphish/rainbow-delimiters.nvim" }) end)
-later(function()
-	add({ source = "nvim-tree/nvim-tree.lua", checkout = "master" })
-	require("config.tool.nvim-tree")
-	require("mini.files").setup()
-end)
-
--- later(function()
--- 	-- conflict with noice.vim
--- 	add("oskarrrrrrr/symbols.nvim")
--- 	require("config.tool.symbols")
--- end)
 
 later(function()
 	-- add({ source = "numToStr/FTerm.nvim" })
@@ -167,28 +140,28 @@ later(function()
 	require("config.tool.terminal")
 end)
 
+------------------------------------------------------------------------
+
+later(function()
+	add({ source = "folke/snacks.nvim" })
+	later(function() require("config.tool.picker") end)
+end)
+
+later(function()
+	add({ source = "nvim-tree/nvim-tree.lua", checkout = "master" })
+	require("config.tool.nvim-tree")
+	require("mini.files").setup()
+end)
+
 later(function()
 	add({ source = "catgoose/nvim-colorizer.lua" })
-	require("config.ui.colorizer") --- only enable for html, js, css
+	add({ source = "hiphish/rainbow-delimiters.nvim" })
+	add({ source = "https://git.sr.ht/~whynothugo/lsp_lines.nvim" })
+	-- colorizer,
+	require("config.ui.widgets")
 end)
 
-later(function() require("mini.doc").setup() end)
-later(function() require("mini.trailspace").setup() end)
-later(function() require("mini.git").setup() end)
-later(function()
-	add({ source = "NStefan002/screenkey.nvim" })
-	require("screenkey").setup()
-end)
--- add({ source = "ibhagwan/smartyank.nvim" })
-later(function() require("config.ui.yank") end)
-later(function() require("config.lang.filetypes") end)
-
-later(function() add({ source = "MeanderingProgrammer/render-markdown.nvim" }) end)
-later(function()
-	-- a plugin that properly configures LuaLS for editing your Neovim config
-	add({ source = "folke/lazydev.nvim" })
-	require("lazydev").setup()
-end)
+------------------------------------------------------------------------
 
 later(function()
 	add({
@@ -204,21 +177,56 @@ later(function()
 	require("config.tool.neotest")
 end)
 
+later(function() add({ source = "MeanderingProgrammer/render-markdown.nvim" }) end)
+later(function()
+	-- a plugin that properly configures LuaLS for editing your Neovim config
+	add({ source = "folke/lazydev.nvim" })
+	require("lazydev").setup()
+end)
+
+------------------------------------------------------------------------
+
+later(function()
+	add({ source = "NStefan002/screenkey.nvim" })
+	require("screenkey").setup()
+end)
+
+later(function()
+	add({ source = "lewis6991/hover.nvim" })
+	require("config.tool.hover")
+end)
+
+later(function()
+	add({ source = "smjonas/inc-rename.nvim" })
+	---@diagnostic disable-next-line: missing-parameter
+	require("inc_rename").setup()
+end)
+
 later(function()
 	add({
-		source = "sustech-data/wildfire.nvim",
-		depends = { { source = "nvim-treesitter/nvim-treesitter" } },
+		source = "rachartier/tiny-code-action.nvim",
+		depends = {
+			{ source = "nvim-lua/plenary.nvim" },
+
+			{ source = "folke/snacks.nvim" },
+			-- { source = "ibhagwan/fzf-lua" },
+			-- { source = "nvim-telescope/telescope.nvim" },
+		},
 	})
-	require("wildfire").setup()
-end)
-later(function()
-	add({ source = "https://git.sr.ht/~whynothugo/lsp_lines.nvim" })
-	require("lsp_lines").setup()
-	vim.diagnostic.config({
-		virtual_text = false,
+
+	require("tiny-code-action").setup({
+		backend = "difftastic",
+		picker = "snacks", -- "telescope",
 	})
 end)
+
 later(function()
 	add({ source = "mikavilpas/yazi.nvim", depends = { { source = "nvim-lua/plenary.nvim" } } })
 	require("yazi").setup({})
 end)
+
+-- later(function()
+-- 	-- conflict with noice.vim
+-- 	add("oskarrrrrrr/symbols.nvim")
+-- 	require("config.tool.symbols")
+-- end)

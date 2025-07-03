@@ -26,7 +26,9 @@ vim.api.nvim_set_keymap("x", ",", "", { noremap = true })
 -- :h mapmode-v: activated in both visual and select mode
 -- o: Operator-pending mode: 先按了操作(e.g.  y(复制),d(删除),c(修改))进入等待范围选择的模式。vim的操作习惯是先输入[操作]，再输入[范围]。
 
+---@diagnostic disable-next-line: unused-function, unused-local
 local leap_jump_wins = function() require("leap").leap({ target_windows = require("leap.user").get_focusable_windows() }) end
+---@diagnostic disable-next-line: unused-function, unused-local
 local leap_jump_buf = function() require("leap").leap({ target_windows = { vim.api.nvim_get_current_win() } }) end
 
 -- stylua: ignore start
@@ -59,17 +61,31 @@ local keymaps = {
 	-- ["n|,pn"]: swap with previous argument
 	-- ["n|,pp"]: swap with next argument
 
+	["n|<leader><space>"] = map_cb(function() Snacks.picker() end):desc("All pickers"),
 	["n|<leader>e"] = map_cr("NvimTreeFindFile"):desc("nvim-tree: Find file"),
 	["n|<leader>y"] = map_cmd("<CMD>lua MiniFiles.open()<CR>"):desc("open mini files navigator"), -- like command 'yazi'
 	-- ["n|<leader>y"] = map_cmd("<CMD>lua require('yazi').yazi()<CR>"):desc("open mini files navigator"),
-
-	["n|<leader>f"] = map_cu("Pick files"):desc("Mini: Pick file"),
-	["n|<leader>b"] = map_cu("Pick buffers"):desc("Mini: Pick buffer"),
-	["n|<leader>c"] = map_cu("Pick commands"):desc("Mini: Pick command"),
-	["n|<leader>w"] = map_cu("Pick grep_live"):desc("Mini: Pick grep words"),
+	["n|<leader>/"] = map_cb(function() Snacks.picker.grep() end):desc("Grep"),
+	-- ["n|<leader>f"] = map_cu("Pick files"):desc("Mini: Pick file"),
+	["n|<leader>f"] = map_cb(function() Snacks.picker.smart() end):desc("Smart Find Files"),
+	-- ["n|<leader>b"] = map_cu("Pick buffers"):desc("Mini: Pick buffer"),
+	["n|<leader>b"] = map_cb(function() Snacks.picker.buffers() end):desc("Buffers"),
+	-- ["n|<leader>c"] = map_cu("Pick commands"):desc("Mini: Pick command"),
+	["n|<leader>c"] = map_cb(function() Snacks.picker.commands() end):desc("Commands"),
+	["n|<leader>:"] = map_cb(function() Snacks.picker.command_history() end):desc("Command History"),
+	-- ["n|<leader>w"] = map_cb("Pick grep_live"):desc("Mini: Pick grep words"),
+	["xn|<leader>w"] = map_cb(function() Snacks.picker.grep_word() end):desc("Visual selection or word"),
+	["n|<leader>sj"] = map_cb(function() Snacks.picker.jumps() end):desc("Jumps"),
+	["n|<leader>sk"] = map_cb(function() Snacks.picker.keymaps() end):desc("Keymaps"),
+	["n|<leader>sm"] = map_cb(function() Snacks.picker.marks() end):desc("Marks"),
+	["n|<leader>sd"] = map_cb(function() Snacks.picker.diagnostics_buffer() end):desc("Buffer Diagnostics"),
+	["n|<leader>sD"] = map_cb(function() Snacks.picker.diagnostics() end):desc("Diagnostics"),
+	["n|<leader>sq"] = map_cb(function() Snacks.picker.qflist() end):desc("Quickfix List"),
+	["n|<leader>uC"] = map_cb(function() Snacks.picker.colorschemes() end):desc("Colorschemes"),
+	-- ["n|<leader>n"] = map_cb(function() Snacks.picker.notifications() end):desc("Notification History"),
 
 	["n|<leader>q"] = map_cu("q"):desc("exit"),
-	["n|<leader>x"] = map_cu("Bdelete"):desc("delete current buffer"),
+	["n|<leader>x"] = map_cb(function() Snacks.bufdelete() end):desc("Delete current buffer"),
 	["n|<Esc><Esc>"] = map_cb(function()
 		vim.cmd([[nohl]])
 		-- TODO chain more auto action
@@ -113,12 +129,18 @@ local keymaps = {
 	-- 	{ desc = "hover.nvim (next source)" }
 	-- ),
 
-	----------- leap for motion/selection ---------------
-	["n|'w"] = map_cb(leap_jump_wins):desc("leap: jump in all windows"),
-	["vn|gw"] = map_cb(leap_jump_buf):desc("leap: jump/select in current window"),
+	----------- motion/selection ---------------
+	---------- flash
+	["vn|'w"] = map_cb(function() require("flash").jump() end):desc("flash: jump in all windows"),
+	["xn|gw"] = map_cb(function() require("flash").treesitter_search() end):desc("flash: select syntax node in current window"),
+	["nxo|mm"] = map_cb(function() require("flash").treesitter() end):desc("flash: select syntax node in local scopes"),
+	["n|gs"] = map_cb(function() require("flash").jump({ pattern = vim.fn.expand("<cword>") }) end):desc("flash: search word"),
+	---------- leap
+	-- ["vn|'w"] = map_cb(leap_jump_wins):desc("leap: jump in all windows"),
+	-- ["xn|'wb"] = map_cb(leap_jump_buf):desc("leap: jump/select in current window"),
 	["n|gm"] = map_cr("TreesitterNodeLeap"):desc("leap treesitter jump/select in local scope"), -- BUG: TODO support visual mode
-	["nxo|mm"] = map_cb(function() require("leap.treesitter").select() end):desc("leap: select treesitter ranged text"),
-	-- tsht: nvim-treehopper (just for)
+	-- ["nxo|mm"] = map_cb(function() require("leap.treesitter").select() end):desc("leap: select syntax node in local scopes"),
+	---------- tsht: nvim-treehopper
 	-- -- ["n|gm"] = map_cu("HopWord"):desc("Hop: jump to a word in any window"),
 	-- -- ["v|gm"] = map_cb(function() require("hop").hint_words() end):desc("Hop: select range to a word"),
 	-- ["no|'s"] = map_cu("lua require('tsht').nodes()"):desc("Treehopper: syntax tree selection"),

@@ -98,7 +98,6 @@ require("catppuccin").setup({
 	},
 	color_overrides = {},
 	highlight_overrides = {
-		---@param cp palette
 		all = function(cp)
 			return {
 				-- For base configs

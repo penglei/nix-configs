@@ -77,7 +77,7 @@ setup("html", {
 })
 
 setup("hls", { filetypes = { "haskell", "lhaskell" } })
-setup("ocamllsp")
+-- setup("ocamllsp")
 setup("nickel_ls")
 setup("nil_ls")
 setup("buck2")

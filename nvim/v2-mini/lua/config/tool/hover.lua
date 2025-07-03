@@ -20,7 +20,7 @@ require("hover").setup({
 	preview_window = false,
 	title = true,
 	mouse_providers = {
-		"LSP",
+		-- "LSP",
 	},
 	mouse_delay = 1000,
 })

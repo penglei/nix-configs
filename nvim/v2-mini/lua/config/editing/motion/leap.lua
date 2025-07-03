@@ -18,12 +18,14 @@ local function get_ast_nodes()
 	end
 	-- Create Leap targets from TS nodes.
 	local targets = {}
-	local startline, startcol
+	local startline, startcol, endline, endcol
 	for _, node in ipairs(nodes) do
-		startline, startcol, _, _ = node:range() -- (0,0)
+		startline, startcol, endline, endcol = node:range() -- (0,0)
 		if startline + 1 >= wininfo.topline then
 			local target = { node = node, pos = { startline + 1, startcol + 1 } }
 			table.insert(targets, target)
+			local target2 = { node = node, pos = { endline + 1, endcol + 1 } }
+			table.insert(targets, target2)
 		end
 	end
 	if #targets >= 1 then return targets end
@@ -45,11 +47,12 @@ local leap = require("leap")
 -- or the opts in calling wouldn't work.
 leap.opts.labels = "sfnkhwuygtqpcxzUIOPHJKLNM" -- extra label letters
 
-local function ts_leap_select()
+local function ts_leap()
+	local targets = get_ast_nodes()
 	leap.leap({
-		targets = get_ast_nodes(),
+		targets = targets,
 		action = api.nvim_get_mode().mode ~= "n" and select_range, -- or jump
-		backward = true,
+		backward = false,
 		-- opts = {
 		-- 	safe_labels = "sufku", -- in a local scope, we don't need too much label letter.
 		-- 	labels = "sfnkhowimuyvrgtaqpcxz",
@@ -57,6 +60,8 @@ local function ts_leap_select()
 	})
 end
 
-vim.api.nvim_create_user_command("TreesitterNodeLeap", ts_leap_select, {
+vim.api.nvim_create_user_command("TreesitterNodeLeap", ts_leap, {
 	desc = "treesitter leap selection",
 })
+
+vim.keymap.set("v", "gm", ts_leap, { noremap = true }) -- map_cmd not works, so we do keymap here.
