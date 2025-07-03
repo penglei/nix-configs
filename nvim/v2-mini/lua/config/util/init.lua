@@ -162,7 +162,6 @@ return {
 			pattern = { filetype },
 			group = group,
 			callback = function(event)
-				vim.notify(vim.inspect(event), vim.log.levels.INFO)
 				vim.bo[event.buf].buflisted = false
 				vim.api.nvim_buf_set_keymap(event.buf, "n", "q", "<CMD>close<CR>", { silent = true, noremap = true, nowait = true })
 			end,

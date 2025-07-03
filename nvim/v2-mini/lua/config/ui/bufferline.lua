@@ -43,7 +43,7 @@ local opts = {
 
 if vim.g.colors_name:find("catppuccin") then
 	local cp = require("catppuccin.palettes").get_palette()
-	vim.notify(("config buffline style to catppuccin\n%s"):format(vim.inspect(cp)), vim.log.levels.DEBUG)
+	-- vim.notify(("config buffline style to catppuccin\n%s"):format(vim.inspect(cp)), vim.log.levels.DEBUG)
 
 	local catppuccin_hl_overwrite = {
 		highlights = require("catppuccin.groups.integrations.bufferline").get({
