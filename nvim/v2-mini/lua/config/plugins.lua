@@ -17,10 +17,10 @@ end)
 
 now(function() require("mini.icons").setup() end)
 now(function()
-	add({
-		source = "nvim-lualine/lualine.nvim",
-		depends = { "nvim-tree/nvim-web-devicons" },
-	})
+	-- add({
+	-- 	source = "nvim-lualine/lualine.nvim",
+	-- 	depends = { "nvim-tree/nvim-web-devicons" },
+	-- })
 	add({ source = "NStefan002/screenkey.nvim" })
 	require("config.ui.statusline")
 end)
