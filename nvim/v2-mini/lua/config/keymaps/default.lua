@@ -152,7 +152,7 @@ local keymaps = {
 	["n|<leader>t<CR>"] = map_cr("NeotestRun"):desc("Neotest: Run cursor nearest test"),
 	["n|<leader>pt"] = map_cr("ToggleNeotestSummar"):desc("Toogle test summary panel"),
 	["n|<leader>to"] = map_cr("ShowTestOutput"):desc("Neotest: show cursor test output"),
-	["n|<leader>pl"] = map_cb(function() require("lsp_lines").toggle() end):desc("Toggle lsp_lines virtual text"),
+	["n|<leader>ud"] = map_cb(function() require("lsp_lines").toggle() end):desc("Toggle lsp_lines virtual text"),
 
 	------------ comment -----------------
 	-- comment key mapping is configured in config.editing.comment and config.ui.mini.clue
@@ -160,7 +160,7 @@ local keymaps = {
 	-- ["v|,/"] -- multiline comment toggle
 
 	-------------- core ----------------
-	["x|S"] = map_cmd([[:<C-u>lua MiniSurround.add('visual')<CR>]]):desc("mini visual surround only in visual mode"),
+	["x|S"] = map_cmd([[:<C-u>lua MiniSurround.add('visual')<CR>]]):desc("surround in visual mode"),
 	["vn|gh"] = map_cmd("0"):desc("Goto line start"),
 	["vn|gl"] = map_cmd("$"):desc("Goto line end"),
 	["vn|ge"] = map_cmd("G"):desc("Goto last line"),

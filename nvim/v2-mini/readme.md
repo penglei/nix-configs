@@ -34,9 +34,9 @@ ui: window layout ... e.g. icons, which-key, alpha, layout, window
 
 * [ ] editing (surround, pairs, text object selection)
     * [x] code actions (tiny code actions)
-    * [ ] smartyank clean searching (set nohl)
+    * [x] clean searching (set nohl)
     * [ ] snippets
-    * [ ] swap `p` and `P`(pasting without overwrite default register) in visual mode x
+    * [x] swap `p` and `P`(pasting without overwrite default register) in visual mode x
         the bahaviour 'pasting with overwrite default register' is designed for exchange text!
     * [x] surround action after selection. (mini surround)
     * [x] tree-sitter range selection
@@ -61,7 +61,6 @@ ui: window layout ... e.g. icons, which-key, alpha, layout, window
     * [x] Neotest
     * [ ] Pick: grep word under the cursor
         * [x] grep_live picker
-    * [ ] fuzzyfinder
     * [ ] asynchronous lint engine
 
 * [x] lang

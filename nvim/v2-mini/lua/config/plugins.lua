@@ -44,7 +44,7 @@ end)
 
 later(function() require("config.lang.filetypes") end)
 
-now(function() require("mini.ai").setup() end)
+later(function() require("mini.ai").setup() end)
 later(function() require("mini.align").setup() end)
 later(function() require("mini.surround").setup() end)
 later(function() require("mini.pairs").setup() end) -- autoclose pairs
@@ -52,7 +52,7 @@ later(function() require("mini.splitjoin").setup() end)
 later(function() require("mini.visits").setup() end)
 later(function() require("mini.bracketed").setup() end)
 -- later(function() require("mini.jump").setup() end) -- extend f, F, t, T. -- it's not compatible with `.` repeat occasionally ?
-later(function() require("mini.extra").setup() end)
+-- later(function() require("mini.extra").setup() end)
 -- later(function() require("mini.operators").setup() end)
 
 later(function() require("config.keymaps.clue") end)

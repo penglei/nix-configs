@@ -1,3 +1,5 @@
+local win = require("config.util").win
+local pos = win.calsize(0, 1)
 ---@diagnostic disable-next-line: missing-fields
 require("noice").setup({
 	lsp = {
@@ -13,23 +15,26 @@ require("noice").setup({
 		inc_rename = true, -- enables an input dialog for inc-rename.nvim
 		lsp_doc_border = false, -- add a border to hover docs and signature help
 	},
+	notify = {
+		enabled = false, -- provided by mini.notify
+	},
 	views = {
 		cmdline_popup = {
 			position = {
-				row = "80%",
+				row = pos.height - 3,
 				col = "50%",
 			},
 			size = {
 				width = 60,
-				height = "auto",
+				height = 1,
 			},
 		},
 		cmdline_popupmenu = {
 			position = {
-				row = "60%",
+				row = pos.height - 6,
 				col = "50%",
 			},
-			-- size = { width = "50", },
+			size = { width = 60, height = "auto", max_height = 33 },
 		},
 	},
 })
