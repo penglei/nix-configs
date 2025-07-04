@@ -76,7 +76,7 @@ setup("html", {
 	flags = { debounce_text_changes = 500 },
 })
 
-setup("hls", { filetypes = { "haskell", "lhaskell" } })
+setup("hls")
 -- setup("ocamllsp")
 setup("nickel_ls")
 setup("nil_ls")

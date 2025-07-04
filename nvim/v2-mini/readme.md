@@ -42,12 +42,13 @@ ui: window layout ... e.g. icons, which-key, alpha, layout, window
     * [x] tree-sitter range selection
     * [x] treesitter syntax motion
     * [ ] completion with `<Tab>` selecting
-    * [ ] AI
+    * [-] AI
         * https://github.com/Jacob411/Ollama-Copilot
+        * https://github.com/yetone/avante.nvim
     * [x] toggle comment
         * [x] ts_context_commentstring (same file with different commentstring)
     * [] mini.surround doens't support visual mode from mouse click
-    * [ ] `va{` in mini.ai implementation, sometimes it doesn't work, but i can't reproduce it.
+    * [-] `va{` in mini.ai implementation, sometimes it doesn't work, but i can't reproduce it.
 
 * [x] `Y` yank to system clipboard in visual mode
 
@@ -64,7 +65,7 @@ ui: window layout ... e.g. icons, which-key, alpha, layout, window
     * [ ] asynchronous lint engine
 
 * [x] lang
-    * [x] lua_lsp search path
+    * [x] ~~lua_lsp search path~~
     * [x] buffer上绑定按键对一些FileType没有生效(如bzl)
 
 * [x] bugs

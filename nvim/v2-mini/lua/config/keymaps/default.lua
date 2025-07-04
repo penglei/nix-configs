@@ -61,6 +61,10 @@ local keymaps = {
 	-- ["n|,pn"]: swap with previous argument
 	-- ["n|,pp"]: swap with next argument
 
+	["i|<C-h>"] = map_cmd("<Left><Del>"):desc("Delete one char before cursor"),
+	["i|<C-f>"] = map_cmd("<Right>"):desc("Cursor move forward"),
+	-- ["i|<C-e"] = map_cmd("<End>"):desc("Cursor move to line end"), -- has occupied by blink.cmp
+
 	["n|<leader><space>"] = map_cb(function() Snacks.picker() end):desc("All pickers"),
 	["n|<leader>e"] = map_cr("NvimTreeFindFile"):desc("nvim-tree: Find file"),
 	["n|<leader>y"] = map_cmd("<CMD>lua MiniFiles.open()<CR>"):desc("open mini files navigator"), -- like command 'yazi'

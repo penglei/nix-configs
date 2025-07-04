@@ -16,7 +16,14 @@ now(function()
 end)
 
 now(function() require("mini.icons").setup() end)
-now(function() require("mini.statusline").setup() end)
+now(function()
+	add({
+		source = "nvim-lualine/lualine.nvim",
+		depends = { "nvim-tree/nvim-web-devicons" },
+	})
+	add({ source = "NStefan002/screenkey.nvim" })
+	require("config.ui.statusline")
+end)
 now(function() require("config.ui.mini.starter") end)
 
 now(function()
@@ -177,7 +184,10 @@ later(function()
 	require("config.tool.neotest")
 end)
 
-later(function() add({ source = "MeanderingProgrammer/render-markdown.nvim" }) end)
+later(function()
+	add({ source = "MeanderingProgrammer/render-markdown.nvim" })
+	require("render-markdown").setup()
+end)
 later(function()
 	-- a plugin that properly configures LuaLS for editing your Neovim config
 	add({ source = "folke/lazydev.nvim" })
@@ -185,11 +195,6 @@ later(function()
 end)
 
 ------------------------------------------------------------------------
-
-later(function()
-	add({ source = "NStefan002/screenkey.nvim" })
-	require("screenkey").setup()
-end)
 
 later(function()
 	add({ source = "lewis6991/hover.nvim" })
@@ -230,3 +235,38 @@ end)
 -- 	add("oskarrrrrrr/symbols.nvim")
 -- 	require("config.tool.symbols")
 -- end)
+
+--------------------
+later(function()
+	add({
+		source = "yetone/avante.nvim",
+		monitor = "main",
+		depends = {
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			"echasnovski/mini.icons",
+		},
+		hooks = { post_checkout = function() vim.cmd("make") end },
+	})
+	--- 可选
+	-- add({ source = "hrsh7th/nvim-cmp" })
+	add({ source = "zbirenbaum/copilot.lua" })
+	add({ source = "HakonHarnes/img-clip.nvim" })
+	-- require("img-clip").setup({ ... }) -- 配置 img-clip
+	-- require("copilot").setup({ ... }) -- 根据您的喜好设置 copilot
+	vim.opt.laststatus = 3
+	require("avante").setup({
+		provider = "claude",
+		providers = {
+			claude = {
+				endpoint = "https://api.anthropic.com",
+				model = "claude-sonnet-4-20250514",
+				timeout = 30000, -- Timeout in milliseconds
+				extra_request_body = {
+					temperature = 0.75,
+					max_tokens = 20480,
+				},
+			},
+		},
+	}) -- 配置 avante.nvim
+end)
