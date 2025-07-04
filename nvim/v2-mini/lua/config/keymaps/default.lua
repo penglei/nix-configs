@@ -63,7 +63,7 @@ local keymaps = {
 
 	["i|<C-h>"] = map_cmd("<Left><Del>"):desc("Delete one char before cursor"),
 	["i|<C-f>"] = map_cmd("<Right>"):desc("Cursor move forward"),
-	-- ["i|<C-e"] = map_cmd("<End>"):desc("Cursor move to line end"), -- has occupied by blink.cmp
+	["i|<C-e>"] = map_cmd("<End>"):desc("Cursor move to line end"),
 
 	["n|<leader><space>"] = map_cb(function() Snacks.picker() end):desc("All pickers"),
 	["n|<leader>e"] = map_cr("NvimTreeFindFile"):desc("nvim-tree: Find file"),

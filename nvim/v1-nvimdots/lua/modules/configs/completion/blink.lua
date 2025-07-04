@@ -5,7 +5,7 @@ return function()
       ["<S-Tab>"] = { "select_prev", "fallback" },
       ["<Tab>"] = { "select_next", "fallback" },
     },
-    cmdline = { sources = { "cmdline" } },
+    -- cmdline = { sources = { "cmdline" } },
     sources = {
       default = { "lsp", "buffer", "codecompanion", "snippets", "path" },
     },

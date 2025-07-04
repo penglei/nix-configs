@@ -15,6 +15,8 @@ require("mini.snippets").setup()
 --
 
 require("blink.cmp").setup({
+	signature = { enabled = true },
+
 	-- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
 	-- 'super-tab' for mappings similar to vscode (tab to accept)
 	-- 'enter' for enter to accept
@@ -27,7 +29,40 @@ require("blink.cmp").setup({
 	-- C-k: Toggle signature help (if signature.enabled = true)
 	--
 	-- See :h blink-cmp-config-keymap for defining your own keymap
-	keymap = { preset = "default" },
+	-- keymap = { preset = "default" },
+	keymap = {
+		preset = "none",
+
+		-- ["<C-e>"] = -- { "fallback" }, -- or false, -- or {} -- has bind to emacs style: to line end
+
+		["<C-.>"] = {
+			"show",
+			"show_documentation",
+			"hide_documentation",
+		},
+		["<C-y>"] = { "select_and_accept" },
+		["<Up>"] = { "select_prev", "fallback" },
+		["<Down>"] = { "select_next", "fallback" },
+		["<C-p>"] = { "select_prev", "fallback_to_mappings" },
+		["<C-n>"] = { "select_next", "fallback_to_mappings" },
+
+		["<Tab>"] = {
+			-- function(cmp)
+			-- 	local items = cmp.get_items()
+			-- 	if #items == 1 then
+			-- 		-- vim.notify(items[1])
+			-- 		-- cmp.accept(cmp)
+			-- 		-- return true
+			-- 	end
+			-- end,
+
+			"select_next",
+			"fallback",
+		},
+		["<S-Tab>"] = { "select_prev", "fallback" },
+		-- ["<Esc>"] = { "hide", "fallback" },
+		["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+	},
 
 	appearance = {
 		-- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
@@ -41,8 +76,16 @@ require("blink.cmp").setup({
 	-- Default list of enabled providers defined so that you can extend it
 	-- elsewhere in your config, without redefining it, due to `opts_extend`
 	sources = {
-		default = { "lsp", "path", "snippets", "buffer" },
+		default = { "lazydev", "lsp", "path", "snippets", "buffer" },
 		-- default = { "lsp", "buffer", "codecompanion", "snippets", "path" },
+		providers = {
+			lazydev = {
+				name = "LazyDev",
+				module = "lazydev.integrations.blink",
+				-- make lazydev completions top priority (see `:h blink.cmp`)
+				score_offset = 100,
+			},
+		},
 	},
 
 	-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
@@ -53,19 +96,8 @@ require("blink.cmp").setup({
 	fuzzy = { implementation = "prefer_rust_with_warning", prebuilt_binaries = { force_version = "v1.4.1" } },
 
 	cmdline = {
-		keymap = { preset = "inherit" },
+		enabled = false, -- ui is not good for noice input ui
+		sources = { "cmdline" },
 		completion = { ghost_text = { enabled = true } },
 	},
 })
-
--- {
--- 	keymap = {
--- 		preset = "enter",
--- 		["<S-Tab>"] = { "select_prev", "fallback" },
--- 		["<Tab>"] = { "select_next", "fallback" },
--- 	},
--- 	cmdline = { sources = { "cmdline" } },
--- 	sources = {
--- 		default = { "lsp", "buffer", "codecompanion", "snippets", "path" },
--- 	},
--- }

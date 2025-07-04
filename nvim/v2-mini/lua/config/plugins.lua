@@ -3,8 +3,13 @@
 ---@diagnostic disable-next-line: unused-local, undefined-global
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
--- for debugging in bootstrap stage. vim.notify would be replaced by trouble.nvim when start finish.
-now(function() require("config.tool.notify") end)
+now(function()
+	add({ source = "folke/snacks.nvim" })
+	--- init notifier firstly
+	---https://github.com/folke/snacks.nvim?tab=readme-ov-file#-usage
+	require("snacks").setup({ notifier = { enabled = true } })
+	-- require("config.tool.notify")
+end)
 
 now(function()
 	add({ source = "catppuccin/nvim" })
@@ -13,6 +18,7 @@ now(function()
 	require("config.ui.catppuccin")
 	vim.cmd.colorscheme("catppuccin-macchiato")
 	-- or vim.api.nvim_cmd({ cmd = "colorscheme", args = { "catppuccin-macchiato" } }, {})
+	--
 end)
 
 now(function() require("mini.icons").setup() end)
@@ -31,9 +37,13 @@ now(function()
 		source = "folke/noice.nvim",
 		depends = {
 			"MunifTanjim/nui.nvim",
-			"folke/snacks.nvim", -- optional
+			"folke/snacks.nvim",
 		},
 	})
+
+	-- add({ source = "ibhagwan/fzf-lua" })
+	-- require("fzf-lua").setup()
+
 	require("config.ui.noice")
 end)
 now(function()
@@ -49,6 +59,7 @@ later(function()
 	require("nvim-web-devicons").setup()
 end)
 
+later(function() require("config.tool.picker") end)
 later(function() require("config.lang.filetypes") end)
 
 later(function() require("mini.ai").setup() end)
@@ -150,11 +161,6 @@ end)
 ------------------------------------------------------------------------
 
 later(function()
-	add({ source = "folke/snacks.nvim" })
-	later(function() require("config.tool.picker") end)
-end)
-
-later(function()
 	add({ source = "nvim-tree/nvim-tree.lua", checkout = "master" })
 	require("config.tool.nvim-tree")
 	require("mini.files").setup()
@@ -186,7 +192,9 @@ end)
 
 later(function()
 	add({ source = "MeanderingProgrammer/render-markdown.nvim" })
+	-- add({ source = "lukas-reineke/headlines.nvim" })
 	require("render-markdown").setup()
+	-- require("headlines").setup()
 end)
 later(function()
 	-- a plugin that properly configures LuaLS for editing your Neovim config
@@ -244,14 +252,14 @@ later(function()
 		depends = {
 			"nvim-lua/plenary.nvim",
 			"MunifTanjim/nui.nvim",
-			"echasnovski/mini.icons",
+			-- "echasnovski/mini.icons",
 		},
 		hooks = { post_checkout = function() vim.cmd("make") end },
 	})
 	--- 可选
 	-- add({ source = "hrsh7th/nvim-cmp" })
 	add({ source = "zbirenbaum/copilot.lua" })
-	add({ source = "HakonHarnes/img-clip.nvim" })
+	-- add({ source = "HakonHarnes/img-clip.nvim" })
 	-- require("img-clip").setup({ ... }) -- 配置 img-clip
 	-- require("copilot").setup({ ... }) -- 根据您的喜好设置 copilot
 	vim.opt.laststatus = 3

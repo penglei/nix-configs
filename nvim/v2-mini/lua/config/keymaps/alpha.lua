@@ -9,7 +9,8 @@ notify_many_keys("j")
 notify_many_keys("k")
 notify_many_keys("l")
 
-local mode = { "i", "c", "x", "s" }
+local mode = { "i", "c", "s" }
+mk.map_combo(mode, "jj", "<BS><BS><Esc>")
 mk.map_combo(mode, "jk", "<BS><BS><Esc>")
 -- To not have to worry about the order of keys, also map "kj"
 mk.map_combo(mode, "kj", "<BS><BS><Esc>")

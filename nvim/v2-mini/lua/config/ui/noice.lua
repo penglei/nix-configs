@@ -1,8 +1,12 @@
 local win = require("config.util").win
 local pos = win.calsize(0, 1)
+
 ---@diagnostic disable-next-line: missing-fields
 require("noice").setup({
 	lsp = {
+		progress = {
+			enabled = false, -- has shown in notification
+		},
 		override = {
 			["vim.lsp.util.convert_input_to_markdown_lines"] = true,
 			["vim.lsp.util.stylize_markdown"] = true,
@@ -15,8 +19,8 @@ require("noice").setup({
 		inc_rename = true, -- enables an input dialog for inc-rename.nvim
 		lsp_doc_border = false, -- add a border to hover docs and signature help
 	},
-	notify = {
-		enabled = false, -- provided by mini.notify
+	notify = { -- record all notify
+		enabled = true,
 	},
 	views = {
 		cmdline_popup = {

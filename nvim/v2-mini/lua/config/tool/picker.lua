@@ -32,28 +32,3 @@ require("fzf-lua").setup({
 	},
 })
 --]]
-
-------------------------- snacks --------------------------------
----https://github.com/folke/snacks.nvim?tab=readme-ov-file#-usage
-require("snacks").setup({
-	opts = {
-		explorer = { enabled = false },
-		-- indent = { enabled = true },
-		scope = { enabled = true },
-		picker = { enabled = true },
-		marks = { enabled = true },
-		quickfile = { enabled = true },
-		qflist = { enabled = true },
-		diagnostics = { enabled = true },
-		diagnostics_buffer = { enabled = true },
-		scroll = { enabled = true, animate = {
-			duration = { step = 10, total = 100 },
-		} },
-		notifiera = { enabled = true },
-	},
-})
-Snacks.scroll.enable()
-------------------------
--- Snacks.notifier.enable()
--- Snacks.quickfile.enable()
--- Snacks.scope.enable()
