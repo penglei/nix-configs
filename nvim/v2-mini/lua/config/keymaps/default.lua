@@ -124,14 +124,6 @@ local keymaps = {
 	["n|gK"] = map_cb(function() require("hover").hover() end):desc("hover.nvim (select)"),
 	["n|<C-p>"] = map_cb(function() require("hover").hover_switch("previous") end):desc("hover.nvim (previous source)"),
 	["n|<C-n>"] = map_cb(function() require("hover").hover_switch("next") end):desc("hover.nvim (next source)"),
-	-- vim.keymap.set( "n", "<C-p>",
-	-- 	function() require("hover").hover_switch("previous") end,
-	-- 	{ desc = "hover.nvim (previous source)" }
-	-- ),
-	-- vim.keymap.set( "n", "<C-n>",
-	-- 	function() require("hover").hover_switch("next") end,
-	-- 	{ desc = "hover.nvim (next source)" }
-	-- ),
 
 	----------- motion/selection ---------------
 	---------- flash

@@ -31,6 +31,8 @@ ui: window layout ... e.g. icons, which-key, alpha, layout, window
      `:lua vim.keymap.set('n', 'v', 'mvv', { noremap = true })`
    * [ ] jump to function argument from bunction body (it's difficult)
 
+     The match-up plugin can partially solve this problem.
+
 
 * [ ] editing (surround, pairs, text object selection)
     * [x] code actions (tiny code actions)

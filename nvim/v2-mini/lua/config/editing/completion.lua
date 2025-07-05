@@ -32,36 +32,30 @@ require("blink.cmp").setup({
 	-- keymap = { preset = "default" },
 	keymap = {
 		preset = "none",
+		-- preset = "super-tab",
 
 		-- ["<C-e>"] = -- { "fallback" }, -- or false, -- or {} -- has bind to emacs style: to line end
 
-		["<C-.>"] = {
-			"show",
-			"show_documentation",
-			"hide_documentation",
+		["<C-.>"] = { "show", "show_documentation", "hide_documentation" },
+		["<Tab>"] = {
+			function(cmp)
+				if cmp.snippet_active() then
+					return cmp.accept()
+				else
+					return cmp.select_and_accept()
+				end
+			end,
+			"snippet_forward",
+			"fallback",
 		},
-		["<C-y>"] = { "select_and_accept" },
+		["<S-Tab>"] = { "snippet_backward", "fallback" },
 		["<Up>"] = { "select_prev", "fallback" },
 		["<Down>"] = { "select_next", "fallback" },
 		["<C-p>"] = { "select_prev", "fallback_to_mappings" },
 		["<C-n>"] = { "select_next", "fallback_to_mappings" },
 
-		["<Tab>"] = {
-			-- function(cmp)
-			-- 	local items = cmp.get_items()
-			-- 	if #items == 1 then
-			-- 		-- vim.notify(items[1])
-			-- 		-- cmp.accept(cmp)
-			-- 		-- return true
-			-- 	end
-			-- end,
-
-			"select_next",
-			"fallback",
-		},
-		["<S-Tab>"] = { "select_prev", "fallback" },
-		-- ["<Esc>"] = { "hide", "fallback" },
 		["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+		-- ["<Esc>"] = { "hide", "fallback" },
 	},
 
 	appearance = {
@@ -70,8 +64,11 @@ require("blink.cmp").setup({
 		nerd_font_variant = "mono",
 	},
 
-	-- (Default) Only show the documentation popup when manually triggered
-	completion = { documentation = { auto_show = false } },
+	completion = {
+
+		-- (Default) Only show the documentation popup when manually triggered
+		documentation = { auto_show = false },
+	},
 
 	-- Default list of enabled providers defined so that you can extend it
 	-- elsewhere in your config, without redefining it, due to `opts_extend`

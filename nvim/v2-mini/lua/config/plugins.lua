@@ -62,15 +62,12 @@ end)
 later(function() require("config.tool.picker") end)
 later(function() require("config.lang.filetypes") end)
 
-later(function() require("mini.ai").setup() end)
 later(function() require("mini.align").setup() end)
-later(function() require("mini.surround").setup() end)
-later(function() require("mini.pairs").setup() end) -- autoclose pairs
-later(function() require("mini.splitjoin").setup() end)
 later(function() require("mini.visits").setup() end)
 later(function() require("mini.bracketed").setup() end)
+
 -- later(function() require("mini.jump").setup() end) -- extend f, F, t, T. -- it's not compatible with `.` repeat occasionally ?
--- later(function() require("mini.extra").setup() end)
+-- later(function() require("mini.extra").setup() end) -- more mini pickers
 -- later(function() require("mini.operators").setup() end)
 
 later(function() require("config.keymaps.clue") end)
@@ -107,15 +104,6 @@ later(function()
 	require("config.editing.completion")
 end)
 
-later(function() require("config.editing.comment") end)
-later(function()
-	add({
-		source = "sustech-data/wildfire.nvim",
-		depends = { { source = "nvim-treesitter/nvim-treesitter" } },
-	})
-	require("wildfire").setup()
-end)
-
 later(function()
 	add({ source = "stevearc/conform.nvim" })
 	require("config.editing.formatter")
@@ -134,22 +122,21 @@ later(function()
 	})
 	--- Add plugin which depends on nvim-treesitter.
 	--- dependencies order is very important, as it affects package search path.
-	add({ source = "nvim-treesitter/nvim-treesitter-textobjects" })
+	add({ source = "nvim-treesitter/nvim-treesitter-textobjects" }) -- This complements mini.ai.
 	add({ source = "windwp/nvim-ts-autotag" })
 	add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
+	add({ source = "sustech-data/wildfire.nvim" })
+	add({ source = "andymass/vim-matchup" })
 
-	-- -- or config dependencies explictly in other later(...) block
-	-- add({
-	-- 	source = "nvim-treesitter/nvim-treesitter-textobjects",
-	-- 	depends = { "nvim-treesitter/nvim-treesitter" },
-	-- })
+	-- dependencies can specified explictly in other later(...) block
+	-- later(function()
+	-- 	add({
+	-- 		source = "nvim-treesitter/nvim-treesitter-textobjects",
+	-- 		depends = { "nvim-treesitter/nvim-treesitter" },
+	-- 	})
+	-- end)
 
-	require("config.editing.treesitter")
-end)
-
-later(function()
-	-- 	require("mini.bufremove").setup() -- Not well implemented
-	-- add({ source = "famiu/bufdelete.nvim" }) -- replaced by Snacks.bufdelete()
+	require("config.editing.textobjects")
 end)
 
 later(function()
