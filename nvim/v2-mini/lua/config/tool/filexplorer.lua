@@ -17,12 +17,10 @@ vim.cmd([[
     :hi link NvimTreeImageFile   Title
   ]])
 
-local function config_on_attach(bufnr)
+local function nvim_tree_config_on_attach(bufnr)
 	-- require("nvim-tree.api").config.mappings.default_on_attach(bufnr)
 	local api = require("nvim-tree.api")
-	local function opts(desc)
-		return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-	end
+	local function opts(desc) return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true } end
 
 	-- default mappings
 	-- api.config.mappings.default_on_attach(bufnr)
@@ -52,9 +50,12 @@ local function config_on_attach(bufnr)
 	vim.keymap.set("n", "<leader>e", "<C-w><C-p>", opts("Back to window")) -- maybe we should do more carefully by record last window by `winnr("#")`
 	vim.keymap.set("n", "<TAB>", "<C-w><C-p>", opts("Back to window")) -- maybe we should do more carefully by record last window by `winnr("#")`
 	vim.keymap.set("n", "<2-LeftMouse>", api.node.open.edit, opts("Open"))
+
+	local preview = require("nvim-tree-preview")
+	vim.keymap.set("n", "P", preview.watch, opts("Preview (Watch)"))
 end
 
-local settings = {
+local nvim_tree_config = {
 	auto_reload_on_write = true,
 	create_in_closed_folder = false,
 	disable_netrw = false,
@@ -65,15 +66,13 @@ local settings = {
 	respect_buf_cwd = false,
 	sort_by = "name",
 	sync_root_with_cwd = false,
-	on_attach = config_on_attach,
+	on_attach = nvim_tree_config_on_attach,
 
 	view = {
 		adaptive_size = false,
 		centralize_selection = true,
 		-- width = 40,
-		width = function()
-			return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
-		end,
+		width = function() return math.floor(vim.opt.columns:get() * WIDTH_RATIO) end,
 		side = "left",
 		preserve_window_proportions = false,
 		number = false,
@@ -268,4 +267,19 @@ local settings = {
 	},
 }
 
-require("nvim-tree").setup(settings)
+local nvim_tree_preview_config = {
+	max_width = math.floor(vim.opt.columns:get() * 0.9),
+	max_height = math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.9),
+	image_preview = {
+		enable = false,
+	},
+}
+
+-- require("image").setup()
+require("nvim-tree").setup(nvim_tree_config)
+require("nvim-tree-preview").setup(nvim_tree_preview_config)
+require("mini.files").setup({
+	window = {
+		preview = true,
+	},
+})

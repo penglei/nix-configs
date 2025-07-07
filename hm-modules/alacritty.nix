@@ -16,6 +16,7 @@
       general.import = [
         "~/.config/alacritty/userlocal.toml"
         "~/.config/alacritty/themes/catppuccin-macchiato.toml"
+        "~/.config/alacritty/keybindings.toml"
       ];
       window = {
         option_as_alt = "OnlyLeft";
@@ -70,11 +71,15 @@
             };
           }
           {
-            regex = ''
-              (ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-\u009F<>"\\s{-}\\^⟨⟩`]+'';
+            regex = ''(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-\u009F<>"\\s{-}\\^⟨⟩`]+'';
             command = {
               program = "open";
-              args = [ "-n" "-a" "Google Chrome" "--args" ];
+              args = [
+                "-n"
+                "-a"
+                "Google Chrome"
+                "--args"
+              ];
             };
             hyperlinks = true;
             post_processing = true;

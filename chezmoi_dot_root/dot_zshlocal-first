@@ -7,4 +7,8 @@ function login-argocd() {
   ssh -t jumper ssh -t khaos ssh -t lespeng@khaos-argocd
 }
 
+if [ -x ~/.keys.sh ];then
+  source ~/.keys.sh
+fi
+
 #source $HOME/.ghcup/env

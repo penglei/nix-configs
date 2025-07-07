@@ -1,0 +1,5 @@
+[keyboard]
+bindings = [
+  #https://sw.kovidgoyal.net/kitty/keyboard-protocol/#legacy-functional-keys
+  { key="Back", mods="Shift", chars="\u001b[127;2u" } # support <S-BS>
+]

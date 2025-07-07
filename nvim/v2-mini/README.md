@@ -43,27 +43,28 @@ ui: window layout ... e.g. icons, which-key, alpha, layout, window
     * [x] surround action after selection. (mini surround)
     * [x] tree-sitter range selection
     * [x] treesitter syntax motion
-    * [ ] completion with `<Tab>` selecting
+    * [x] completion with `<Tab>` selecting
     * [-] AI
         * https://github.com/Jacob411/Ollama-Copilot
         * https://github.com/yetone/avante.nvim
     * [x] toggle comment
         * [x] ts_context_commentstring (same file with different commentstring)
-    * [] mini.surround doens't support visual mode from mouse click
+    * [ ] mini.surround doens't support visual mode from mouse click
     * [-] `va{` in mini.ai implementation, sometimes it doesn't work, but i can't reproduce it.
-    * [ ] delete in seletion mode don't override fault register
+    * [x] delete in seletion mode don't override default register by `<S-BS>`
+    * [ ] selection comment block textobject
 
 * [x] `Y` yank to system clipboard in visual mode
 
 * [ ] ui
     * [x] terminal window border (→ switch to toggleterm fixed)
     * [ ] smart `<leader>d` to show diagnostic (if inline exist, show inline, else show buffer)
-    * [ ] highlight MiniSurround
+    * [ ] ~~highlight MiniSurround~~
 
 * [ ] tool
     * dap debugger
     * [x] Neotest
-    * [ ] Pick: grep word under the cursor
+    * [x] Pick: grep word under the cursor
         * [x] grep_live picker
     * [ ] asynchronous lint engine
 
@@ -82,6 +83,11 @@ ui: window layout ... e.g. icons, which-key, alpha, layout, window
 * https://github.com/folke/lazydev.nvim
 * https://github.com/natecraddock/workspaces.nvim
 * https://github.com/mfussenegger/nvim-lint
+
+### markdown
+
+* https://github.com/iwe-org/iwe
+* https://github.com/artempyanykh/marksman
 
 ## Key Design Thoughts
 
@@ -152,3 +158,7 @@ neovim对结构性文本的处理有一个通用的抽象，叫作`textobject`�
 
 
 
+
+#### more vim configurations  
+
+* https://github.com/nshen/InsisVim

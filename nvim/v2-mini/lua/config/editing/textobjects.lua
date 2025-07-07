@@ -189,7 +189,7 @@ require("mini.move").setup({
 -------------------- goto block outer --------------------
 
 require("treesitter-outer").setup({
-	-- g[, g[ has bound to surround, but I don't employ them.
+	-- -- g[, g[ has bound to surround, but I don't employ them.
 	prev_outer_key = "g[", -- "g<",
 	next_outer_key = "g]", -- "g>",
 })

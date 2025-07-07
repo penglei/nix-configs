@@ -20,6 +20,16 @@ now(function()
 				keys = { i_esc = { "<esc>", { "cmp_close", "cancel" }, mode = "i", expr = true } },
 			},
 		},
+		picker = {
+			win = {
+				input = {
+					keys = {
+						["<S-Tab>"] = { "list_up", mode = { "i", "n" } },
+						["<Tab>"] = { "list_down", mode = { "i", "n" } },
+					},
+				},
+			},
+		},
 	})
 	-- require("config.tool.notify")
 end)
@@ -38,7 +48,7 @@ now(function()
 	-- 	depends = { "nvim-tree/nvim-web-devicons" },
 	-- })
 	add({ source = "NStefan002/screenkey.nvim" })
-	require("config.ui.statusline")
+	require("config.ui.statusline") -- mini.statusline
 end)
 now(function() require("config.ui.mini.starter") end)
 
@@ -116,19 +126,32 @@ later(function()
 		depends = {
 			"rafamadriz/friendly-snippets",
 			"onsails/lspkind.nvim",
-			"zbirenbaum/copilot.lua", -- super-tab and super-next/previous require copilot.suggestions
+			-- mikavilpas/blink-ripgrep.nvim
 		},
 		checkout = "v1.4.1",
 		monitor = "main",
 	})
-	add({ source = "olimorris/codecompanion.nvim", depends = {
-		"nvim-lua/plenary.nvim",
-		"ravitemer/codecompanion-history.nvim",
-	} })
-	add({ source = "zbirenbaum/copilot.lua" })
+	add({
+		source = "olimorris/codecompanion.nvim",
+		depends = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"MeanderingProgrammer/render-markdown.nvim",
+			"ravitemer/codecompanion-history.nvim",
+		},
+	})
+	add({ source = "Saghen/blink.compat" })
 
-	require("config.editing.ai")
-	require("config.editing.completion")
+	-- ai suggestions
+	add({ source = "zbirenbaum/copilot.lua" })
+	add({ source = "milanglacier/minuet-ai.nvim" })
+	add({ source = "supermaven-inc/supermaven-nvim" })
+
+	local ai = require("config.editing.ai")
+
+	require("config.editing.completion").setup({
+		ai_virtext_sugg = ai.virtext_sugg, -- ai virtual text suggestions,
+	})
 end)
 
 later(function()
@@ -205,8 +228,13 @@ end)
 
 later(function()
 	add({ source = "nvim-tree/nvim-tree.lua", checkout = "master" })
-	require("config.tool.nvim-tree")
-	require("mini.files").setup()
+	add({ source = "b0o/nvim-tree-preview.lua", depends = {
+		"nvim-lua/plenary.nvim",
+		"3rd/image.nvim",
+	} })
+
+	-- require("image").setup()
+	require("config.tool.filexplorer")
 end)
 
 later(function()
