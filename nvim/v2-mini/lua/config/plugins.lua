@@ -38,7 +38,7 @@ now(function()
 	-- 	depends = { "nvim-tree/nvim-web-devicons" },
 	-- })
 	add({ source = "NStefan002/screenkey.nvim" })
-	require("config.ui.statusline")
+	require("config.ui.statusline") -- mini.statusline
 end)
 now(function() require("config.ui.mini.starter") end)
 
@@ -116,19 +116,32 @@ later(function()
 		depends = {
 			"rafamadriz/friendly-snippets",
 			"onsails/lspkind.nvim",
-			"zbirenbaum/copilot.lua", -- super-tab and super-next/previous require copilot.suggestions
+			-- mikavilpas/blink-ripgrep.nvim
 		},
 		checkout = "v1.4.1",
 		monitor = "main",
 	})
-	add({ source = "olimorris/codecompanion.nvim", depends = {
-		"nvim-lua/plenary.nvim",
-		"ravitemer/codecompanion-history.nvim",
-	} })
-	add({ source = "zbirenbaum/copilot.lua" })
+	add({
+		source = "olimorris/codecompanion.nvim",
+		depends = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"MeanderingProgrammer/render-markdown.nvim",
+			"ravitemer/codecompanion-history.nvim",
+		},
+	})
+	add({ source = "Saghen/blink.compat" })
 
-	require("config.editing.ai")
-	require("config.editing.completion")
+	-- ai suggestions
+	add({ source = "zbirenbaum/copilot.lua" })
+	add({ source = "milanglacier/minuet-ai.nvim" })
+	add({ source = "supermaven-inc/supermaven-nvim" })
+
+	local ai = require("config.editing.ai")
+
+	require("config.editing.completion").setup({
+		ai_virtext_sugg = ai.virtext_sugg, -- ai virtual text suggestions,
+	})
 end)
 
 later(function()
@@ -206,7 +219,11 @@ end)
 later(function()
 	add({ source = "nvim-tree/nvim-tree.lua", checkout = "master" })
 	require("config.tool.nvim-tree")
-	require("mini.files").setup()
+	require("mini.files").setup({
+		window = {
+			preview = true,
+		},
+	})
 end)
 
 later(function()

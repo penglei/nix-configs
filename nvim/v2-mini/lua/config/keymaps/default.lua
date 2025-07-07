@@ -71,6 +71,7 @@ local keymaps = {
 
 	["n|<leader><space>"] = map_cb(function() Snacks.picker() end):desc("All pickers"),
 	["n|<leader>e"] = map_cr("NvimTreeFindFile"):desc("nvim-tree: Find file"),
+	["n|<leader>ee"] = map_cb(function() MiniFiles.open() end):desc("mini.files open"),
 	["n|<leader>y"] = map_cmd("<CMD>lua MiniFiles.open()<CR>"):desc("open mini files navigator"), -- like command 'yazi'
 	-- ["n|<leader>y"] = map_cmd("<CMD>lua require('yazi').yazi()<CR>"):desc("open mini files navigator"),
 	["n|<leader>/"] = map_cb(function() Snacks.picker.grep() end):desc("Grep"),
@@ -102,7 +103,15 @@ local keymaps = {
 	-- reverse p and P behaviour in visual mode
 	["v|p"] = map_cb(visual_lower_p):desc("paste in visual mode"),
 	["v|P"] = map_cb(visual_upper_p):desc("paste and override default register"),
+	-- <BS> has mapped to wilder in visual mode, so we need to bind to **selection mode** to dinstict from it while press <BS>.
 	["s|<BS>"] = map_cmd('<C-G>"_<DEL>'):desc("delete text without overriding default register"),
+	["v|<S-BS>"] = map_cmd('"_<DEL>'):desc("delete text without overriding default register"),
+
+	["n|<leader>p"] = map_cmd("p"):desc("paste in normal mode"),
+	["n|<leader>P"] = map_cmd("P"):desc("paste and override default register"),
+
+	["n|<leader>r"] = map_cr("Rename"):desc("lsp: Rename current word"),
+	["n|<leader>R"] = map_cr("LspRestart"):desc("lsp: Restart lsp server"),
 
 	----------------- command line ----------------------
 	["c|<C-p>"] = map_cmd("<Up>"),
