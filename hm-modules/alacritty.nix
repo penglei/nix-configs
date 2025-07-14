@@ -9,6 +9,9 @@
     ".config/alacritty/userlocal.toml" = {
       source = ../files/dotfiles/_config/alacritty/userlocal.toml;
     };
+    ".config/alacritty/keybindings.toml" = {
+      source = ../files/dotfiles/_config/alacritty/keybindings.toml;
+    };
   };
   programs.alacritty = {
     enable = true;

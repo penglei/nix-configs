@@ -275,6 +275,8 @@ local nvim_tree_preview_config = {
 	},
 }
 
+vim.api.nvim_create_user_command("SnacksExplorer", function() Snacks.explorer() end, {})
+
 -- require("image").setup()
 require("nvim-tree").setup(nvim_tree_config)
 require("nvim-tree-preview").setup(nvim_tree_preview_config)

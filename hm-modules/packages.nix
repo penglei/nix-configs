@@ -124,7 +124,7 @@
 
       # go_1_22
       #gotools #these plugins are managed by neovim ray-x/go.vim plugin.
-      nodejs_latest
+      nodejs
 
       typos # source code typo checking
 
