@@ -3,6 +3,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+vim.opt.conceallevel = 2
+
 -- Don't send system clipboard, or it would be watched by other clipboard manager.
 -- vim.opt.clipboard = "unnamedplus"
 

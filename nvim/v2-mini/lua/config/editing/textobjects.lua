@@ -8,7 +8,7 @@ local ts_langs = {
 }
 -- stylua: ignore end
 
-local config = {
+local treesitter_config = {
 	ensure_installed = ts_langs,
 	highlight = {
 		enable = true,
@@ -22,7 +22,8 @@ local config = {
 		additional_vim_regex_highlighting = false,
 	},
 }
-config.textobjects = {
+
+treesitter_config.textobjects = {
 	swap = {
 		enable = true,
 		swap_next = {
@@ -117,7 +118,7 @@ config.textobjects = {
 
 require("nvim-treesitter.install").prefer_git = true
 ---@diagnostic disable-next-line: missing-fields
-require("nvim-treesitter.configs").setup(config)
+require("nvim-treesitter.configs").setup(treesitter_config)
 
 require("nvim-ts-autotag").setup() -- Use treesitter to autoclose and autorename html tag
 require("mini.pairs").setup() -- autoclose pairs
@@ -204,8 +205,31 @@ require("mini.splitjoin").setup({
 ---------------------- matchup matchparen tips ------------------------
 
 vim.g.matchup_matchparen_offscreen = { method = "popup" }
-vim.api.nvim_set_hl(0, "MatchParen", {
-	bg = "white",
-	fg = "blue",
-	italic = true,
+vim.api.nvim_set_hl(0, "MatchParen", { italic = true, bold = true, underline = true })
+
+------------- https://github.com/roobert/tabtree.nvim -----------------
+require("tabtree").setup({
+	--- tips : try run `:InspectTree` to inpsect all ts nodes.
+	key_bindings = {
+		previous = "[[",
+		next = "]]",
+	},
+	language_configs = {
+		go = {
+			target_query = [[
+					(type_declaration) @type_declaration_capture
+					(method_declaration) @method_declaration_capture
+					(if_statement) @if_statement_capture
+					(for_statement) @for_statement_capture
+					(function_declaration) @function_capture
+					(block) @block_capture
+					(go_statement) @go_statement_capture
+					;(interpreted_string_literal) @string_capture
+				]],
+			offsets = {},
+		},
+	},
+	default_config = {
+		offsets = {},
+	},
 })

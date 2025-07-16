@@ -141,6 +141,11 @@ starter.setup({
 	header = header,
 	items = {
 		{
+			name = "Run Command",
+			action = function() Snacks.picker.commands() end,
+			section = "Entry",
+		},
+		{
 			name = "Recent files",
 			action = function() require("mini.extra").pickers.oldfiles() end,
 			section = "Entry",

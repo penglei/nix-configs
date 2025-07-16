@@ -189,33 +189,6 @@ later(function()
 	-- end)
 
 	require("config.editing.textobjects")
-
-	-- https://github.com/roobert/tabtree.nvim
-	require("tabtree").setup({
-		--- tips : try run `:InspectTree` to inpsect all ts nodes.
-		key_bindings = {
-			previous = "<S-Left>",
-			next = "<S-Right>",
-		},
-		language_configs = {
-			go = {
-				target_query = [[
-					(type_declaration) @type_declaration_capture
-					(method_declaration) @method_declaration_capture
-					(if_statement) @if_statement_capture
-					(for_statement) @for_statement_capture
-					(function_declaration) @function_capture
-					(block) @block_capture
-					(go_statement) @go_statement_capture
-					;(interpreted_string_literal) @string_capture
-				]],
-				offsets = {},
-			},
-		},
-		default_config = {
-			offsets = {},
-		},
-	})
 end)
 
 later(function()
@@ -325,4 +298,9 @@ end)
 later(function()
 	add({ source = "saecki/crates.nvim" })
 	require("config.lang.rust")
+end)
+
+later(function()
+	add({ source = "epwalsh/obsidian.nvim", depends = { "nvim-lua/plenary.nvim" } })
+	require("config.tool.obsidian")
 end)
