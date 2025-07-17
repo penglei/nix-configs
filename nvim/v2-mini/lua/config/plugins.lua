@@ -6,10 +6,11 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 now(function()
 	add({ source = "folke/snacks.nvim" })
 	--- init notifier firstly
-	---https://github.com/folke/snacks.nvim?tab=readme-ov-file#-usage
+	--- https://github.com/folke/snacks.nvim?tab=readme-ov-file#-usage
 	require("snacks").setup({
 		notifier = { enabled = true },
 		input = { enabled = true },
+		image = { enabled = true },
 		styles = {
 			---@diagnostic disable-next-line: missing-fields
 			input = {
@@ -28,6 +29,11 @@ now(function()
 						["<Tab>"] = { "list_down", mode = { "i", "n" } },
 					},
 				},
+			},
+			layout = {
+				cycle = true,
+				--- Use the default layout or vertical if the window is too narrow
+				preset = function() return vim.o.columns >= 120 and "default" or "ivy_split" end,
 			},
 		},
 	})
@@ -136,7 +142,7 @@ later(function()
 		depends = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
-			"MeanderingProgrammer/render-markdown.nvim",
+			-- "MeanderingProgrammer/render-markdown.nvim",
 			"ravitemer/codecompanion-history.nvim",
 		},
 	})
@@ -234,12 +240,8 @@ later(function()
 	require("config.tool.neotest")
 end)
 
-later(function()
-	add({ source = "MeanderingProgrammer/render-markdown.nvim" })
-	-- add({ source = "lukas-reineke/headlines.nvim" })
-	require("render-markdown").setup({ latex = { enabled = false } })
-	-- require("headlines").setup()
-end)
+later(function() end)
+
 later(function()
 	-- a plugin that properly configures LuaLS for editing your Neovim config
 	add({ source = "folke/lazydev.nvim" })
@@ -277,6 +279,21 @@ later(function()
 	})
 end)
 
+later(function()
+	add({ source = "hedyhli/outline.nvim" })
+	require("outline").setup()
+end)
+
+later(function()
+	add({ source = "kevinhwang91/nvim-ufo", depends = { "kevinhwang91/promise-async" } })
+
+	require("config.tool.fold")
+end)
+
+later(function()
+	add({ source = "HakonHarnes/img-clip.nvim" })
+	require("img-clip").setup()
+end)
 -- later(function()
 -- 	add({ source = "mikavilpas/yazi.nvim", depends = { { source = "nvim-lua/plenary.nvim" } } })
 -- 	require("yazi").setup({})
@@ -294,13 +311,26 @@ later(function()
 	require("nvim-autocenter").setup()
 end)
 
+later(function()
+	add({ source = "leath-dub/snipe.nvim" })
+	require("snipe").setup()
+end)
+
 -------------------- lang ---------------------
 later(function()
 	add({ source = "saecki/crates.nvim" })
 	require("config.lang.rust")
 end)
+now(function()
+	add({ source = "OXY2DEV/markview.nvim", depends = { "saghen/blink.cmp" } })
+	local presets = require("markview.presets")
+	require("markview").setup({
+		markdown = { headings = presets.headings.slanted },
+	})
+end)
 
 later(function()
 	add({ source = "epwalsh/obsidian.nvim", depends = { "nvim-lua/plenary.nvim" } })
+	add({ source = "MeanderingProgrammer/render-markdown.nvim" })
 	require("config.tool.obsidian")
 end)

@@ -184,4 +184,5 @@ setup("purescriptls", {
 	},
 })
 
+setup("marksman")
 -- setup()

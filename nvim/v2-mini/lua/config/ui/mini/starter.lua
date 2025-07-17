@@ -141,13 +141,18 @@ starter.setup({
 	header = header,
 	items = {
 		{
-			name = "Run Command",
+			name = "Recent files",
+			action = function() require("mini.extra").pickers.oldfiles() end,
+			section = "Entry",
+		},
+		{
+			name = "Command",
 			action = function() Snacks.picker.commands() end,
 			section = "Entry",
 		},
 		{
-			name = "Recent files",
-			action = function() require("mini.extra").pickers.oldfiles() end,
+			name = "Explorer",
+			action = function() vim.cmd([[NvimTreeFindFile]]) end,
 			section = "Entry",
 		},
 		{

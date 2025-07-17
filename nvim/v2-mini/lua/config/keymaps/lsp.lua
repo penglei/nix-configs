@@ -14,7 +14,7 @@ return {
 	-- ["nx|,a"] = map_cr("FzfLua lsp_code_actions"):desc("code actions"),
 	-- ["n|,o"] = map_cr("Symbols"):desc("show buffer lsp symbols"),
 
-	["n|<leader>o"] = map_cb(function() Snacks.picker.lsp_symbols() end):desc("LSP Symbols"),
+	-- ["n|<leader>o"] = map_cb(function() Snacks.picker.lsp_symbols() end):desc("LSP Symbols"),
 	-- ["n|<leader>ss"] = map_cb(function() Snacks.picker.lsp_symbols() end):desc("LSP Symbols"),
 	["n|<leader>ss"] = map_cb(function() Snacks.picker.lsp_workspace_symbols() end):desc("LSP Workspace Symbols"),
 	["n|gd"] = map_cb(function() Snacks.picker.lsp_definitions() end):desc("Goto Definition"),

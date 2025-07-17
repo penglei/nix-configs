@@ -3,7 +3,7 @@ local ts_langs = {
 	-- "latex", -- cause parsing markdown embed latex equation failed
 	"regex", "vimdoc", "bash", "c", "cpp", "css", "go", "gomod",
 	"html", "javascript", "json", "lua", "make", "python",
-	"markdown_inline", "markdown", "rust", "typescript", "yaml",
+	"markdown", "markdown_inline", "rust", "typescript", "yaml",
 	"nickel", "nix", "scheme", "elvish", "purescript",
 }
 -- stylua: ignore end
