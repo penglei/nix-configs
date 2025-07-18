@@ -67,6 +67,8 @@ ui: window layout ... e.g. icons, which-key, alpha, layout, window
     * [x] Pick: grep word under the cursor
         * [x] grep_live picker
     * [ ] asynchronous lint engine
+    * [?] [**neoorg**](https://github.com/nvim-neorg/neorg)
+    * [ ] [**neogit**](https://github.com/NeogitOrg/neogit)
 
 * [x] lang
     * [x] ~~lua_lsp search path~~

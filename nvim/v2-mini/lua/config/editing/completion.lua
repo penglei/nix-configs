@@ -213,13 +213,7 @@ local function make_config(ai_virtext_sugg)
 				supermaven = {
 					name = "supermaven",
 					module = "blink.compat.source",
-					priority = 3,
 				},
-
-				-- local cmp = require "cmp"
-				-- cmp.register_source("obsidian", require("cmp_obsidian").new())
-				-- cmp.register_source("obsidian_new", require("cmp_obsidian_new").new())
-				-- cmp.register_source("obsidian_tags", require("cmp_obsidian_tags").new())
 			},
 		},
 
@@ -230,11 +224,11 @@ local function make_config(ai_virtext_sugg)
 		-- See the fuzzy documentation for more information
 		fuzzy = { implementation = "prefer_rust_with_warning", prebuilt_binaries = { force_version = "v1.4.1" } },
 
-		-- render a menu for cmdline prompt
 		cmdline = {
-			enabled = false, -- ui is not good for noice input ui
-			sources = { "cmdline" }, -- only select cmdline as source (what other sources can be add?)
-			completion = { ghost_text = { enabled = true } },
+			enabled = false, -- wilder is a better choice
+			sources = { "cmdline", "path" },
+			keymap = { preset = "inherit" },
+			completion = { ghost_text = { enabled = true }, menu = { auto_show = true } },
 		},
 	}
 

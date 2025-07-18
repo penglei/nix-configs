@@ -13,6 +13,9 @@ function _G.put(...)
 	print(table.concat(objects, "\n"))
 	return ...
 end
+_G.dd = function(...) Snacks.debug.inspect(...) end
+_G.bt = function() Snacks.debug.backtrace() end
+vim.print = _G.dd
 
 vim.log.level = vim.log.levels.WARN
 

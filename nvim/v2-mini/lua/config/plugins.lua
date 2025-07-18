@@ -6,38 +6,8 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 now(function()
 	add({ source = "folke/snacks.nvim" })
 	--- init notifier firstly
-	--- https://github.com/folke/snacks.nvim?tab=readme-ov-file#-usage
-	require("snacks").setup({
-		notifier = { enabled = true },
-		input = { enabled = true },
-		image = { enabled = true },
-		styles = {
-			---@diagnostic disable-next-line: missing-fields
-			input = {
-				row = require("config.util").win.calsize(1, 0.5).height,
-				b = {
-					completion = true, -- disable blink completions in input
-				},
-				keys = { i_esc = { "<esc>", { "cmp_close", "cancel" }, mode = "i", expr = true } },
-			},
-		},
-		picker = {
-			win = {
-				input = {
-					keys = {
-						["<S-Tab>"] = { "list_up", mode = { "i", "n" } },
-						["<Tab>"] = { "list_down", mode = { "i", "n" } },
-					},
-				},
-			},
-			layout = {
-				cycle = true,
-				--- Use the default layout or vertical if the window is too narrow
-				preset = function() return vim.o.columns >= 120 and "default" or "ivy_split" end,
-			},
-		},
-	})
 	-- require("config.tool.notify")
+	require("config.tool.snacks")
 end)
 
 now(function()
@@ -49,10 +19,6 @@ end)
 
 now(function() require("mini.icons").setup() end)
 now(function()
-	-- add({
-	-- 	source = "nvim-lualine/lualine.nvim",
-	-- 	depends = { "nvim-tree/nvim-web-devicons" },
-	-- })
 	add({ source = "NStefan002/screenkey.nvim" })
 	require("config.ui.statusline") -- mini.statusline
 end)
@@ -67,7 +33,7 @@ end)
 ------------ Safely execute later ---------------
 
 later(function()
-	add({ source = "folke/noice.nvim", depends = { "MunifTanjim/nui.nvim", "folke/snacks.nvim" } })
+	-- 	add({ source = "folke/noice.nvim", depends = { "MunifTanjim/nui.nvim", "folke/snacks.nvim" } }) -- just ui, no auto completion
 	add({
 		source = "gelguy/wilder.nvim",
 		hooks = {
@@ -207,12 +173,15 @@ end)
 
 later(function()
 	add({ source = "nvim-tree/nvim-tree.lua", checkout = "master" })
-	add({ source = "b0o/nvim-tree-preview.lua", depends = {
-		"nvim-lua/plenary.nvim",
-		"3rd/image.nvim",
-	} })
+	add({
+		source = "b0o/nvim-tree-preview.lua",
+		depends = {
+			"nvim-lua/plenary.nvim",
+			-- "3rd/image.nvim",
+		},
+	})
 
-	-- require("image").setup()
+	-- require("image").setup() -- The functionality of `3rd/image.nvim` and `snacks image` overlaps.
 	require("config.tool.filexplorer")
 end)
 
@@ -280,6 +249,7 @@ later(function()
 end)
 
 later(function()
+	-- 	add("oskarrrrrrr/symbols.nvim") -- conflict with noice.vim?
 	add({ source = "hedyhli/outline.nvim" })
 	require("outline").setup()
 end)
@@ -294,15 +264,10 @@ later(function()
 	add({ source = "HakonHarnes/img-clip.nvim" })
 	require("img-clip").setup()
 end)
+
 -- later(function()
 -- 	add({ source = "mikavilpas/yazi.nvim", depends = { { source = "nvim-lua/plenary.nvim" } } })
 -- 	require("yazi").setup({})
--- end)
-
--- later(function()
--- 	-- conflict with noice.vim
--- 	add("oskarrrrrrr/symbols.nvim")
--- 	require("config.tool.symbols")
 -- end)
 
 later(function()
@@ -312,7 +277,7 @@ later(function()
 end)
 
 later(function()
-	add({ source = "leath-dub/snipe.nvim" })
+	add({ source = "leath-dub/snipe.nvim" }) --buffer explorer
 	require("snipe").setup()
 end)
 
@@ -321,9 +286,13 @@ later(function()
 	add({ source = "saecki/crates.nvim" })
 	require("config.lang.rust")
 end)
-now(function()
-	add({ source = "OXY2DEV/markview.nvim", depends = { "saghen/blink.cmp" } })
+
+now(function() -- markview do lazy loading internally, so we setup it synchronously.
+	add({ source = "OXY2DEV/markview.nvim", depends = { "saghen/blink.cmp" } }) -- markview will register blink.cmp automatically
 	local presets = require("markview.presets")
+	require("markview.extras.checkboxes").setup()
+	require("markview.extras.editor").setup({ max_height = 30 })
+	require("markview.extras.headings").setup()
 	require("markview").setup({
 		markdown = { headings = presets.headings.slanted },
 	})
@@ -331,6 +300,24 @@ end)
 
 later(function()
 	add({ source = "epwalsh/obsidian.nvim", depends = { "nvim-lua/plenary.nvim" } })
-	add({ source = "MeanderingProgrammer/render-markdown.nvim" })
+	-- add({ source = "MeanderingProgrammer/render-markdown.nvim" }) -- there exists many conflict with obsidian.nvim
 	require("config.tool.obsidian")
+end)
+
+later(function()
+	add({
+		source = "NeogitOrg/neogit",
+		depends = {
+			"nvim-lua/plenary.nvim",
+			"sindrets/diffview.nvim",
+			"folke/snacks.nvim",
+		},
+	})
+
+	require("neogit").setup({
+		graph_style = "unicode",
+		integrations = {
+			-- snacks,
+		},
+	})
 end)

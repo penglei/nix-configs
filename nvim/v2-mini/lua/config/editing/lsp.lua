@@ -144,8 +144,6 @@ setup("jsonls", {
 	},
 })
 
--- markdown_oxide.setup({})
-
 setup("yamlls", {
 	settings = {
 		yaml = {
@@ -184,5 +182,7 @@ setup("purescriptls", {
 	},
 })
 
-setup("marksman")
+-- setup("marksman")
+setup("markdown_oxide")
+
 -- setup()

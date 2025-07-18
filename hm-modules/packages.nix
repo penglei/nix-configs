@@ -184,6 +184,12 @@
       typstyle
       tinymist
 
+      #for neovim Snacks image
+      ghostscript
+      markdown-oxide
+      mermaid-cli
+      pngpaste
+
     ]
     ++ lib.optionals stdenvNoCC.isLinux [
       m4
