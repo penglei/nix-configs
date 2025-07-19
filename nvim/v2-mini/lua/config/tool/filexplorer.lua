@@ -271,7 +271,7 @@ local nvim_tree_preview_config = {
 	max_width = math.floor(vim.opt.columns:get() * 0.9),
 	max_height = math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.9),
 	image_preview = {
-		enable = false,
+		enable = true,
 	},
 }
 

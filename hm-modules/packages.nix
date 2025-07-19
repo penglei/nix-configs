@@ -108,6 +108,7 @@
       preview_open # script wrapper for Preview.app
       koodo-reader
       skimpdf
+      sioyek
       #adobe-reader
 
       #bitwarden-desktop
@@ -185,11 +186,12 @@
       tinymist
 
       #for neovim Snacks image
+      imagemagick
       ghostscript
       markdown-oxide
       mermaid-cli
       pngpaste
-
+      tectonic
     ]
     ++ lib.optionals stdenvNoCC.isLinux [
       m4
