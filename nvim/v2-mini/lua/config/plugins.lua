@@ -281,6 +281,15 @@ later(function()
 	require("snipe").setup()
 end)
 
+later(function()
+	add({ source = "otavioschwanck/arrow.nvim", depends = { "nvim-tree/nvim-web-devicons" } })
+	require("arrow").setup({
+		show_icons = true,
+		leader_key = "mf", -- File Mappings mark
+		buffer_leader_key = "ml", -- Per Buffer Mappings mark
+	})
+end)
+
 -------------------- lang ---------------------
 later(function()
 	add({ source = "saecki/crates.nvim" })
