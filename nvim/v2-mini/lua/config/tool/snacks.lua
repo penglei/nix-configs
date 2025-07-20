@@ -40,7 +40,7 @@ require("snacks").setup({
 					return {
 						"-density",
 						192,
-						function(data) return ("%s[%s]"):format(data.src, data.params.page) end,
+						function(data) return ("%s[%s]"):format(data.src, data.params.page or 0) end,
 						"-background",
 						"white",
 						"-alpha",
