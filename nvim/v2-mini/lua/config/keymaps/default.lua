@@ -27,7 +27,6 @@ vim.api.nvim_set_keymap("n", "s", "", { noremap = true })
 -- :h mapmode-v: activated in both visual and select mode
 -- o: Operator-pending mode: 先按了操作(e.g.  y(复制),d(删除),c(修改))进入等待范围选择的模式。vim的操作习惯是先输入[操作]，再输入[范围]。
 
----@diagnostic disable-next-line: unused-function, unused-local
 local leap_jump_wins = function() require("leap").leap({ target_windows = require("leap.user").get_focusable_windows() }) end
 ---@diagnostic disable-next-line: unused-function, unused-local
 local leap_jump_buf = function() require("leap").leap({ target_windows = { vim.api.nvim_get_current_win() } }) end
@@ -168,7 +167,6 @@ local keymaps = {
 	["n|<leader>t<CR>"] = map_cr("NeotestRun"):desc("Neotest: Run cursor nearest test"),
 	["n|<leader>pt"] = map_cr("ToggleNeotestSummar"):desc("Toogle test summary panel"),
 	["n|<leader>to"] = map_cr("ShowTestOutput"):desc("Neotest: show cursor test output"),
-	["n|<leader>ud"] = map_cb(function() require("lsp_lines").toggle() end):desc("Toggle lsp_lines virtual text"),
 
 	------------ comment -----------------
 	-- comment key mapping is configured in config.editing.comment and config.ui.mini.clue

@@ -23,6 +23,7 @@ end
 require("snacks").setup({
 	notifier = { enabled = true },
 	input = { enabled = true },
+	toggle = { enabled = true },
 	image = {
 		enabled = true,
 		doc = { -- it will render image in markdown

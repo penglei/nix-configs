@@ -63,7 +63,37 @@ later(function() require("mini.bracketed").setup() end)
 -- later(function() require("mini.extra").setup() end) -- more mini pickers
 -- later(function() require("mini.operators").setup() end)
 
-later(function() require("config.keymaps.clue") end)
+later(function()
+	add({ source = "folke/which-key.nvim" })
+
+	-- require("config.keymaps.clue")
+
+	require("which-key").setup({
+		preset = "helix", --"modern",
+	})
+
+	-- Create some toggle mappings
+	Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
+	Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
+	Snacks.toggle.diagnostics():map("<leader>ud")
+	Snacks.toggle.line_number():map("<leader>ul")
+	Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }):map("<leader>uc")
+	Snacks.toggle.treesitter():map("<leader>uT")
+	Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
+	Snacks.toggle.inlay_hints():map("<leader>uh")
+	Snacks.toggle.indent():map("<leader>ug")
+	Snacks.toggle.dim():map("<leader>uD")
+
+	Snacks.toggle
+		.new({
+			id = "lsp_line_virtext",
+			name = "Lsp Line Virtual Text",
+			get = function() return vim.diagnostic.config().virtual_lines end,
+			set = function(state) vim.diagnostic.config({ virtual_lines = state }) end,
+		})
+		:map("<leader>ue")
+end)
+
 later(function()
 	-- 方案0
 	-- key changed in every step, feel bad... and it's not integrated with treesitter
