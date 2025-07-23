@@ -35,6 +35,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 local neotest_golang_opts = {} -- Specify custom configuration
+---@diagnostic disable-next-line: missing-fields
 require("neotest").setup({
 	adapters = {
 		require("neotest-golang")(neotest_golang_opts), -- Registration

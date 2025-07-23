@@ -80,3 +80,9 @@ vim.api.nvim_create_autocmd("LspProgress", {
 		})
 	end,
 })
+
+-- https://github.com/RRethy/vim-illuminate?tab=readme-ov-file#configuration
+require("illuminate").configure({
+	delay = 200,
+	disable_keymaps = false,
+})

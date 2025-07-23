@@ -61,7 +61,6 @@ local keymaps = {
 
 	-- ["n|,pn"]: swap with previous argument
 	-- ["n|,pp"]: swap with next argument
-
 	["sinv|<C-s>"] = map_cmd("<esc>:w<cr>"):desc("Exit insert mode and save changes"),
 
 	["i|<C-h>"] = map_cmd("<Left><Del>"):desc("Delete one char before cursor"),
@@ -109,8 +108,7 @@ local keymaps = {
 	["s|<BS>"] = map_cmd('<C-G>"_<DEL>'):desc("delete text without overriding default register"),
 	["v|<S-BS>"] = map_cmd('"_<DEL>'):desc("delete text without overriding default register"),
 
-	["n|<leader>p"] = map_cmd("p"):desc("paste in normal mode"),
-	["n|<leader>P"] = map_cmd("P"):desc("paste and override default register"),
+	["n|,pi"] = map_cr("PasteImage"):desc("Paste image from system clipboard"),
 
 	-- ["n|<leader>r"] = map_cr("Rename"):desc("lsp: Rename current word"),
 	-- ["n|<leader>R"] = map_cr("LspRestart"):desc("lsp: Restart lsp server"),
@@ -165,7 +163,6 @@ local keymaps = {
 	------------- test ------------------
 	-- ["n|<C-t>"] = map_cr("NeotestRun"):desc("Neotest: Run cursor nearest test"),
 	["n|<leader>t<CR>"] = map_cr("NeotestRun"):desc("Neotest: Run cursor nearest test"),
-	["n|<leader>pt"] = map_cr("ToggleNeotestSummar"):desc("Toogle test summary panel"),
 	["n|<leader>to"] = map_cr("ShowTestOutput"):desc("Neotest: show cursor test output"),
 
 	------------ comment -----------------

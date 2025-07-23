@@ -72,26 +72,7 @@ later(function()
 		preset = "helix", --"modern",
 	})
 
-	-- Create some toggle mappings
-	Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
-	Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
-	Snacks.toggle.diagnostics():map("<leader>ud")
-	Snacks.toggle.line_number():map("<leader>ul")
-	Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }):map("<leader>uc")
-	Snacks.toggle.treesitter():map("<leader>uT")
-	Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
-	Snacks.toggle.inlay_hints():map("<leader>uh")
-	Snacks.toggle.indent():map("<leader>ug")
-	Snacks.toggle.dim():map("<leader>uD")
-
-	Snacks.toggle
-		.new({
-			id = "lsp_line_virtext",
-			name = "Lsp Line Virtual Text",
-			get = function() return vim.diagnostic.config().virtual_lines end,
-			set = function(state) vim.diagnostic.config({ virtual_lines = state }) end,
-		})
-		:map("<leader>ue")
+	require("config.keymaps.toggle")
 end)
 
 later(function()
@@ -175,6 +156,7 @@ later(function()
 	--- Add plugin which depends on nvim-treesitter.
 	--- dependencies order is very important, as it affects package search path.
 	add({ source = "nvim-treesitter/nvim-treesitter-textobjects" }) -- This complements mini.ai.
+	-- add({ source = "nvim-treesitter/nvim-treesitter-refactor" })
 	add({ source = "windwp/nvim-ts-autotag" })
 	add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
 	add({ source = "sustech-data/wildfire.nvim" })
@@ -219,7 +201,8 @@ later(function()
 	add({ source = "catgoose/nvim-colorizer.lua" })
 	add({ source = "hiphish/rainbow-delimiters.nvim" })
 	add({ source = "https://git.sr.ht/~whynothugo/lsp_lines.nvim" })
-	-- colorizer,
+	add({ source = "RRethy/vim-illuminate" })
+
 	require("config.ui.widgets")
 end)
 
@@ -288,6 +271,18 @@ later(function()
 	add({ source = "kevinhwang91/nvim-ufo", depends = { "kevinhwang91/promise-async" } })
 
 	require("config.tool.fold")
+end)
+
+later(function()
+	-- Neovim plugin for dimming the highlights of unused functions, variables, parameters, and more
+	add({ source = "zbirenbaum/neodim" })
+	require("neodim").setup({
+		hide = {
+			virtual_text = false,
+			signs = false,
+			underline = false,
+		},
+	})
 end)
 
 later(function()

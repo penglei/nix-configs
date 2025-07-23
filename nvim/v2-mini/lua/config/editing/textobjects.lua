@@ -115,6 +115,14 @@ treesitter_config.textobjects = {
 		include_surrounding_whitespace = false,
 	},
 	matchup = { enable = true },
+	refactor = {
+		highlight_definitions = {
+			enable = true,
+			-- Set to false if you have an `updatetime` of ~100.
+			clear_on_cursor_move = true,
+		},
+		highlight_current_scope = { enable = true },
+	},
 }
 
 require("nvim-treesitter.install").prefer_git = true
