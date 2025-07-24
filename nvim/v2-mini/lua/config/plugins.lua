@@ -210,6 +210,9 @@ later(function()
 
 	add({ source = "yt20chill/inline_git_blame.nvim" })
 
+	-- A tiny Neovim plugin that adds subtle animations to various operations.
+	add({ source = "rachartier/tiny-glimmer.nvim" })
+
 	require("config.ui.widgets")
 end)
 

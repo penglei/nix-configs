@@ -1,27 +1,6 @@
 require("mini.git").setup()
 require("mini.trailspace").setup()
 
---[[
-local animate = require("mini.animate")
-animate.setup({
-	resize = {
-		enable = false,
-	},
-	scroll = {
-		timing = animate.gen_timing.cubic({ duration = 120, unit = "total" }),
-	},
-	cursor = {
-		timing = animate.gen_timing.cubic({ duration = 100, unit = "total" }),
-	},
-})
---]]
-
--- Prompts the yank scope
-vim.api.nvim_create_autocmd("TextYankPost", {
-	pattern = "*",
-	command = [[silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=300})]],
-})
-
 --- https://github.com/catgoose/nvim-colorizer.lua
 require("colorizer").setup({
 	filetypes = {
@@ -98,4 +77,35 @@ vim.api.nvim_create_autocmd("LspProgress", {
 require("illuminate").configure({
 	delay = 200,
 	disable_keymaps = false,
+})
+
+--[[
+local animate = require("mini.animate")
+animate.setup({
+	resize = {
+		enable = false,
+	},
+	scroll = {
+		timing = animate.gen_timing.cubic({ duration = 120, unit = "total" }),
+	},
+	cursor = {
+		timing = animate.gen_timing.cubic({ duration = 100, unit = "total" }),
+	},
+})
+--]]
+
+-- -- Prompts the yank scope
+-- vim.api.nvim_create_autocmd("TextYankPost", {
+-- 	pattern = "*",
+-- 	command = [[silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=300})]],
+-- })
+require("tiny-glimmer").setup({
+	overwrite = {
+		undo = {
+			enabled = true,
+		},
+		redo = {
+			enabled = true,
+		},
+	},
 })
