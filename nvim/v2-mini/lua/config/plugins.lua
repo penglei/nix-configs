@@ -4,7 +4,8 @@
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 now(function()
-	add({ source = "folke/snacks.nvim" })
+	-- add({ source = "folke/snacks.nvim" })
+	add({ source = "penglei/snacks.nvim" })
 	--- init notifier firstly
 	-- require("config.tool.notify")
 	require("config.tool.snacks")
