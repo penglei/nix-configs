@@ -99,13 +99,16 @@ animate.setup({
 -- 	pattern = "*",
 -- 	command = [[silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=300})]],
 -- })
+
 require("tiny-glimmer").setup({
+	hijack_ft_disabled = {
+		"ministarter", -- important!
+		"alpha",
+		"snacks_dashboard",
+		"snacks_picker_input",
+	},
 	overwrite = {
-		undo = {
-			enabled = true,
-		},
-		redo = {
-			enabled = true,
-		},
+		undo = { enabled = true },
+		redo = { enabled = true },
 	},
 })
