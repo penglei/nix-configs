@@ -201,12 +201,12 @@ local keymaps = {
 	["i|<C-b>"] = map_cmd("<Left>"):desc("editi: Move cursor to left"),
 	["i|<C-a>"] = map_cmd("<ESC>^i"):desc("editi: Move cursor to line start"),
 	-- Command mode
-	["c|<C-b>"] = map_cmd("<Left>"):desc("editc: Left"),
-	["c|<C-f>"] = map_cmd("<Right>"):desc("editc: Right"),
-	["c|<C-a>"] = map_cmd("<Home>"):desc("editc: Home"),
-	["c|<C-e>"] = map_cmd("<End>"):desc("editc: End"),
-	["c|<C-d>"] = map_cmd("<Del>"):desc("editc: Delete"),
-	["c|<C-h>"] = map_cmd("<BS>"):desc("editc: Backspace"),
+	["c|<C-b>"] = map_cmd("<Left>"):nowait(true):desc("editc: Left"),
+	["c|<C-f>"] = map_cmd("<Right>"):nowait(true):desc("editc: Right"),
+	["c|<C-a>"] = map_cmd("<Home>"):nowait(true):desc("editc: Home"),
+	["c|<C-e>"] = map_cmd("<End>"):nowait(true):desc("editc: End"),
+	["c|<C-d>"] = map_cmd("<Del>"):nowait(true):desc("editc: Delete"),
+	["c|<C-h>"] = map_cmd("<BS>"):nowait(true):desc("editc: Backspace"),
 	["c|<C-t>"] = map_cmd([[<C-R>=expand("%:p:h") . "/" <CR>]]):desc("editc: Complete path of current file"),
 	-- Visual mode
 	["v|J"] = map_cmd(":m '>+1<CR>gv=gv"):desc("editv: Move this line down"),

@@ -35,10 +35,23 @@ require("colorizer").setup({
 	user_default_options = { mode = "background" },
 })
 
+require("tiny-inline-diagnostic").setup({
+	multilines = {
+		enabled = true,
+	},
+	show_all_diags_on_cursorline = true,
+})
 require("lsp_lines").setup()
 -- lsp_lines need disable diagnostic virtual text
 vim.diagnostic.config({
 	virtual_text = false,
+})
+
+require("inline_git_blame").setup({
+	-- excluded_filetypes will be extended from default
+	excluded_filetypes = { "NvimTree", "neo-tree", "TelescopePrompt", "help" },
+	debounce_ms = 150,
+	autocmd = false, -- config in toggle
 })
 
 ------------------------------------------------

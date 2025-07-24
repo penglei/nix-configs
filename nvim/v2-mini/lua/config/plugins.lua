@@ -200,8 +200,15 @@ end)
 later(function()
 	add({ source = "catgoose/nvim-colorizer.lua" })
 	add({ source = "hiphish/rainbow-delimiters.nvim" })
-	add({ source = "https://git.sr.ht/~whynothugo/lsp_lines.nvim" })
+	-- Neovim plugin for automatically highlighting other uses of the word under the cursor using either LSP, Tree-sitter, or regex matching.
 	add({ source = "RRethy/vim-illuminate" })
+
+	-- display prettier diagnostic messages. Display one line diagnostic messages where the cursor is, with icons and colors.
+	add({ source = "rachartier/tiny-inline-diagnostic.nvim" })
+	-- lsp_lines is a simple neovim plugin that renders diagnostics using virtual lines on top of the real line of code
+	add({ source = "https://git.sr.ht/~whynothugo/lsp_lines.nvim" })
+
+	add({ source = "yt20chill/inline_git_blame.nvim" })
 
 	require("config.ui.widgets")
 end)
@@ -314,6 +321,8 @@ later(function()
 		buffer_leader_key = "ml", -- Per Buffer Mappings mark
 	})
 end)
+
+later(function() end)
 
 -------------------- lang ---------------------
 later(function()
