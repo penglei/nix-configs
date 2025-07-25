@@ -1,6 +1,6 @@
 local init = function(config)
 	require("catppuccin").setup(config)
-	vim.cmd.colorscheme("catppuccin-macchiato")
+	vim.cmd.colorscheme("catppuccin-frappe")
 	-- or vim.api.nvim_cmd({ cmd = "colorscheme", args = { "catppuccin-macchiato" } }, {})
 end
 

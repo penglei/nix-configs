@@ -327,7 +327,10 @@ later(function()
 	})
 end)
 
-later(function() end)
+later(function()
+	add({ source = "Mofiqul/dracula.nvim" })
+	require("dracula").setup()
+end)
 
 -------------------- lang ---------------------
 later(function()
