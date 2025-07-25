@@ -214,6 +214,7 @@ later(function()
 	-- A tiny Neovim plugin that adds subtle animations to various operations.
 	add({ source = "rachartier/tiny-glimmer.nvim" })
 
+	add({ source = "folke/todo-comments.nvim", depends = { "nvim-lua/plenary.nvim" } })
 	require("config.ui.widgets")
 end)
 

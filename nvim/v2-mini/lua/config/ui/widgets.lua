@@ -112,3 +112,5 @@ require("tiny-glimmer").setup({
 		redo = { enabled = true },
 	},
 })
+
+require("todo-comments").setup()

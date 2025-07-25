@@ -3,6 +3,8 @@
 -- 	if vim.fn.executable(opts.cmd[1]) == 1 then lspconfig[name].setup(opts) end
 -- end
 
+vim.lsp.inlay_hint.enable(true)
+
 local setup = function(name, opts)
 	if opts == nil then
 		vim.lsp.enable(name)

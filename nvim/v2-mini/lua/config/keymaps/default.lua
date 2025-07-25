@@ -97,9 +97,11 @@ local keymaps = {
 	["n|<leader>q"] = map_cu("q"):desc("exit"),
 	["n|<leader>x"] = map_cb(function() Snacks.bufdelete() end):desc("Delete current buffer"),
 	["n|<Esc><Esc>"] = map_cb(function()
-		vim.cmd([[nohl]])
-		-- TODO chain more auto action
-	end):desc("clean ui to default"),
+		vim.cmd("nohl") -- vim.cmd.nohlsearch()
+		require("todo-comments").disable()
+		-- TODO: chain more auto action
+		vim.api.nvim_feedkeys(util.bind.escape_termcode("<ESC>"), "n", true)
+	end):desc("Clean(nohl, todo-comments)"),
 
 	-- reverse p and P behaviour in visual mode
 	["v|p"] = map_cb(visual_lower_p):desc("paste in visual mode"),
