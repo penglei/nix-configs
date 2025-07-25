@@ -18,12 +18,13 @@ now(function()
 	require("config.ui.catppuccin")
 end)
 
-now(function() require("mini.icons").setup() end)
+later(function() require("mini.icons").setup() end)
 now(function()
-	add({ source = "NStefan002/screenkey.nvim" })
+	add({ source = "NStefan002/screenkey.nvim" }) -- show key pressing
+
 	require("config.ui.statusline") -- mini.statusline
+	require("config.ui.mini.starter")
 end)
-now(function() require("config.ui.mini.starter") end)
 
 now(function()
 	-- require("mini.tabline").setup() --- mini.tabline doesn't export api, and so we can't do key binding...
@@ -35,17 +36,17 @@ end)
 
 later(function()
 	-- 	add({ source = "folke/noice.nvim", depends = { "MunifTanjim/nui.nvim", "folke/snacks.nvim" } }) -- just ui, no auto completion
-	add({
-		source = "gelguy/wilder.nvim",
-		hooks = {
-			post_checkout = function()
-				vim.cmd([[ let &rtp=&rtp ]])
-				vim.api.nvim_command("runtime! plugin/rplugin.vim")
-				vim.api.nvim_command(":UpdateRemotePlugins")
-			end,
-		},
-	})
-	require("config.ui.interact")
+	-- add({
+	-- 	source = "gelguy/wilder.nvim", -- no path auto-completion, so I have switched to blink.cmp
+	-- 	hooks = {
+	-- 		post_checkout = function()
+	-- 			vim.cmd([[ let &rtp=&rtp ]])
+	-- 			vim.api.nvim_command("runtime! plugin/rplugin.vim")
+	-- 			vim.api.nvim_command(":UpdateRemotePlugins")
+	-- 		end,
+	-- 	},
+	-- })
+	-- require("config.ui.interact")
 end)
 
 later(function()
@@ -214,6 +215,7 @@ later(function()
 	-- A tiny Neovim plugin that adds subtle animations to various operations.
 	add({ source = "rachartier/tiny-glimmer.nvim" })
 
+	add({ source = "folke/todo-comments.nvim", depends = { "nvim-lua/plenary.nvim" } })
 	require("config.ui.widgets")
 end)
 
@@ -326,7 +328,10 @@ later(function()
 	})
 end)
 
-later(function() end)
+later(function()
+	add({ source = "Mofiqul/dracula.nvim" })
+	require("dracula").setup()
+end)
 
 -------------------- lang ---------------------
 later(function()
@@ -342,8 +347,14 @@ now(function() -- markview do lazy loading internally, so we setup it synchronou
 	require("markview.extras.headings").setup()
 	require("markview").setup({
 		markdown = { headings = presets.headings.slanted },
+		-- latex = { enable = true }, -- unset it would also disable math in markdown
 	})
 end)
+
+-- later(function()
+-- 	add({ source = "pxwg/math-conceal.nvim" })
+-- 	require("math-conceal").setup()
+-- end)
 
 later(function()
 	add({ source = "epwalsh/obsidian.nvim", depends = { "nvim-lua/plenary.nvim" } })

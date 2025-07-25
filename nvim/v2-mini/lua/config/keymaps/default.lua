@@ -97,9 +97,11 @@ local keymaps = {
 	["n|<leader>q"] = map_cu("q"):desc("exit"),
 	["n|<leader>x"] = map_cb(function() Snacks.bufdelete() end):desc("Delete current buffer"),
 	["n|<Esc><Esc>"] = map_cb(function()
-		vim.cmd([[nohl]])
-		-- TODO chain more auto action
-	end):desc("clean ui to default"),
+		vim.cmd("nohl") -- vim.cmd.nohlsearch()
+		require("todo-comments").disable()
+		-- TODO: chain more auto action
+		vim.api.nvim_feedkeys(util.bind.escape_termcode("<ESC>"), "n", true)
+	end):desc("Clean(nohl, todo-comments)"),
 
 	-- reverse p and P behaviour in visual mode
 	["v|p"] = map_cb(visual_lower_p):desc("paste in visual mode"),
@@ -172,8 +174,10 @@ local keymaps = {
 
 	-------------- core ----------------
 	["x|S"] = map_cmd([[:<C-u>lua MiniSurround.add('visual')<CR>]]):desc("surround in visual mode"),
-	["vn|gh"] = map_cmd("0"):desc("Goto line start"),
-	["vn|gl"] = map_cmd("$"):desc("Goto line end"),
+	["vn|gh"] = map_cmd("^"):desc("Goto line word start"),
+	["vn|gH"] = map_cmd("0"):desc("Goto line start"),
+	["vn|gl"] = map_cmd("g_"):desc("Goto line last word end"),
+	["vn|gL"] = map_cmd("$"):desc("Goto line end"),
 	["vn|ge"] = map_cmd("G"):desc("Goto last line"),
 	-- ["n|gg"] -- editor default. go to first line.
 

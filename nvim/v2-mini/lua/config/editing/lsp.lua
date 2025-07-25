@@ -3,6 +3,8 @@
 -- 	if vim.fn.executable(opts.cmd[1]) == 1 then lspconfig[name].setup(opts) end
 -- end
 
+vim.lsp.inlay_hint.enable(true)
+
 local setup = function(name, opts)
 	if opts == nil then
 		vim.lsp.enable(name)
@@ -19,52 +21,8 @@ setup("gopls")
 
 setup("bashls", { cmd = { "bash-language-server", "start" }, filetypes = { "bash", "sh" } })
 
-setup("pylsp", {
-	cmd = { "pylsp" },
-	filetypes = { "python" },
-	settings = {
-		pylsp = {
-			plugins = {
-				-- Lint
-				ruff = {
-					enabled = true,
-					select = {
-						-- enable pycodestyle
-						"E",
-						-- enable pyflakes
-						"F",
-					},
-					ignore = {
-						-- ignore E501 (line too long)
-						"E501",
-						-- ignore F401 (imported but unused)
-						"F401",
-					},
-					extendSelect = { "I" },
-					severities = {
-						-- Hint, Information, Warning, Error
-						F401 = "I",
-						E501 = "I",
-					},
-				},
-
-				flake8 = { enabled = false, maxLineLength = 200 },
-				pyflakes = { enabled = false },
-				pycodestyle = { enabled = false, maxLineLength = 200 },
-				mccabe = { enabled = false },
-
-				-- Code refactor
-				rope = { enabled = true },
-
-				-- Formatting
-				black = { enabled = false }, -- I don't known why it doesn't' work, and I implement this by conform plugin
-				pyls_isort = { enabled = false },
-				autopep8 = { enabled = false },
-				yapf = { enabled = false },
-			},
-		},
-	},
-})
+setup("pyright")
+-- setup("pylsp")
 
 setup("html", {
 	cmd = { "vscode-html-language-server", "--stdio" },

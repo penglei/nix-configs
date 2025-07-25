@@ -20,6 +20,7 @@ local function parse_path_and_params(src)
 
 	return path, params
 end
+
 require("snacks").setup({
 	notifier = { enabled = true },
 	input = { enabled = true },
@@ -28,8 +29,8 @@ require("snacks").setup({
 		enabled = true,
 		doc = { -- it will render image in markdown
 			inline = false,
-			max_width = 100,
-			max_height = 60,
+			max_width = 180,
+			max_height = 120,
 		},
 		transforms = {
 			markdown_inline = function() vim.notify("markdown_inline") end,

@@ -1,4 +1,4 @@
-require("mini.git").setup()
+-- require("mini.git").setup()
 require("mini.trailspace").setup()
 
 --- https://github.com/catgoose/nvim-colorizer.lua
@@ -101,14 +101,11 @@ animate.setup({
 -- })
 
 require("tiny-glimmer").setup({
-	hijack_ft_disabled = {
-		"ministarter", -- important!
-		"alpha",
-		"snacks_dashboard",
-		"snacks_picker_input",
-	},
+	hijack_ft_disabled = require("config.notfiles"),
 	overwrite = {
 		undo = { enabled = true },
 		redo = { enabled = true },
 	},
 })
+
+require("todo-comments").setup()

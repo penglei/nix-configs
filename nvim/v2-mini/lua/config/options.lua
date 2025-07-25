@@ -40,12 +40,6 @@ vim.opt.statusline = " "
 vim.opt.laststatus = 3 -- always and ONLY the last window have a statusline
 vim.opt.cmdheight = 0 -- hide cmdline
 
-vim.opt.foldenable = true
-vim.opt.foldmethod = "syntax"
-
--- foldenable and open all default (only fold > 100 level)
-vim.opt.foldlevel = 99
-
 vim.opt.list = true
 
 -- vim.o.listchars = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←"
@@ -72,6 +66,7 @@ vim.opt.jumpoptions = "stack"
 vim.opt.grepprg = "rg --hidden --vimgrep --smart-case --"
 
 ------------- fold ------------------
+-- vim.opt.foldmethod = "syntax"
 vim.opt.foldcolumn = "1" -- '0' is not bad
 vim.opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.opt.foldlevelstart = 99

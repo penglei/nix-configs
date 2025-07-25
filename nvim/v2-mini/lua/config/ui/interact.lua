@@ -85,7 +85,6 @@ end
 
 --------------------------- noice ----------------------------
 
----@diagnostic disable-next-line: unused-function
 local function setup_noice()
 	local util = require("config.util")
 	local pos = util.win.calsize(0, 1)
@@ -154,4 +153,4 @@ local function setup_noice()
 	require("noice").setup(noice_config)
 end
 
-setup_wilder()
+-- setup_wilder()

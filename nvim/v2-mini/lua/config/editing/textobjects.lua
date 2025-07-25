@@ -132,6 +132,7 @@ require("nvim-treesitter.configs").setup(treesitter_config)
 require("nvim-ts-autotag").setup() -- Use treesitter to autoclose and autorename html tag
 require("mini.pairs").setup() -- autoclose pairs
 
+-- https://github.com/numToStr/Comment.nvim -- TODO: replace
 require("mini.comment").setup({
 	-- notice that `,` key must be configured in **mini.clue**
 	mappings = {

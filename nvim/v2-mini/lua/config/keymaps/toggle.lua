@@ -3,12 +3,12 @@ Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
 Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
 Snacks.toggle.diagnostics():map("<leader>ud")
 Snacks.toggle.line_number():map("<leader>ul")
-Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }):map("<leader>uc")
+-- Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }):map("<leader>uc")
 Snacks.toggle.treesitter():map("<leader>uT")
 Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
-Snacks.toggle.inlay_hints():map("<leader>uh")
+-- Snacks.toggle.inlay_hints():map("<leader>uh")
 Snacks.toggle.indent():map("<leader>ua")
-Snacks.toggle.dim():map("<leader>uD")
+Snacks.toggle.dim():map("<leader>uD") -- focus on lines(treesitter block?) near cursor.
 
 Snacks.toggle
 	.new({
@@ -114,3 +114,26 @@ Snacks.toggle
 		end,
 	})
 	:map("<leader>ugb")
+
+local ui_hints_state = true
+Snacks.toggle
+	.new({
+		id = "ui_hints",
+		name = "UI Hints(Todo, Search, Lsp Inlay)",
+		get = function() return ui_hints_state end,
+		set = function(state)
+			local tc = require("todo-comments")
+			if state then
+				vim.o.hlsearch = true -- vim.cmd("set hlsearch")
+				tc.enable()
+				-- vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
+			else
+				vim.cmd("nohlsearch")
+				tc.disable()
+			end
+			vim.lsp.inlay_hint.enable(state, { bufnr = 0 })
+
+			ui_hints_state = state
+		end,
+	})
+	:map("<leader>uh")

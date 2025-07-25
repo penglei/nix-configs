@@ -225,7 +225,7 @@ local function make_config(ai_virtext_sugg)
 		fuzzy = { implementation = "prefer_rust_with_warning", prebuilt_binaries = { force_version = "v1.4.1" } },
 
 		cmdline = {
-			enabled = false, -- wilder is a better choice
+			enabled = true, -- wilder is a better choice?
 			sources = { "cmdline", "path" },
 			keymap = { preset = "inherit" },
 			completion = { ghost_text = { enabled = true }, menu = { auto_show = true } },
