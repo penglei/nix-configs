@@ -143,4 +143,6 @@ setup("purescriptls", {
 -- setup("marksman")
 setup("markdown_oxide")
 
+setup("jdtls")
+
 -- setup()
