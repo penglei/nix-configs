@@ -106,7 +106,7 @@
       # isabelle_app
 
       preview_open # script wrapper for Preview.app
-      koodo-reader
+      #koodo-reader
       skimpdf
       sioyek
       #adobe-reader
