@@ -36,13 +36,13 @@ patch:
 
   # 皮肤主题名称输入在下方，分为浅色和深色
   # 浅色主题（使用哪个主题去掉前面的 #）
-  style/color_scheme: mac_light
+  #style/color_scheme: mac_light
   #style/color_scheme: mac_green
   #style/color_scheme: mac_orange
   #style/color_scheme: mac_blue
   #style/color_scheme: win10
   #style/color_scheme: apathy
-  #style/color_scheme: google
+  style/color_scheme: google
   #style/color_scheme: milan
   #style/color_scheme: ink
   #style/color_scheme: nord_light
