@@ -1,4 +1,10 @@
-{ hostname, lib, pkgs, ... }: {
+{
+  hostname,
+  lib,
+  pkgs,
+  ...
+}:
+{
 
   imports = [ ./modules/keeping.nix ];
   fileSystems."/data" = {
@@ -16,7 +22,12 @@
     nftables.enable = true;
   };
 
-  services.openssh = { ports = [ 22 36000 ]; };
+  services.openssh = {
+    ports = [
+      22
+      36000
+    ];
+  };
 
   #this also enable 'services.resolved'
   systemd.network.enable = true;
@@ -40,7 +51,6 @@
     iftop
 
     unzip
-    clang
   ];
   system.stateVersion = "23.05";
 }
