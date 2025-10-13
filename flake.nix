@@ -50,7 +50,8 @@
       profiles = import ./profiles.nix { inherit sops-nix; };
       overlays = [ (import ./pkgs/all.nix) ];
 
-      crossShells = import ./nix/cross.nix { inherit nixpkgs flake-utils; };
+      cross = import ./nix/cross.nix { inherit nixpkgs flake-utils; };
+
       systems-outputs = eachSystem (
         system:
         let
@@ -77,7 +78,7 @@
               '';
             };
           }
-          // crossShells;
+          // (cross.mkCrossSystemShells system);
         }
         // (import ./nix/debug.nix pkgs)
       ); # end each system
