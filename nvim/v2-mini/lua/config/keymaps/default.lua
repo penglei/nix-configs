@@ -56,11 +56,7 @@ end
 
 local keymaps = {
 
-	----- visual mode has many object selection key binds -----
-	-- a/i[f], a/i[p], as
-
-	-- ["n|,pn"]: swap with previous argument
-	-- ["n|,pp"]: swap with next argument
+	["n|,w"] = map_cmd("<esc>:w<cr>"):desc("save"),
 	["sinv|<C-s>"] = map_cmd("<esc>:w<cr>"):desc("Exit insert mode and save changes"),
 
 	["i|<C-h>"] = map_cmd("<Left><Del>"):desc("Delete one char before cursor"),

@@ -334,5 +334,5 @@ end
 setup_supermaven_as_cmp_provider()
 
 return {
-	virtext_sugg = minuet_suggester(), --copilot_suggester(), --
+	virtext_sugg = copilot_suggester(), --minuet_suggester(), --copilot_suggester(), --
 }
