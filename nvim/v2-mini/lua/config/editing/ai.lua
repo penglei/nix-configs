@@ -315,7 +315,7 @@ local setup_supermaven_as_cmp_provider = function()
 			suggestion_color = "#ffffff",
 			cterm = 244,
 		},
-		log_level = "info", -- set to "off" to disable logging completely
+		log_level = "off", -- set to "off" to disable logging completely
 
 		-- true to disable inline completion for use with cmp
 		disable_inline_completion = true,
