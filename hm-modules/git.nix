@@ -41,17 +41,15 @@
         dd = "-c diff.external=difft diff";
       };
 
-      extraConfig = {
-        pager.branch = false;
-        pull.rebase = true;
-        init.defaultBranch = "main";
-        push.default = "current";
-        merge.conflictstyle = "zdiff3";
-        diff.colorMoved = "default";
-        core = {
-          hooksPath = "${config.xdg.configHome}/git/hooks";
-          quotepath = false;
-        };
+      pager.branch = false;
+      pull.rebase = true;
+      init.defaultBranch = "main";
+      push.default = "current";
+      merge.conflictstyle = "zdiff3";
+      diff.colorMoved = "default";
+      core = {
+        hooksPath = "${config.xdg.configHome}/git/hooks";
+        quotepath = false;
       };
     };
     signing = {
