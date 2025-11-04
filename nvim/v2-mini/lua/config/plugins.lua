@@ -335,6 +335,10 @@ end)
 
 -------------------- lang ---------------------
 later(function()
+	add({ source = "Julian/lean.nvim" })
+	require("lean").setup({ mappings = true })
+end)
+later(function()
 	add({ source = "saecki/crates.nvim" })
 	require("config.lang.rust")
 end)
