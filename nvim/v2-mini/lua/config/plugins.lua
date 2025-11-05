@@ -230,6 +230,7 @@ later(function()
 			{ source = "antoinemadec/FixCursorHold.nvim" },
 			{ source = "nvim-treesitter/nvim-treesitter" },
 			{ source = "fredrikaverpil/neotest-golang", version = "*" }, -- Installation
+			{ source = "moonbit-community/moonbit.nvim" },
 		},
 	})
 	require("config.tool.neotest")
@@ -338,9 +339,14 @@ later(function()
 	add({ source = "Julian/lean.nvim" })
 	require("lean").setup({ mappings = true })
 end)
+
 later(function()
 	add({ source = "saecki/crates.nvim" })
 	require("config.lang.rust")
+end)
+later(function()
+	add({ source = "moonbit-community/moonbit.nvim" })
+	require("config.lang.moonbit")
 end)
 
 now(function() -- markview do lazy loading internally, so we setup it synchronously.
