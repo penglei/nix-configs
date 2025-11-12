@@ -98,6 +98,19 @@ local keymaps = {
 		-- TODO: chain more auto action
 		vim.api.nvim_feedkeys(util.bind.escape_termcode("<ESC>"), "n", true)
 	end):desc("Clean(nohl, todo-comments)"),
+	["i|<Esc>"] = map_cb(function()
+		-- if cmp menu is visible, close it first
+		local cmp = require("blink.cmp")
+		local ai = require("config.editing.ai")
+
+		if cmp.is_menu_visible() and ai.virtext_sugg.is_visible() then
+			-- close cmp menu then we can press <Tab> to accept ai suggestion
+			cmp.hide()
+			return
+		end
+		-- fallback to normal esc behaviour
+		vim.api.nvim_feedkeys(util.bind.escape_termcode("<ESC>"), "n", true)
+	end):desc("Exit insert mode"),
 
 	-- reverse p and P behaviour in visual mode
 	["v|p"] = map_cb(visual_lower_p):desc("paste in visual mode"),

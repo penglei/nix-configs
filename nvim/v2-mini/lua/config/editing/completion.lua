@@ -11,16 +11,6 @@
 -- 	callback = function() vim.b.copilot_suggestion_hidden = false end,
 -- })
 
----@diagnostic disable-next-line: unused-local
-local ai_virtext_default = {
-	enabled = false,
-	is_visible = function() return false end, -- `is_visible` in copilot and minuet, 'has_suggestion` in supermaven
-	accept = function() end,
-	next = function() end,
-	prev = function() end,
-	dismiss = function() end,
-}
-
 local function make_config(ai_virtext_sugg)
 	local tab_as_next = false
 
@@ -239,9 +229,7 @@ return {
 	setup = function(config)
 		if config == nil then config = {} end
 
-		local ai_virtext_sugg = vim.tbl_deep_extend("force", ai_virtext_default, config.ai_virtext_sugg or {})
-
-		local blink_config = make_config(ai_virtext_sugg)
+		local blink_config = make_config(config.ai_virtext_sugg)
 		require("blink.cmp").setup(blink_config)
 	end,
 }

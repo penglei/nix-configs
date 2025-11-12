@@ -190,9 +190,10 @@ end)()
 
 ------------------------ chat -------------------------
 require("codecompanion").setup(codecompanion_config)
+
 --------------------- suggestion ----------------------
 ---@diagnostic disable-next-line: unused-function
-local minuet_suggester = function()
+local setup_minuet_suggester = function()
 	local minuet_config = {
 		virtualtext = {
 			auto_trigger_ft = { "go" },
@@ -293,7 +294,7 @@ local minuet_suggester = function()
 end
 
 ---@diagnostic disable-next-line: unused-function
-local copilot_suggester = function()
+local setup_copilot_suggester = function()
 	require("copilot").setup(copilot_config)
 	local s = require("copilot.suggestion")
 	return {
@@ -331,8 +332,21 @@ end
 
 -- there is no way to integrate supermaven as virtualtext and let it works well with super-tab,
 -- so we use it as cmp provider instead (disable_inline_completion).
-setup_supermaven_as_cmp_provider()
+--setup_supermaven_as_cmp_provider()
 
-return {
-	virtext_sugg = copilot_suggester(), --minuet_suggester(), --copilot_suggester(), --
+local ai_virtext_default = {
+	enabled = false,
+	is_visible = function() return false end, -- `is_visible` in copilot and minuet, 'has_suggestion` in supermaven
+	accept = function() end,
+	next = function() end,
+	prev = function() end,
+	dismiss = function() end,
 }
+
+local virtext_sugg = setup_copilot_suggester() -- setup_minuet_suggester() -- {} --
+
+local api = {
+	virtext_sugg = vim.tbl_deep_extend("force", ai_virtext_default, virtext_sugg),
+}
+
+return api

@@ -37,6 +37,16 @@ autocmd("BufWritePre", {
 	end,
 })
 
+-- create a command  BufDelete to delete current buffer without closing window
+
+autocmd("VimEnter", {
+	callback = function()
+		vim.api.nvim_create_user_command("BufDelete", function(opts) Snacks.bufdelete() end, {
+			desc = "Delete buffer without closing window",
+		})
+	end,
+})
+
 ----------------- default key mapping -----------------
 util.bind:new():load(require("config.keymaps.default"))
 
