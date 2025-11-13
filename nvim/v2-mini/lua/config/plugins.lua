@@ -337,7 +337,7 @@ end)
 -------------------- lang ---------------------
 later(function()
 	add({ source = "Julian/lean.nvim" })
-	require("lean").setup({ mappings = true })
+	require("lean").setup({ mappings = false })
 end)
 
 later(function()
@@ -356,6 +356,7 @@ now(function() -- markview do lazy loading internally, so we setup it synchronou
 	require("markview.extras.editor").setup({ max_height = 30 })
 	require("markview.extras.headings").setup()
 	require("markview").setup({
+		---@diagnostic disable-next-line: missing-fields
 		markdown = { headings = presets.headings.slanted },
 		-- latex = { enable = true }, -- unset it would also disable math in markdown
 	})

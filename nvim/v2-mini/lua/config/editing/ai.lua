@@ -110,34 +110,36 @@ local codecompanion_config = (function()
 		strategies = strategies.deepseek,
 
 		adapters = {
-			openrouter = function()
-				return require("codecompanion.adapters").extend("openai_compatible", {
-					env = {
-						url = "https://openrouter.ai/api",
-						api_key = vim.fn.getenv("OPENROUTER_API_KEY") or "",
-						chat_url = "/v1/chat/completions",
-					},
-					schema = {
-						model = {
-							default = current_chat_model,
+			http = {
+				openrouter = function()
+					return require("codecompanion.adapters").extend("openai_compatible", {
+						env = {
+							url = "https://openrouter.ai/api",
+							api_key = vim.fn.getenv("OPENROUTER_API_KEY") or "",
+							chat_url = "/v1/chat/completions",
 						},
-					},
-				})
-			end,
-			deepseek_siliconflow = function()
-				return require("codecompanion.adapters").extend("openai_compatible", {
-					env = {
-						url = "https://api.siliconflow.com/v1",
-						api_key = vim.fn.getenv("SILICONFLOW_API_KEY") or "",
-						chat_url = "/v1/chat/completions",
-					},
-					schema = {
-						model = {
-							default = current_chat_model,
+						schema = {
+							model = {
+								default = current_chat_model,
+							},
 						},
-					},
-				})
-			end,
+					})
+				end,
+				deepseek_siliconflow = function()
+					return require("codecompanion.adapters").extend("openai_compatible", {
+						env = {
+							url = "https://api.siliconflow.com/v1",
+							api_key = vim.fn.getenv("SILICONFLOW_API_KEY") or "",
+							chat_url = "/v1/chat/completions",
+						},
+						schema = {
+							model = {
+								default = current_chat_model,
+							},
+						},
+					})
+				end,
+			},
 		},
 		display = {
 			diff = {
@@ -343,7 +345,7 @@ local ai_virtext_default = {
 	dismiss = function() end,
 }
 
-local virtext_sugg = setup_copilot_suggester() -- setup_minuet_suggester() -- {} --
+local virtext_sugg = {} -- setup_copilot_suggester() -- setup_minuet_suggester() --
 
 local api = {
 	virtext_sugg = vim.tbl_deep_extend("force", ai_virtext_default, virtext_sugg),
