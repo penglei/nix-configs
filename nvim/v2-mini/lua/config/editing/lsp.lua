@@ -37,7 +37,7 @@ setup("html", {
 })
 
 -- setup("hls")
--- setup("ocamllsp")
+setup("ocamllsp")
 
 setup("nickel_ls")
 setup("nil_ls")

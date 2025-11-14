@@ -5,7 +5,8 @@ local ts_langs = {
 	"html", "javascript", "json", "lua", "make", "python",
 	"markdown", "markdown_inline", "rust", "typescript", "yaml",
 	"nickel", "nix", "scheme", "elvish", "purescript",
-	"latex", "scss", "svelte", "tsx", "typst", "vue"
+	"latex", "scss", "svelte", "tsx", "typst", "vue",
+	"ocaml", "ocaml_interface"
 }
 -- stylua: ignore end
 

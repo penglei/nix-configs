@@ -70,6 +70,7 @@ local function setup_conform()
 			typst = { "typstyle" },
 			nickel = { "nickel" },
 			rust = { "rustfmt" },
+			ocaml = { "ocamlformat" },
 		},
 		formatters = {
 			shfmt = {
