@@ -52,7 +52,7 @@ Snacks.toggle
 		name = "Markview(all)",
 		get = function() return markview_state end,
 		set = function(state)
-			vim.api.nvim_cmd({ cmd = "Markview", args = { "toggleAll" } }, { output = false })
+			vim.api.nvim_cmd({ cmd = "Markview", args = { "toggle" } }, { output = false })
 			markview_state = state
 		end,
 	})
