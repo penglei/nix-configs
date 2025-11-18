@@ -373,6 +373,8 @@ later(function()
 	require("config.tool.obsidian")
 end)
 
+later(function() add({ source = "gpanders/nvim-parinfer" }) end)
+
 later(function()
 	add({
 		source = "NeogitOrg/neogit",
