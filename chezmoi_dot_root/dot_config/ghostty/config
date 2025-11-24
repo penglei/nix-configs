@@ -1,14 +1,21 @@
 # Font configuration:
-font-family = "MonaspiceNe Nerd Font"
-font-family-italic = "Cartograph CF Italic"
+#font-family = "MonaspiceNe Nerd Font"
+#font-family-italic = "Cartograph CF Italic"
+
+font-family = "JuliaMono"
+
+#font-family = "JetBrainsMono Nerd Font Mono"
+
+font-size = 18
+
 adjust-cell-width = -5%
-adjust-cell-height = 20%
+adjust-cell-height = -1%
 adjust-underline-position = 6
 adjust-underline-thickness = 40%
 adjust-cursor-thickness = 150%
 
 # Color theme:
-theme = catppuccin-frappe
+theme = catppuccin-frappe.conf
 
 # Cursor:
 cursor-color = F8F8F2

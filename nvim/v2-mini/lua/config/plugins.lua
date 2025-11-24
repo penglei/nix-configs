@@ -349,6 +349,11 @@ later(function()
 	require("config.lang.moonbit")
 end)
 
+later(function()
+	vim.g.cornelis_use_global_binary = 1 -- disable buildding to install
+	add({ source = "isovector/cornelis", depends = { "neovimhaskell/nvim-hs.vim", "kana/vim-textobj-user" } })
+end)
+
 now(function() -- markview do lazy loading internally, so we setup it synchronously.
 	add({ source = "OXY2DEV/markview.nvim", depends = { "saghen/blink.cmp" } }) -- markview will register blink.cmp automatically
 	local presets = require("markview.presets")

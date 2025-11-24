@@ -2,6 +2,12 @@
 
 fpath+=~/.zfunc
 path+="$HOME/Library/Application Support/edgedb/bin"
+path+="$HOME/.moon/bin"
+path+="$HOME/.npm-global/bin"
+path+="/opt/ocaml/bin"
+path+="/Applications/Racket v8.16/bin"
+
+eval "$(opam env)"
 
 function login-argocd() {
   ssh -t jumper ssh -t khaos ssh -t lespeng@khaos-argocd

@@ -1,10 +1,10 @@
 # Make the font a bit larger on mac:
-font-size = 18
+#font-size = 18
 
 macos-titlebar-style = hidden
 
 # Title bar font:
-window-title-font-family = "Hasklug Nerd Font Mono Med"
+#window-title-font-family = "Hasklug Nerd Font Mono Med"
 
 # Treat the option key as alt:
 macos-option-as-alt = true

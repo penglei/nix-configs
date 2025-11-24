@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home.packages = with pkgs; [
     fontconfig
 
@@ -42,6 +43,9 @@
     #hack-nerd-font
     #apple-sfmono-font
     #apple-sfmono-nerd-font
+
+    # a monospaced font with reasonable Unicode support.
+    julia-mono
 
     # texlive 字体说明:
     #   texlive 需要一些字体如STFangsong、Kaiti，这些字体文件在nix texlive fontconfig的查找路径中是不存在的。
