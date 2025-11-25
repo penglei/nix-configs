@@ -63,11 +63,7 @@
 
       difftastic
 
-      #emacs-nox
       helix # modern editor
-
-      #tree-sitter #generic ast parser
-      # koka
 
       watchexec
 
@@ -192,6 +188,15 @@
       mermaid-cli
       pngpaste
       tectonic
+
+      ## java env
+      gradle
+      openjdk
+      jdt-language-server
+
+      #others
+      koka
+      llama-cpp
     ]
     ++ lib.optionals stdenvNoCC.isLinux [
       m4
