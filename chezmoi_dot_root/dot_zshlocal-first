@@ -6,6 +6,9 @@ path+="$HOME/.moon/bin"
 path+="$HOME/.npm-global/bin"
 path+="/opt/ocaml/bin"
 path+="/Applications/Racket v8.16/bin"
+path+="/opt/zulujdk/current/bin"
+
+export JAVA_HOME=/opt/zulujdk/current/zulu-17.jdk/Contents/Home
 
 eval "$(opam env)"
 

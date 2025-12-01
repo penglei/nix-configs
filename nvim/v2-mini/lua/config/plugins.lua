@@ -3,9 +3,10 @@
 ---@diagnostic disable-next-line: unused-local, undefined-global
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
+local snacks_repo = "penglei/snacks.nvim" -- "folke/snacks.nvim"
+
 now(function()
-	-- add({ source = "folke/snacks.nvim" })
-	add({ source = "penglei/snacks.nvim" })
+	add({ source = snacks_repo })
 	--- init notifier firstly
 	-- require("config.tool.notify")
 	require("config.tool.snacks")
@@ -35,7 +36,7 @@ end)
 ------------ Safely execute later ---------------
 
 later(function()
-	-- 	add({ source = "folke/noice.nvim", depends = { "MunifTanjim/nui.nvim", "folke/snacks.nvim" } }) -- just ui, no auto completion
+	-- 	add({ source = "folke/noice.nvim", depends = { "MunifTanjim/nui.nvim",  snacks_repo} }) -- just ui, no auto completion
 	-- add({
 	-- 	source = "gelguy/wilder.nvim", -- no path auto-completion, so I have switched to blink.cmp
 	-- 	hooks = {
@@ -118,6 +119,7 @@ later(function()
 	})
 	add({
 		source = "olimorris/codecompanion.nvim",
+		checkout = "v17.33.0",
 		depends = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
@@ -263,7 +265,7 @@ later(function()
 		depends = {
 			{ source = "nvim-lua/plenary.nvim" },
 
-			{ source = "folke/snacks.nvim" },
+			{ source = snacks_repo },
 			-- { source = "ibhagwan/fzf-lua" },
 			-- { source = "nvim-telescope/telescope.nvim" },
 		},
@@ -386,7 +388,7 @@ later(function()
 		depends = {
 			"nvim-lua/plenary.nvim",
 			"sindrets/diffview.nvim",
-			"folke/snacks.nvim",
+			snacks_repo,
 		},
 	})
 

@@ -78,6 +78,7 @@
       chezmoi
       concealed-pbcopy
       passage
+      cfssl
       yubikey-manager
       yubico-piv-tool
       age-plugin-yubikey
@@ -190,9 +191,9 @@
       tectonic
 
       ## java env
-      gradle
-      openjdk
-      jdt-language-server
+      #gradle
+      #openjdk
+      #jdt-language-server
 
       #others
       koka

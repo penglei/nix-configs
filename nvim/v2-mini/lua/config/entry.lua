@@ -6,6 +6,7 @@ require("config.options")
 local util = require("config.util")
 
 local autocmd = vim.api.nvim_create_autocmd
+local usercmd = vim.api.nvim_create_user_command
 -- augroup is named autocmd
 
 vim.filetype.add({
@@ -41,8 +42,8 @@ autocmd("BufWritePre", {
 
 autocmd("VimEnter", {
 	callback = function()
-		vim.api.nvim_create_user_command("BufDelete", function(opts) Snacks.bufdelete() end, {
-			desc = "Delete buffer without closing window",
+		usercmd("ToglleAICompletion", function() require("config.editing.ai").toggle() end, {
+			desc = "toggle ai completion for cmp",
 		})
 	end,
 })

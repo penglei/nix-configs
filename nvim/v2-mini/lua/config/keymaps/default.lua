@@ -75,6 +75,7 @@ local keymaps = {
 	["n|<leader>f"] = map_cb(function() Snacks.picker.smart() end):desc("Smart Find Files"),
 	-- ["n|<leader>b"] = map_cu("Pick buffers"):desc("Mini: Pick buffer"),
 	["n|<leader>b"] = map_cb(function() Snacks.picker.buffers() end):desc("Buffers"),
+	["n|<leader>r"] = map_cb(function() Snacks.picker.recent() end):desc("Recent files"),
 	-- ["n|<leader>c"] = map_cu("Pick commands"):desc("Mini: Pick command"),
 	["n|<leader>c"] = map_cb(function() Snacks.picker.commands() end):desc("Commands"),
 	["n|<leader>:"] = map_cb(function() Snacks.picker.command_history() end):desc("Command History"),
