@@ -152,7 +152,12 @@ starter.setup({
 		},
 		{
 			name = "Explorer",
-			action = function() vim.cmd([[NvimTreeFindFile]]) end,
+			action = function()
+				local ok, err = pcall(vim.cmd, "NvimTreeFindFile")
+				if not ok then
+					vim.notify("NvimTree not available: " .. tostring(err), vim.log.levels.WARN)
+				end
+			end,
 			section = "Entry",
 		},
 		{
