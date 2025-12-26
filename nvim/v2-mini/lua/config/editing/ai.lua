@@ -345,10 +345,9 @@ local ai_virtext_default = {
 	dismiss = function() end,
 }
 
---  -- setup_minuet_suggester() --
-local copilot_ai = setup_copilot_suggester()
-
-local virtext_sugg = copilot_ai -- {}
+local virtext_sugg = {}
+-- virtext_sugg = setup_minuet_suggester()
+-- virtext_sugg = setup_copilot_suggester()
 
 local api = {
 	virtext_sugg = vim.tbl_deep_extend("force", ai_virtext_default, virtext_sugg),

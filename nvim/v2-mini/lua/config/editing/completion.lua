@@ -14,6 +14,30 @@
 local function make_config(ai_virtext_sugg)
 	local tab_as_next = false
 
+	-- Helper function to check if a completion item contains actual snippet placeholders
+	-- Many LSPs mark items as snippet format even when they don't have placeholders
+	local function has_snippet_placeholders(item)
+		if not item then return false end
+		if item.insertTextFormat ~= vim.lsp.protocol.InsertTextFormat.Snippet then
+			return false
+		end
+
+		-- Get the text that will be inserted
+		local insert_text = item.insertText
+		if not insert_text and item.textEdit then
+			insert_text = item.textEdit.newText
+		end
+		if not insert_text then
+			insert_text = item.label
+		end
+
+		if not insert_text then return false end
+
+		-- Check for snippet placeholder patterns: $1, ${1}, ${1:default}, $0
+		-- Simple pattern check for common snippet syntax
+		return insert_text:match("%$%d") ~= nil or insert_text:match("%${%d") ~= nil
+	end
+
 	---@diagnostic disable-next-line: unused-function
 	local super_tab_entry = function(cmp)
 		local snippet_active = cmp.snippet_active()
@@ -25,10 +49,20 @@ local function make_config(ai_virtext_sugg)
 		-- 	tostring(snippet_active), tostring(menu_visible), tostring(ai_visible)))
 
 		if snippet_active then
-			-- If menu is visible while in snippet, stop snippet session first
-			-- to prevent extmark corruption when accepting completion
+			-- If menu is visible while in snippet
 			if menu_visible then
-				vim.snippet.stop()
+				-- Check if the selected item has actual snippet placeholders
+				local selected_item = cmp.get_selected_item()
+				local has_placeholders = has_snippet_placeholders(selected_item)
+				-- vim.notify(string.format("  selected_item has_placeholders=%s, label=%s",
+				-- 	tostring(has_placeholders),
+				-- 	selected_item and selected_item.label or "nil"))
+				if has_placeholders then
+					-- Only stop snippet session if accepting another snippet
+					-- to prevent extmark corruption
+					vim.snippet.stop()
+				end
+				-- Accept the completion; if it's not a snippet, snippet session remains active
 				return cmp.select_and_accept()
 			end
 
