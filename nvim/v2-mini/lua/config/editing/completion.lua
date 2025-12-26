@@ -16,30 +16,51 @@ local function make_config(ai_virtext_sugg)
 
 	---@diagnostic disable-next-line: unused-function
 	local super_tab_entry = function(cmp)
-		if cmp.snippet_active() then
-			-- vim.notify("snippet active")
+		local snippet_active = cmp.snippet_active()
+		local menu_visible = cmp.is_menu_visible()
+		local ai_visible = ai_virtext_sugg.enabled and ai_virtext_sugg.is_visible()
 
-			if ai_virtext_sugg.enabled then
-				if ai_virtext_sugg.is_visible() and (cmp.is_menu_visible() == false) then
-					-- vim.notify("accept ai suggestion in snippet")
-					ai_virtext_sugg.accept()
-					cmp.snippet_forward() -- jump to next snippet placeholder
-					return true
-				end
+		-- Debug logging (uncomment to diagnose issues)
+		-- vim.notify(string.format("Tab: snippet=%s, menu=%s, ai=%s",
+		-- 	tostring(snippet_active), tostring(menu_visible), tostring(ai_visible)))
+
+		if snippet_active then
+			-- If menu is visible while in snippet, stop snippet session first
+			-- to prevent extmark corruption when accepting completion
+			if menu_visible then
+				vim.snippet.stop()
+				return cmp.select_and_accept()
 			end
 
-			return cmp.accept()
+			-- AI suggestion visible while in snippet: stop snippet first to prevent
+			-- extmark corruption, then accept AI suggestion
+			if ai_visible then
+				vim.snippet.stop()
+				ai_virtext_sugg.accept()
+				return true
+			end
+
+			-- No menu, no AI suggestion visible, let fallback handle snippet_forward
+			return false
 		else
 			-- select in menu
-			if cmp.is_menu_visible() then
+			if menu_visible then
+				-- Dismiss AI suggestion before accepting menu item to avoid conflicts
+				-- when the accepted item is a snippet
+				if ai_visible then
+					ai_virtext_sugg.dismiss()
+				end
+
 				if tab_as_next then
 					return cmp.select_next()
 				else
 					return cmp.select_and_accept()
 				end
 			else
-				-- vim.notify("press tab to fallback, try ai suggestion. visible: " .. vim.inspect(ai_virtext_sugg.is_visible()))
-				ai_virtext_sugg.accept()
+				-- No menu visible, try to accept AI suggestion
+				if ai_visible then
+					ai_virtext_sugg.accept()
+				end
 			end
 		end
 	end

@@ -11,12 +11,7 @@ Host khaos-automaton
     RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
 
 
-Host team-khaos
-    Hostname 9.134.191.144
-    Port 36000
-    User ubuntu
-
-Host team-khaos-arm64
+Host khaos-team-arm64
     Hostname 9.135.90.233
     Port 36000
     User khaos
