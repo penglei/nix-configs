@@ -280,7 +280,16 @@ end)
 later(function()
 	-- 	add("oskarrrrrrr/symbols.nvim") -- conflict with noice.vim?
 	add({ source = "hedyhli/outline.nvim" })
-	require("outline").setup()
+	require("outline").setup({
+		providers = {
+			lsp = {
+				-- markdown_oxide LSP returns symbols from embedded languages in code blocks,
+				-- causing outline to show comments (e.g. YAML # comments) as headings.
+				-- Blacklisting it forces markdown files to use the built-in markdown provider.
+				blacklist_clients = { "markdown_oxide" },
+			},
+		},
+	})
 end)
 
 later(function()

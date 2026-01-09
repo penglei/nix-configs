@@ -191,7 +191,7 @@ local codecompanion_config = (function()
 end)()
 
 ------------------------ chat -------------------------
-require("codecompanion").setup(codecompanion_config)
+-- require("codecompanion").setup(codecompanion_config)
 
 --------------------- suggestion ----------------------
 ---@diagnostic disable-next-line: unused-function
