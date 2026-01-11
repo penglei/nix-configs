@@ -1,13 +1,14 @@
 -- https://github.com/ggandor/leap-ast.nvim
 --
 local api = vim.api
--- Note: The functions used here will be upstreamed eventually.
+
 local ts_utils = require("nvim-treesitter.ts_utils")
 
 local function get_ast_nodes()
 	local wininfo = vim.fn.getwininfo(api.nvim_get_current_win())[1]
 	-- Get current TS node.
-	local cur_node = ts_utils.get_node_at_cursor(0)
+	local cur_node = vim.treesitter.get_node()
+	-- local cur_node = ts_utils.get_node_at_cursor(0)
 	if not cur_node then return end
 	-- Get parent nodes recursively.
 	local nodes = { cur_node }

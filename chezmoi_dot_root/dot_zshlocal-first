@@ -12,10 +12,6 @@ export JAVA_HOME=/opt/zulujdk/current/zulu-17.jdk/Contents/Home
 
 eval "$(opam env)"
 
-function login-argocd() {
-  ssh -t jumper ssh -t khaos ssh -t lespeng@khaos-argocd
-}
-
 if [ -x ~/.keys.sh ];then
   source ~/.keys.sh
 fi

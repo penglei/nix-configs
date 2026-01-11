@@ -1,8 +1,14 @@
+-- Ensure vault directory exists
+local vault_path = vim.fn.expand("~/Documents/Obsidian Vault")
+if vim.fn.isdirectory(vault_path) == 0 then
+	vim.fn.mkdir(vault_path, "p")
+end
+
 local config = {
 	workspaces = {
 		{
 			name = "default",
-			path = "~/Documents/Obsidian Vault",
+			path = vault_path,
 		},
 	},
 	notes_subdir = "notes",

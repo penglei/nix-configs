@@ -92,7 +92,8 @@ later(function()
 	-- 方案2 leap
 	-- 既能满足全局motion，也支持局部基于treesitter语法的 motion和section，
 	-- 但是在单纯的跳转中存在window抖动的问题。
-	add({ source = "ggandor/leap.nvim", depends = { { source = "nvim-treesitter/nvim-treesitter" } } })
+	-- add({ source = "ggandor/leap.nvim", depends = { { source = "nvim-treesitter/nvim-treesitter" } } })
+	add({ source = "https://codeberg.org/andyg/leap.nvim", depends = { { source = "nvim-treesitter/nvim-treesitter" } } })
 	require("config.editing.motion.leap")
 	-- 方案3 flash
 	-- 有一些缺陷，不能支持按visual模式下调整?
@@ -159,7 +160,7 @@ later(function()
 	})
 	--- Add plugin which depends on nvim-treesitter.
 	--- dependencies order is very important, as it affects package search path.
-	add({ source = "nvim-treesitter/nvim-treesitter-textobjects" }) -- This complements mini.ai.
+	add({ source = "nvim-treesitter/nvim-treesitter-textobjects", monitor = "main" }) -- This complements mini.ai.
 	-- add({ source = "nvim-treesitter/nvim-treesitter-refactor" })
 	add({ source = "windwp/nvim-ts-autotag" })
 	add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
