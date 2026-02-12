@@ -5,8 +5,11 @@ path+="$HOME/Library/Application Support/edgedb/bin"
 path+="$HOME/.moon/bin"
 path+="$HOME/.npm-global/bin"
 path+="/opt/ocaml/bin"
-path+="/Applications/Racket v8.16/bin"
+path+="/opt/lima/bin"
 path+="/opt/zulujdk/current/bin"
+
+export BUN_INSTALL="$HOME/.bun" 
+export PATH="$BUN_INSTALL/bin:$PATH"
 
 export JAVA_HOME=/opt/zulujdk/current/zulu-17.jdk/Contents/Home
 

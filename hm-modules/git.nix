@@ -88,6 +88,9 @@
       "*.vrb"
       #lua
       ".luarc.json"
+      # ai
+      ".claude"
+      ".codebuddy"
     ];
 
   };

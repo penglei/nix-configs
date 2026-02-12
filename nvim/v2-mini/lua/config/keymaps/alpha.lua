@@ -1,13 +1,15 @@
 local mk = require("mini.keymap")
+
+---@diagnostic disable-next-line: unused-function
 local notify_many_keys = function(key)
 	local lhs = string.rep(key, 18)
 	local action = function() vim.notify("Too many " .. key .. "!") end
 	mk.map_combo({ "n", "x" }, lhs, action)
 end
-notify_many_keys("h")
-notify_many_keys("j")
-notify_many_keys("k")
-notify_many_keys("l")
+-- notify_many_keys("h")
+-- notify_many_keys("j")
+-- notify_many_keys("k")
+-- notify_many_keys("l")
 
 local mode = { "i", "c", "s" }
 mk.map_combo(mode, "jj", "<BS><BS><Esc>j")

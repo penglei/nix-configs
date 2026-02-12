@@ -13,6 +13,8 @@ local setup = function(name, opts)
 	end
 end
 
+setup("clangd")
+
 setup("lua_ls")
 
 -- setup("rust_analyzer") -- moved to lang.rust

@@ -1,6 +1,6 @@
 Host cloud-dev
     Hostname 9.135.73.231
-    RemoteForward /run/user/penglei/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+    #RemoteForward /run/user/penglei/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
     ProxyCommand ssh -W %h:%p khaos-automaton
     Port 36000
 
@@ -8,7 +8,7 @@ Host khaos-automaton
     Hostname 9.134.52.172
     Port 36000
     User ubuntu
-    RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
+    #RemoteForward /run/user/ubuntu/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
 
 
 Host khaos-team-arm64

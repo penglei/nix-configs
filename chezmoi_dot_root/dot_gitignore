@@ -68,4 +68,5 @@ go.work.sum
 
 .luarc.json
 secrets/local-build
-
+.claude
+.codebuddy
