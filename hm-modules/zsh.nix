@@ -72,7 +72,7 @@ in
           #unset PATH introduced by plugins
           ${lib.concatStrings (
             map (plugin: ''
-              path[''${path[(I)${zshcfg.pluginsDir}/${plugin.name}]}]=()
+              # path[''${path[(I)${zshcfg.pluginsDir}/${plugin.name}]}]=()
             '') zshcfg.plugins
           )}
 

@@ -56,7 +56,7 @@ in
     echo removing the link file 'Applications/Home Manager Apps'
 
     if [ -d $HOME/Applications/Home\ Manager\ Apps ]; then
-      $DRY_RUN_CMD rm $HOME/Applications/Home\ Manager\ Apps
+      $DRY_RUN_CMD rm -rf $HOME/Applications/Home\ Manager\ Apps
     fi
   '';
 }

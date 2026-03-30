@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # **************************installation****************************#
   # bootstrap tips:                                                   #
   #  first run `nix shell home-manager#home-manager`,                 #
@@ -17,11 +18,15 @@
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "22.05";
+  home.stateVersion = "26.05";
 
   xdg.enable = true;
 
-  nix = { settings = { use-xdg-base-directories = true; }; };
+  nix = {
+    settings = {
+      use-xdg-base-directories = true;
+    };
+  };
 
   programs = {
     command-not-found.enable = true;
@@ -35,4 +40,3 @@
   };
   home.packages = [ pkgs.mynixcleaner ];
 }
-

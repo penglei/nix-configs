@@ -74,6 +74,7 @@
       bashInteractive
       git-cliff
       lazygit
+      git-filter-repo
       gnupg # full with gui
       chezmoi
       concealed-pbcopy
@@ -138,10 +139,7 @@
 
       ##editor (lsp, dap, linter, formatter)
 
-      # `nixfmt` has been renamed to nixfmt-classic.
-      #The `nixfmt` attribute may be used for the new RFC 166-style formatter in the future,
-      #which is currently available as nixfmt-rfc-style
-      nixfmt-rfc-style # nixfmt-classic
+      nixfmt
       nil # nil-language-server
 
       yaml-language-server
@@ -198,6 +196,11 @@
       #others
       koka
       llama-cpp
+
+      librsvg
+      tree-sitter
+      postgresql
+      imagemagick
     ]
     ++ lib.optionals stdenvNoCC.isLinux [
       m4

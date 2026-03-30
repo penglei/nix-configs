@@ -1,6 +1,6 @@
 { lib, config, ... }:
 let
-  homeDir = config.home.homeDirectory;
+  homeDir = config.xdg.configHome;
   configText = ''
     [General]
     auto_backup=false
@@ -26,13 +26,13 @@ let
     [Update]
     check_on_start=false
   '';
-in {
+in
+{
 
   home.file.".snipaste/.config.ini.link".text = configText;
-  home.activation.CreateSnipasteConfig =
-    lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-      # if [ -f $HOME/.snipaste/.config.ini.link  ];then
-        cat $HOME/.snipaste/.config.ini.link > $HOME/.snipaste/config.ini
-      # fi
-    '';
+  home.activation.CreateSnipasteConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    # if [ -f $HOME/.snipaste/.config.ini.link  ];then
+      cat $HOME/.snipaste/.config.ini.link > $HOME/.snipaste/config.ini
+    # fi
+  '';
 }

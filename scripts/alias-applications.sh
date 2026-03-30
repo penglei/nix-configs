@@ -25,13 +25,13 @@ if [[ -L "$apps_dir" && -d "$apps_dir" ]]; then
     apps+=($app)
   done
 
-  rm $apps_dir
+  rm -rf $apps_dir
   mkdir -p $apps_dir
 
   for app in ${apps[@]}; do
     make_app_alias $app
   done
-  
+
 fi
 
 
