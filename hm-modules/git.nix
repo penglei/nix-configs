@@ -91,6 +91,8 @@
       # ai
       ".claude"
       ".codebuddy"
+      "AGENTS.md"
+      "CLAUDE.md"
     ];
 
   };

@@ -47,6 +47,8 @@
     # a monospaced font with reasonable Unicode support.
     julia-mono
 
+    maple-mono.NF-CN-unhinted
+
     # texlive 字体说明:
     #   texlive 需要一些字体如STFangsong、Kaiti，这些字体文件在nix texlive fontconfig的查找路径中是不存在的。
     #   因此我们需要手动将相应的字体文件拷贝到 ~/Library/Fonts 或 ~/.local/share/fonts/ 目录(当前这个module没有自动做这个事情)。
