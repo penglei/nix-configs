@@ -1,49 +1,58 @@
-# Personal macOS&Linux configuration
+# Personal macOS & Linux Configuration
 
-## Nix flake usage scenarios
+## Table of Contents
 
-* macOS: [home-manager](https://github.com/nix-community/home-manager) only (I don't employ nix-darwin).
-* Linux: NixOS with embeded home-manager.
-* linux distribution like ubuntu: home-manager only.
+- [Nix Flake Usage Scenarios](#nix-flake-usage-scenarios)
+- [Routine Maintenance Operations](#routine-maintenance-operations)
+- [Initialization](#initialization)
+  - [home-manager (macOS)](#home-manager-macos)
+  - [Linux (NixOS)](#linux-nixos)
+- [Tips](#tips)
+  - [General](#general)
+  - [macOS Operations](#macos-operations)
+- [References](#references)
+- [TODOs](#todos)
 
-## Routine maintenance operations
+## Nix Flake Usage Scenarios
 
-* Update sops keys: `make update-sops`
-* Edit encrypted information(files, ..): `make edit-backup`
-* Make global flake registry consistent with this flake repo: `make pin-registry`
+- **macOS**: [home-manager](https://github.com/nix-community/home-manager) only (I don't use nix-darwin).
+- **Linux (NixOS)**: NixOS with embedded home-manager.
+- **Linux (non-NixOS)**: home-manager only (e.g., Ubuntu).
 
+## Routine Maintenance Operations
 
-## Initliazation
+- Update sops keys: `make update-sops`
+- Edit encrypted files: `make edit-backup`
+- Pin global flake registry to this repo: `make pin-registry`
 
-Clone this directory and place it in the home directory (for neovim and chezmoi).
+## Initialization
 
+Clone this repository and place it in the home directory (required by neovim and chezmoi).
 
-### home-manager(macOS)
+### home-manager (macOS)
 
-Firstly, put the following content in the file `/etc/nix/nix.conf`:
+First, add the following to `/etc/nix/nix.conf`:
 
-```
+```ini
 build-users-group = nixbld
 experimental-features = nix-command flakes
 trusted-users = root penglei
 ```
 
+Then initialize home-manager:
 
-Then, do initialize:
-
-```
-❯ nix --extra-experimental-features nix-command --extra-experimental-features flakes run nixpkgs#home-manager switch -- --flake .#penglei.aarch64-darwin
+```bash
+$ nix --extra-experimental-features nix-command --extra-experimental-features flakes run nixpkgs#home-manager switch -- --flake .#penglei.aarch64-darwin
 ```
 
 #### Replace zsh's nix env injection
 
-In a flake directory, we can employ [direnv](https://github.com/direnv/direnv) to initialize the shell using `use flake` automatically.
-However, subsequently adding packages temporarily by `nix shell ...` does not take effect in this shell.
-The reason is that the path priority in its PATH variable is incorrect, and the fundamental cause is that
-subshells reinitialize by reading configurations (such as zshrc) are not reentrant.
-The following configuration can solve this problem:
+In a flake directory, [direnv](https://github.com/direnv/direnv) can initialize the shell via `use flake` automatically.
+However, subsequently adding packages with `nix shell ...` does not take effect in this shell.
+The root cause is incorrect PATH priority: subshells that reinitialize by re-reading configurations (e.g., zshrc) are not reentrant.
+The following configuration solves this problem:
 
-```
+```zsh
 XDG_DATA_DIRS=${XDG_DATA_DIRS:-/usr/local/share:/usr/share}
 export NIX_PROFILES="/nix/var/nix/profiles/default $HOME/.nix-profile"
 
@@ -56,7 +65,6 @@ for i in $NIX_PROFILES; do
     fi
   fi
 
-  #if ! (($path[(I)$i/bin])); #zsh style
   if [ -e "$i/bin" ]; then
     if ! [[ :$PATH: == *:"$i/bin":* ]]; then
       export PATH="$i/bin:$PATH"
@@ -71,20 +79,19 @@ done
 unset i
 ```
 
+The nix installer initializes the shell env with:
 
-The nix installer initialize shell env by:
-> ```
-> # Nix
-> if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
->  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-> fi
-> # End Nix
-> ```
-
-
-If ssl has been broken (e.g. run `nix profile remove cacert` ), set env explicitly:
-
+```bash
+# Nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+ . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+# End Nix
 ```
+
+If SSL is broken (e.g., after `nix profile remove cacert`), set the env explicitly:
+
+```bash
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 fi
@@ -93,181 +100,173 @@ if [ ! -e "$NIX_SSL_CERT_FILE" ]; then
 fi
 ```
 
+#### Configure sudo
 
-#### config sudo
+Add the following to `/etc/sudoers.d/user`:
 
-Add the following content to `/etc/sudoers.d/user`
-
-```
+```sudoers
 penglei ALL=(root) NOPASSWD: /usr/bin/su -
 ```
 
-_pam\_smartcard module has enabled by default, we needn't do anything more._
+_pam\_smartcard module is enabled by default; no additional configuration needed._
 
-#### twm
+#### Window Manager (twm)
 
-1. Disable most default keyboard shortcuts.
+1. Disable most default keyboard shortcuts:
 
-    *Launchpad & Dock*, *Mission Control*, *Keyboard*, *Services*, **Spotlight**, 
+    *Launchpad & Dock*, *Mission Control*, *Keyboard*, *Services*, **Spotlight**
 
-    In **Mission Control**, modify keyboard shortcuts like this:
-    1. `Option + Up`: Mission Control
-    2. `Option + Down`: Application window
+    In **Mission Control**, modify keyboard shortcuts:
+    - `Option + Up`: Mission Control
+    - `Option + Down`: Application Windows
 
-2. **Modifer Keys**: Caps Lock -> Control
+2. **Modifier Keys**: Caps Lock -> Control
 
 3. **Disable "Automatically rearrange Spaces based on most recent use"** in `Desktop & Dock > Mission Control`
 
+#### Additional manual initialization steps
 
-#### more initialization actions should be done mannually
+1. Restore passphrase and GPG keys: `make restore`
 
-1. restore passage and gpg keys: `make restore`
+    After placing the private key in `~/.gnupg/private-keys-v1.d`, restart the agent:
 
-    After placing the private key in the directory `~/.gnupg/private-keys-v1.d` , manually restart the agent:
-
+    ```bash
+    $ gpgconf --kill gpg-agent
+    $ gpgconf --launch gpg-agent
     ```
-    ❯ gpgconf --kill gpg-agent
-    ❯ gpgconf --launch gpg-agent
-    ```
 
-1. copy zsh command history
+2. Copy zsh command history
 
 #### alt-tab
 
-To quit app followed by mouse cursor, recommend enabling all additional control configurations:
+To quit app followed by mouse cursor, enable all additional control configurations:
 
 <p align="center">
 <img style="width: 50%; text-align: center;" src="./pictures/alt-tab-additional-control.png" />
 </p>
 
-### Linux(NixOS)
+### Linux (NixOS)
 
-```
+```bash
 $ sudo nixos-rebuild switch --flake .
 ```
 
 ## Tips
 
-* rollback nixos
+### General
 
-    ```
-    /nix/var/nix/profiles/system-*-link/bin/switch-to-configuration switch
-    ```
+- **Rollback NixOS**
 
-* Clean home-manager news
-
-    ```
-    home-manager news --flake .
+    ```bash
+    # /nix/var/nix/profiles/system-*-link/bin/switch-to-configuration switch
     ```
 
-* Using vim on a freshly installed Linux (NixOS)
+- **Clean home-manager news**
 
-    Why: The newly installed NixOS does not come with vim by default(but carrying nano..),
-    Use the following command to temporarily use vim:
-
+    ```bash
+    $ home-manager news --flake .
     ```
+
+- **Use vim on a freshly installed NixOS**
+
+    NixOS does not include vim by default (only nano). Use the following to get vim temporarily:
+
+    ```bash
     $ nix --extra-experimental-features nix-command --extra-experimental-features flakes shell nixpkgs#vim
     ```
 
-* Clean journald logs one hour ago
+- **Clean journald logs older than one hour**
 
-  ```
-  # journalctl --rotate
-  # journalctl --vacuum-time=1h
-  ```
+    ```bash
+    # journalctl --rotate
+    # journalctl --vacuum-time=1h
+    ```
 
-### macOS ops
+### macOS Operations
 
-* yabai
+#### yabai
 
-    * Installing yabai
+- **Installing yabai**
 
-        1. Switching between spaces requires disabling sip.
+    1. Switching between spaces requires disabling SIP:
 
-            ```
-            csrutil enable --without fs --without debug --without nvram
-            ```
-
-        1. configure sudo
-
-            Append the following content to `/etc/sudoers.d/user`
-
-            ```
-            penglei ALL=(root) NOPASSWD: /Users/penglei/.nix-profile/bin/yabai --load-sa
-            penglei ALL=(root) NOPASSWD: /Users/penglei/.nix-profile/bin/yabai --uninstall-sa
-            ```
-
-            After completing the sudo configuration, we can manually run `sudo yabai --load-sa`` once without waiting for the next reboot.
-
-
-
-    * restart yabai daemon
-
-        ```
-        # launchctl load -F ~/Library/LaunchAgents/org.nix-community.home.yabai.plist
-        # launchctl unload -F ~/Library/LaunchAgents/org.nix-community.home.yabai.plist
-        # launchctl kickstart -k gui/$(id -u)/org.nix-community.home.yabai
+        ```bash
+        $ csrutil enable --without fs --without debug --without nvram
         ```
 
+    2. Configure sudo — append to `/etc/sudoers.d/user`:
 
-* rime/squirrel
+        ```sudoers
+        penglei ALL=(root) NOPASSWD: /Users/penglei/.nix-profile/bin/yabai --load-sa
+        penglei ALL=(root) NOPASSWD: /Users/penglei/.nix-profile/bin/yabai --uninstall-sa
+        ```
 
-    log location:
+        After completing the sudo configuration, manually run `sudo yabai --load-sa` once without waiting for the next reboot.
 
-    * $TMPDIR/rime.squirrel/Squirrel.INFO
-    * $TMPDIR/rime.squirrel/Squirrel.WARNING
+- **Restart yabai daemon**
 
-    **Force deployment after updating configuration**
+    ```bash
+    $ launchctl load -F ~/Library/LaunchAgents/org.nix-community.home.yabai.plist
+    $ launchctl unload -F ~/Library/LaunchAgents/org.nix-community.home.yabai.plist
+    $ launchctl kickstart -k gui/$(id -u)/org.nix-community.home.yabai
+    ```
 
-    1. Run *home-manager switch* to link rime configuration again
-    1. Clean cache
+#### rime/squirrel
 
-       ```
-       rm -rf ~/Library/Rime/build
-       ```
-    1. Do squirrel Deploy (click in menu)
+Log locations:
 
+- `$TMPDIR/rime.squirrel/Squirrel.INFO`
+- `$TMPDIR/rime.squirrel/Squirrel.WARNING`
 
-    *installation.yaml should be writable after upgrading squirrel.*
+**Force deployment after updating configuration:**
 
+1. Run `home-manager switch` to re-link rime configuration
+2. Clean cache:
 
-* upgrade nix
+    ```bash
+    $ rm -rf ~/Library/Rime/build
+    ```
 
-  run in root:
-  ```
-  # nix profile install nixpkgs#nix_git
-  ```
+3. Click "Deploy" in the Squirrel menu
 
-## references
+_`installation.yaml` should be writable after upgrading Squirrel._
 
-* shell expansion
+#### Upgrade nix
 
-    * https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
-    * https://zsh.sourceforge.io/Doc/Release/Expansion.html
-    * https://zsh.sourceforge.io/Doc/Release/Expansion.html#Modifiers
-    * https://zsh.sourceforge.io/Doc/Release/Expansion.html#Parameter-Expansion
-    * https://stackoverflow.com/questions/3435355/remove-entry-from-array
-    * https://unix.stackexchange.com/questions/411304/how-do-i-check-whether-a-zsh-array-contains-a-given-value
+Run as root:
 
-* macOS
+```bash
+# nix profile install nixpkgs#nix_git
+```
 
-    * [NSUserDefaults](https://juejin.cn/post/6844903464300969991)
-    * [Awesome macOS apps](https://github.com/icopy-site/awesome-cn/blob/master/docs/awesome/open-source-mac-os-apps.md)
+## References
 
+- **Shell Expansion**
 
-    * Rime Input Method
+    - [Bash Parameter Expansion](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html)
+    - [Zsh Expansion](https://zsh.sourceforge.io/Doc/Release/Expansion.html)
+    - [Zsh Modifiers](https://zsh.sourceforge.io/Doc/Release/Expansion.html#Modifiers)
+    - [Zsh Parameter Expansion](https://zsh.sourceforge.io/Doc/Release/Expansion.html#Parameter-Expansion)
+    - [Remove entry from array](https://stackoverflow.com/questions/3435355/remove-entry-from-array)
+    - [Check if zsh array contains value](https://unix.stackexchange.com/questions/411304/how-do-i-check-whether-a-zsh-array-contains-a-given-value)
 
-        * [rime-ice framework](https://github.com/iDvel/rime-ice)
-        * [Grammer model](https://github.com/lotem/rime-octagram-data/tree/hans)
-        * [*Shift+space* as switcher key](https://github.com/rime/squirrel/issues/113)
+- **macOS**
 
-    * Font
+    - [NSUserDefaults](https://juejin.cn/post/6844903464300969991)
+    - [Awesome macOS apps](https://github.com/icopy-site/awesome-cn/blob/master/docs/awesome/open-source-mac-os-apps.md)
 
-        * [LaTeX "Kaiti SC" cannot be found](https://jia.je/software/2021/02/09/big-sur-m1-latex-kaiti-fonts/)
-        * [Linux fontconfig matching mechanism](https://catcat.cc/post/2020-10-31/)
-        * [nerd icon font](https://www.nerdfonts.com/cheat-sheet)
+- **Rime Input Method**
 
+    - [rime-ice framework](https://github.com/iDvel/rime-ice)
+    - [Grammar model](https://github.com/lotem/rime-octagram-data/tree/hans)
+    - [*Shift+Space* as switcher key](https://github.com/rime/squirrel/issues/113)
+
+- **Font**
+
+    - [LaTeX "Kaiti SC" cannot be found](https://jia.je/software/2021/02/09/big-sur-m1-latex-kaiti-fonts/)
+    - [Linux fontconfig matching mechanism](https://catcat.cc/post/2020-10-31/)
+    - [Nerd icon font cheat sheet](https://www.nerdfonts.com/cheat-sheet)
 
 ## TODOs
 
-* [ ] Inject username while employ home-manager alone.
+- [ ] Inject username when using home-manager standalone.

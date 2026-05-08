@@ -64,7 +64,7 @@ in
       "relay-to-sv-alpha",
 
       #direct subscribes
-      "clashcloud-ss",
+      # "clashcloud-ss",
       "flowercloud-ss",
 
       #hk-alpha server
@@ -94,7 +94,7 @@ in
     type = "selector",
     outbounds = [
       "flowercloud-ss",
-      "clashcloud-ss",
+      # "clashcloud-ss",
     ],
     default = "flowercloud-ss",
     interrupt_exist_connections = false,
