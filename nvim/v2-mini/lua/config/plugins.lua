@@ -205,6 +205,11 @@ end)
 later(function()
 	add({ source = "catgoose/nvim-colorizer.lua" })
 	add({ source = "hiphish/rainbow-delimiters.nvim" })
+	-- Disable rainbow-delimiters for latex: its bundled query uses a
+	-- `curly_group_label` node that doesn't exist in the latex parser
+	-- pinned by nvim-treesitter (rev 7b06f6e), causing a query error
+	-- whenever markdown files with embedded math are opened.
+	vim.g.rainbow_delimiters = { blacklist = { "latex" } }
 	-- Neovim plugin for automatically highlighting other uses of the word under the cursor using either LSP, Tree-sitter, or regex matching.
 	add({ source = "RRethy/vim-illuminate" })
 
