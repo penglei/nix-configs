@@ -26,7 +26,7 @@ require("snacks").setup({
 	input = { enabled = true },
 	toggle = { enabled = true },
 	image = {
-		enabled = true,
+		enabled = false,
 		doc = { -- it will render image in markdown
 			inline = false,
 			max_width = 180,
