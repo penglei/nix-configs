@@ -33,6 +33,31 @@ require("inline_git_blame").setup({
 	autocmd = false, -- config in toggle
 })
 
+-- Monkey-patch nvim_buf_set_extmark for the "inline_blame" namespace only,
+-- to guard against stale buffers/lines. The inline_git_blame plugin runs
+-- `git blame` via jobstart and then defers its internal `show_blame` with
+-- vim.schedule. If the buffer is wiped (e.g. <space>x) or shrunk in between,
+-- the deferred set_extmark raises "Invalid 'line': out of range".
+--
+-- `show_blame` is a `local function` in the plugin source, so we can't replace
+-- it directly. Instead, intercept the only API it ultimately calls and no-op
+-- when the target buffer/line is no longer valid. Scoped to the inline_blame
+-- namespace so other plugins are untouched. mini.deps upgrades of this plugin
+-- don't reset our patch since we patch the global vim.api method.
+do
+	local blame_ns = vim.api.nvim_create_namespace("inline_blame")
+	local orig_set_extmark = vim.api.nvim_buf_set_extmark
+	vim.api.nvim_buf_set_extmark = function(bufnr, ns, line, col, opts)
+		if ns == blame_ns then
+			if not bufnr or not vim.api.nvim_buf_is_valid(bufnr) then return 0 end
+			if type(line) ~= "number" or line < 0 then return 0 end
+			local ok, count = pcall(vim.api.nvim_buf_line_count, bufnr)
+			if not ok or line >= count then return 0 end
+		end
+		return orig_set_extmark(bufnr, ns, line, col, opts)
+	end
+end
+
 ------------------------------------------------
 -- vim.lsp.handlers["$/progress"] = function() end -- disable progress notification
 local progress = vim.defaulttable()

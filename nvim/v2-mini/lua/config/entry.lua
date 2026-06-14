@@ -6,7 +6,6 @@ require("config.options")
 local util = require("config.util")
 
 local autocmd = vim.api.nvim_create_autocmd
-local usercmd = vim.api.nvim_create_user_command
 -- augroup is named autocmd
 
 vim.filetype.add({
@@ -39,14 +38,6 @@ autocmd("BufWritePre", {
 })
 
 -- create a command  BufDelete to delete current buffer without closing window
-
-autocmd("VimEnter", {
-	callback = function()
-		usercmd("ToglleAICompletion", function() require("config.editing.ai").toggle() end, {
-			desc = "toggle ai completion for cmp",
-		})
-	end,
-})
 
 ----------------- default key mapping -----------------
 util.bind:new():load(require("config.keymaps.default"))

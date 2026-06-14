@@ -1,17 +1,4 @@
--- Do not hide AI suggestions when the cmp menu is displayed. Keep both visible simultaneously to enable automatic updates of Copilot suggestions
--- after switching cmp candidates, i.e., generate new suggestions based on the newly selected candidate.
---
--- vim.api.nvim_create_autocmd("User", {
--- 	pattern = "BlinkCmpMenuOpen",
--- 	callback = function() vim.b.copilot_suggestion_hidden = true end,
--- })
---
--- vim.api.nvim_create_autocmd("User", {
--- 	pattern = "BlinkCmpMenuClose",
--- 	callback = function() vim.b.copilot_suggestion_hidden = false end,
--- })
-
-local function make_config(ai_virtext_sugg)
+local function make_config()
 	local tab_as_next = false
 
 	-- Helper function to check if a completion item contains actual snippet placeholders
@@ -42,21 +29,12 @@ local function make_config(ai_virtext_sugg)
 	local super_tab_entry = function(cmp)
 		local snippet_active = cmp.snippet_active()
 		local menu_visible = cmp.is_menu_visible()
-		local ai_visible = ai_virtext_sugg.enabled and ai_virtext_sugg.is_visible()
-
-		-- Debug logging (uncomment to diagnose issues)
-		-- vim.notify(string.format("Tab: snippet=%s, menu=%s, ai=%s",
-		-- 	tostring(snippet_active), tostring(menu_visible), tostring(ai_visible)))
 
 		if snippet_active then
-			-- If menu is visible while in snippet
 			if menu_visible then
 				-- Check if the selected item has actual snippet placeholders
 				local selected_item = cmp.get_selected_item()
 				local has_placeholders = has_snippet_placeholders(selected_item)
-				-- vim.notify(string.format("  selected_item has_placeholders=%s, label=%s",
-				-- 	tostring(has_placeholders),
-				-- 	selected_item and selected_item.label or "nil"))
 				if has_placeholders then
 					-- Only stop snippet session if accepting another snippet
 					-- to prevent extmark corruption
@@ -66,34 +44,15 @@ local function make_config(ai_virtext_sugg)
 				return cmp.select_and_accept()
 			end
 
-			-- AI suggestion visible while in snippet: stop snippet first to prevent
-			-- extmark corruption, then accept AI suggestion
-			if ai_visible then
-				vim.snippet.stop()
-				ai_virtext_sugg.accept()
-				return true
-			end
-
-			-- No menu, no AI suggestion visible, let fallback handle snippet_forward
+			-- No menu, let fallback handle snippet_forward
 			return false
 		else
 			-- select in menu
 			if menu_visible then
-				-- Dismiss AI suggestion before accepting menu item to avoid conflicts
-				-- when the accepted item is a snippet
-				if ai_visible then
-					ai_virtext_sugg.dismiss()
-				end
-
 				if tab_as_next then
 					return cmp.select_next()
 				else
 					return cmp.select_and_accept()
-				end
-			else
-				-- No menu visible, try to accept AI suggestion
-				if ai_visible then
-					ai_virtext_sugg.accept()
 				end
 			end
 		end
@@ -110,24 +69,10 @@ local function make_config(ai_virtext_sugg)
 			["<C-.>"] = {
 				function(cmp)
 					if cmp.is_menu_visible() then
-						-- vim.notify("menu is visible, close it:\n" .. vim.inspect(cmp))
 						cmp.hide()
 					else
-						-- vim.notify("menu is not visible, open it:\n" .. vim.inspect(cmp))
 						cmp.show()
 					end
-				end,
-			},
-
-			-- cancel ai suggestion if it is visible, or dothing
-			["<C-/>"] = {
-				function()
-					if ai_virtext_sugg.is_visible() then
-						-- vim.notify("ai suggestion is visible, cancel it")
-						ai_virtext_sugg.dismiss()
-					end
-
-					return true -- prevent fallback to default and insert '/'
 				end,
 			},
 
@@ -156,38 +101,8 @@ local function make_config(ai_virtext_sugg)
 			["<C-y>"] = { "select_and_accept" },
 			["<Up>"] = { "select_prev", "fallback" },
 			["<Down>"] = { "select_next", "fallback" },
-			["<C-p>"] = {
-				function(cmp)
-					--- Prioritize the page-turning selection of virtualtext.
-					if ai_virtext_sugg.is_visible() then
-						ai_virtext_sugg.prev()
-						return true
-					end
-
-					if cmp.is_menu_visible() then
-						cmp.select_prev()
-						return true
-					end
-				end,
-				-- "select_prev",
-				"fallback_to_mappings",
-			},
-			["<C-n>"] = {
-				function(cmp)
-					--- Prioritize the page-turning selection of virtualtext.
-					if ai_virtext_sugg.is_visible() then
-						ai_virtext_sugg.next()
-						return true
-					end
-
-					if cmp.is_menu_visible() then
-						cmp.select_next()
-						return true
-					end
-				end,
-				-- "select_next",
-				"fallback_to_mappings",
-			},
+			["<C-p>"] = { "select_prev", "fallback_to_mappings" },
+			["<C-n>"] = { "select_next", "fallback_to_mappings" },
 
 			["<C-k>"] = {
 				"show_documentation",
@@ -215,13 +130,9 @@ local function make_config(ai_virtext_sugg)
 									local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
 									if dev_icon then icon = dev_icon end
 								else
-									if ctx.source_name == "supermaven" then
-										icon = ""
-									else
-										icon = require("lspkind").symbolic(ctx.kind, {
-											mode = "symbol",
-										})
-									end
+									icon = require("lspkind").symbolic(ctx.kind, {
+										mode = "symbol",
+									})
 								end
 								return icon .. ctx.icon_gap
 							end,
@@ -245,19 +156,13 @@ local function make_config(ai_virtext_sugg)
 				"snippets",
 				"buffer",
 				-- "lazydev",
-				-- "supermaven", -- ai
 			},
-			-- default = { "lsp", "buffer", "codecompanion", "snippets", "path" },
 			providers = {
 				lazydev = {
 					name = "LazyDev",
 					module = "lazydev.integrations.blink",
 					-- make lazydev completions top priority (see `:h blink.cmp`)
 					score_offset = 100,
-				},
-				supermaven = {
-					name = "supermaven",
-					module = "blink.compat.source",
 				},
 			},
 		},
@@ -281,10 +186,7 @@ local function make_config(ai_virtext_sugg)
 end
 
 return {
-	setup = function(config)
-		if config == nil then config = {} end
-
-		local blink_config = make_config(config.ai_virtext_sugg)
-		require("blink.cmp").setup(blink_config)
+	setup = function()
+		require("blink.cmp").setup(make_config())
 	end,
 }

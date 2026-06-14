@@ -6,5 +6,4 @@ return {
 	"NvimTree",
 	"Outline",
 	"snacks_input",
-	"codecompanion",
 }

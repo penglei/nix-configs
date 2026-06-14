@@ -118,28 +118,8 @@ later(function()
 		checkout = "v1.4.1",
 		monitor = "main",
 	})
-	add({
-		source = "olimorris/codecompanion.nvim",
-		checkout = "v17.33.0",
-		depends = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-			-- "MeanderingProgrammer/render-markdown.nvim",
-			"ravitemer/codecompanion-history.nvim",
-		},
-	})
-	add({ source = "Saghen/blink.compat" })
 
-	-- ai suggestions
-	add({ source = "zbirenbaum/copilot.lua" })
-	add({ source = "milanglacier/minuet-ai.nvim" })
-	add({ source = "supermaven-inc/supermaven-nvim" })
-
-	local ai = require("config.editing.ai")
-
-	require("config.editing.completion").setup({
-		ai_virtext_sugg = ai.virtext_sugg, -- ai virtual text suggestions,
-	})
+	require("config.editing.completion").setup()
 end)
 
 later(function()
