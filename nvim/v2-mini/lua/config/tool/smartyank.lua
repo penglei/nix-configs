@@ -23,9 +23,7 @@ local function osc52(str)
 		seq = string.format("\x1b]52;c;%s\x07", b64)
 	end
 	local bytes = vim.fn.chansend(vim.v.stderr, seq)
-	vim.api.nvim_echo({
-		{ string.format("[clip] %d chars sent via OSC52 (%d bytes)", #str, bytes), "Directory" },
-	}, false, {})
+	vim.notify(string.format("[clip] %d chars sent via OSC52 (%d bytes)", #str, bytes))
 end
 
 function M.yank_to_system(str)

@@ -39,9 +39,27 @@ local function nvim_tree_config_on_attach(bufnr)
 	vim.keymap.set("n", "d", api.fs.remove, opts("Delete"))
 	vim.keymap.set("n", "D", api.fs.trash, opts("Trash"))
 
-	vim.keymap.set("n", "y", api.fs.copy.filename, opts("Copy Fileame"))
-	vim.keymap.set("n", "Y", api.fs.copy.relative_path, opts("Copy Relative Path"))
-	vim.keymap.set("n", "gy", api.fs.copy.absolute_path, opts("Copy Absolute Path"))
+	-- 复制路径统一走 config.tool.smartyank：本地写入 * 寄存器，远端 SSH 走 OSC52。
+	-- nvim-tree 自带的 api.fs.copy.* 在远端只 setreg("+") 而不触发 OSC52，
+	-- 会出现"提示已复制到系统剪贴板"但实际没生效的问题。
+	local smartyank = require("config.tool.smartyank")
+	local copy_path = function(kind)
+		return function()
+			local node = api.tree.get_node_under_cursor()
+			if not node then return end
+			local path = node.absolute_path
+			if kind == "filename" then
+				path = vim.fs.basename(path)
+			elseif kind == "relative" then
+				path = vim.fn.fnamemodify(path, ":.")
+			end
+			-- absolute 直接用 node.absolute_path
+			smartyank.yank_to_system(path)
+		end
+	end
+	vim.keymap.set("n", "y", copy_path("filename"), opts("Copy Filename"))
+	vim.keymap.set("n", "Y", copy_path("relative"), opts("Copy Relative Path"))
+	vim.keymap.set("n", "gy", copy_path("absolute"), opts("Copy Absolute Path"))
 
 	vim.keymap.set("n", "H", api.tree.toggle_hidden_filter, opts("Toggle Filter: Dotfiles"))
 	vim.keymap.set("n", "I", api.tree.toggle_gitignore_filter, opts("Toggle Filter: Git Ignore"))
