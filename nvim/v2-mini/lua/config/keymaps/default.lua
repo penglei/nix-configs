@@ -185,8 +185,7 @@ local keymaps = {
 	["v|Y"] = map_cb(function()
 		vim.cmd("normal! y")
 		local text = vim.fn.getreg('"', false)
-		vim.fn.setreg("*", text)
-		vim.notify("Clipboard  updated")
+		require("config.tool.smartyank").yank_to_system(text)
 	end):desc("Copy to clipboard (also default register)"),
 
 	["n|D"] = map_cmd("d$"):desc("editn: Delete text to EOL"),

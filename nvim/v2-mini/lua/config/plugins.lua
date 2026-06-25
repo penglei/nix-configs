@@ -331,6 +331,10 @@ later(function()
 	require("dracula").setup()
 end)
 
+-- 复制到系统剪贴板的工具（本地走 * 寄存器，远端 SSH 走 OSC52）。
+-- 不依赖任何插件，由 keymaps/default.lua 的 v|Y 手动调用。
+later(function() require("config.tool.smartyank") end)
+
 -------------------- lang ---------------------
 later(function()
 	add({ source = "Julian/lean.nvim" })
