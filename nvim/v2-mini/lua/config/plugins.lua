@@ -226,11 +226,10 @@ end)
 
 later(function() end)
 
-later(function()
-	-- a plugin that properly configures LuaLS for editing your Neovim config
-	add({ source = "folke/lazydev.nvim" })
-	require("lazydev").setup()
-end)
+-- lazydev.nvim removed: its workspace/configuration handler returns `{}` for
+-- unscoped requests, which lua_ls 3.17.x uses, dropping workspace.library and
+-- breaking `gd` on require() strings / vim / plugin globals. lua_ls is now
+-- configured manually with on_init in lua/config/editing/lsp.lua.
 
 ------------------------------------------------------------------------
 

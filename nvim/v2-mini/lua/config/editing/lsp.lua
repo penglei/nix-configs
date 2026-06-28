@@ -5,17 +5,39 @@
 
 vim.lsp.inlay_hint.enable(true)
 
+-- `vim.lsp.config` only updates the config; `vim.lsp.enable` is what actually
+-- auto-starts the server. Always call both so servers with custom opts attach.
 local setup = function(name, opts)
-	if opts == nil then
-		vim.lsp.enable(name)
-	else
+	if opts then
 		vim.lsp.config(name, opts)
 	end
+	vim.lsp.enable(name)
 end
 
 setup("clangd")
 
-setup("lua_ls")
+-- Configure lua_ls for editing the nvim config (and lua plugins on rtp).
+-- We avoid lazydev.nvim here: its `workspace/configuration` handler returns `{}`
+-- for unscoped requests (lazydev/lsp.lua "fallback scope" branch), and lua_ls
+-- 3.17.x uses that empty response, dropping `workspace.library`/`runtime.path`.
+-- That breaks `gd` on `require("...")` strings, `vim.*`, and plugin globals.
+-- `on_init` runs at client start and mutates `client.config.settings.Lua`
+-- (same ref as `client.settings`), which the default handler serves to lua_ls.
+setup("lua_ls", {
+	on_init = function(client)
+		client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+			runtime = {
+				version = "LuaJIT",
+				path = { "?.lua", "?/init.lua" },
+				pathStrict = true,
+			},
+			workspace = {
+				checkThirdParty = false,
+				library = vim.api.nvim_get_runtime_file("lua", true),
+			},
+		})
+	end,
+})
 
 -- setup("rust_analyzer") -- moved to lang.rust
 
