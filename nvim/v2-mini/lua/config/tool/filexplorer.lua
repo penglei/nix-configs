@@ -65,6 +65,9 @@ local function nvim_tree_config_on_attach(bufnr)
 	vim.keymap.set("n", "I", api.tree.toggle_gitignore_filter, opts("Toggle Filter: Git Ignore"))
 	vim.keymap.set("n", "W", api.tree.collapse_all, opts("Collapse"))
 	vim.keymap.set("n", "R", api.tree.reload, opts("Refresh"))
+	-- update_focused_file.update_root=true 会因 LSP gd 跳到库源码而把 tree 根切到库
+	-- 目录，关掉 buffer 后 tree 仍滞留在库目录。按 C 把 tree 根切回项目 cwd。
+	vim.keymap.set("n", "C", function() api.tree.change_root(vim.fn.getcwd()) end, opts("Change root to project cwd"))
 	vim.keymap.set("n", "<leader>e", "<C-w><C-p>", opts("Back to window")) -- maybe we should do more carefully by record last window by `winnr("#")`
 	vim.keymap.set("n", "<TAB>", "<C-w><C-p>", opts("Back to window")) -- maybe we should do more carefully by record last window by `winnr("#")`
 	vim.keymap.set("n", "<2-LeftMouse>", api.node.open.edit, opts("Open"))

@@ -24,6 +24,12 @@ vim.opt.cul = false
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
 vim.opt.smartindent = false -- true is not good for commenting yaml
+
+-- nvim 0.11 默认 'formatoptions' 为 "tcqj"，不再含 'r'/'o'，导致在注释块中按
+-- <CR> 或 o/O 开新行时不会自动添加注释前缀（如 go 的 "//"）。补上 'r'/'o'，
+-- 同时加 'n' 让 gq 能识别数字列表；'l' 仅在有 textwidth 时影响换行，无副作用。
+-- 设置全局值即可：新 buffer 创建时会继承，各 ftplugin 在此基础上增删。
+vim.opt.formatoptions = "tcroqlnj"
 vim.opt.fillchars = { eob = " " }
 vim.opt.number = true
 vim.opt.numberwidth = 2
