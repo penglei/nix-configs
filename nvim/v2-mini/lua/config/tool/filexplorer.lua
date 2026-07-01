@@ -95,7 +95,11 @@ local nvim_tree_config = {
 		-- width = 40,
 		width = function() return math.floor(vim.opt.columns:get() * WIDTH_RATIO) end,
 		side = "left",
-		preserve_window_proportions = false,
+		-- 必须为 true：view.resize() 后会执行 `:wincmd =` 把所有窗口等分，
+		-- 这会把 nvim-tree 从配置的 20% 又拉回 50%。打开此处让 resize 后维持比例。
+		-- 配合 actions.open_file.resize_window = true 修复"只剩 nvim-tree 时
+		-- 打开文件造成 50/50 分屏"的问题。
+		preserve_window_proportions = true,
 		number = false,
 		relativenumber = false,
 		signcolumn = "yes",
@@ -209,7 +213,10 @@ local nvim_tree_config = {
 		},
 		open_file = {
 			quit_on_open = false,
-			resize_window = false,
+			-- 打开文件后调用 view.resize()，让 nvim-tree 从被 vsplit 出来的 50%
+			-- 恢复到 view.width 配置的 20%。仅当 nvim-tree 当前宽度不等于配置宽度
+			-- 时才生效，正常情况下是 no-op。
+			resize_window = true,
 			window_picker = {
 				enable = true,
 				chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
