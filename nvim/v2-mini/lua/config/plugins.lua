@@ -189,7 +189,22 @@ later(function()
 	-- `curly_group_label` node that doesn't exist in the latex parser
 	-- pinned by nvim-treesitter (rev 7b06f6e), causing a query error
 	-- whenever markdown files with embedded math are opened.
-	vim.g.rainbow_delimiters = { blacklist = { "latex" } }
+	--
+	-- Also blacklist snacks floating windows (notifications, history,
+	-- terminals, generic win): their buffers have no treesitter parser, so
+	-- `get_parser` returns nil and `lib.lua:200` crashes with "attempt to
+	-- index local 'parser' (a nil value)" whenever such a window is shown.
+	vim.g.rainbow_delimiters = {
+		blacklist = {
+			"latex",
+			"snacks_notif",
+			"snacks_notif_history",
+			"snacks_terminal",
+			"snacks_win",
+			"snacks_win_help",
+			"snacks_win_backdrop",
+		},
+	}
 	-- Neovim plugin for automatically highlighting other uses of the word under the cursor using either LSP, Tree-sitter, or regex matching.
 	add({ source = "RRethy/vim-illuminate" })
 
