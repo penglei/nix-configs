@@ -352,7 +352,9 @@ later(function() require("config.tool.smartyank") end)
 -------------------- lang ---------------------
 later(function()
 	add({ source = "Julian/lean.nvim" })
-	require("lean").setup({ mappings = false })
+	-- lean.nvim v2026.9.1 起废弃 require("lean").setup，改用 vim.g.lean_config。
+	-- plugin/lean.lua 会在 add() 时自动调用 lean.init() 并读取该变量，故必须在 add 前设置。
+	vim.g.lean_config = { mappings = false }
 end)
 
 later(function()

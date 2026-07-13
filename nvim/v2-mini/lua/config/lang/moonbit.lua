@@ -6,8 +6,10 @@ require("moonbit").setup({
 	-- optionally disable the treesitter integration
 	treesitter = {
 		enabled = true,
-		-- Set false to disable automatic installation and updating of parsers.
-		auto_install = true,
+		-- nvim-treesitter 锁定在 v0.10.0 master，主模块没有 .install 字段，
+		-- moonbit.nvim 调用 require('nvim-treesitter').install 会报错。
+		-- parser 已手动安装 (parser/moonbit.so)，关掉 auto_install 即可。
+		auto_install = false,
 	},
 	-- configure the language server integration
 	-- set `lsp = false` to disable the language server integration
