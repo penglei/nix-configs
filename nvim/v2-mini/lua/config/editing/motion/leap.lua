@@ -2,7 +2,28 @@
 --
 local api = vim.api
 
-local ts_utils = require("nvim-treesitter.ts_utils")
+-- Inlined from nvim-treesitter master's ts_utils.lua (removed in main branch).
+-- Only substitution: ts.get_node_range → vim.treesitter.get_node_range (core API).
+local function get_vim_range(range, bufnr)
+	local srow, scol, erow, ecol = unpack(range)
+	local ecol_adjusted = ecol == 0 and -1 or ecol - 1
+	if ecol_adjusted < 0 and erow > 0 then
+		erow = erow - 1
+		ecol_adjusted = #vim.fn.getline(erow + 1)
+	end
+	return srow + 1, scol, erow + 1, ecol_adjusted, bufnr or 0
+end
+
+local function update_selection(bufnr, node, selection_mode)
+	local srow, scol, erow, ecol = get_vim_range({ vim.treesitter.get_node_range(node) }, bufnr)
+	vim.api.nvim_buf_set_mark(bufnr, "<", srow, scol, {})
+	vim.api.nvim_buf_set_mark(bufnr, ">", erow, ecol, {})
+	local mode = selection_mode == "linewise" and "V"
+		or selection_mode == "blockwise" and vim.api.nvim_replace_termcodes("<C-v>", true, true, true)
+		or "v"
+	vim.cmd("normal! " .. mode .. "gv")
+	if vim.api.nvim_get_mode().mode:match("no") then vim.cmd("normal! o") end
+end
 
 local function get_ast_nodes()
 	local wininfo = vim.fn.getwininfo(api.nvim_get_current_win())[1]
@@ -38,7 +59,7 @@ local function select_range(target)
 		-- Force going back to Normal (implies mode = v | V | ).
 		vim.cmd("normal! " .. mode)
 	end
-	ts_utils.update_selection(0, target.node, mode:match("V") and "linewise" or mode:match("") and "blockwise" or "charwise")
+	update_selection(0, target.node, mode:match("V") and "linewise" or mode:match("") and "blockwise" or "charwise")
 end
 
 local leap = require("leap")

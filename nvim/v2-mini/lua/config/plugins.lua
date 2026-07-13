@@ -130,8 +130,10 @@ end)
 later(function()
 	add({
 		source = "nvim-treesitter/nvim-treesitter",
-		-- Use 'master' while monitoring updates in 'main'
-		checkout = "master",
+		-- 'main' is the incompatible rewrite for nvim 0.12+ (minimal: parser
+		-- install + query distribution only; highlight/textobjects/matchup
+		-- modules removed — use core vim.treesitter API instead).
+		checkout = "main",
 		monitor = "main",
 		-- Perform action after every checkout
 		hooks = {
@@ -140,13 +142,12 @@ later(function()
 	})
 	--- Add plugin which depends on nvim-treesitter.
 	--- dependencies order is very important, as it affects package search path.
-	add({ source = "nvim-treesitter/nvim-treesitter-textobjects", monitor = "main" }) -- This complements mini.ai.
+	add({ source = "nvim-treesitter/nvim-treesitter-textobjects", checkout = "main", monitor = "main" }) -- This complements mini.ai.
 	-- add({ source = "nvim-treesitter/nvim-treesitter-refactor" })
 	add({ source = "windwp/nvim-ts-autotag" })
 	add({ source = "JoosepAlviste/nvim-ts-context-commentstring" })
 	add({ source = "sustech-data/wildfire.nvim" })
 	add({ source = "andymass/vim-matchup" })
-	add({ source = "Mr-LLLLL/treesitter-outer" })
 	add({ source = "roobert/tabtree.nvim" })
 
 	-- dependencies can specified explictly in other later(...) block
@@ -185,18 +186,13 @@ end)
 later(function()
 	add({ source = "catgoose/nvim-colorizer.lua" })
 	add({ source = "hiphish/rainbow-delimiters.nvim" })
-	-- Disable rainbow-delimiters for latex: its bundled query uses a
-	-- `curly_group_label` node that doesn't exist in the latex parser
-	-- pinned by nvim-treesitter (rev 7b06f6e), causing a query error
-	-- whenever markdown files with embedded math are opened.
-	--
-	-- Also blacklist snacks floating windows (notifications, history,
-	-- terminals, generic win): their buffers have no treesitter parser, so
-	-- `get_parser` returns nil and `lib.lua:200` crashes with "attempt to
-	-- index local 'parser' (a nil value)" whenever such a window is shown.
+	-- Disable rainbow-delimiters for snacks floating windows (notifications,
+	-- history, terminals, generic win): their buffers have no treesitter
+	-- parser, so `get_parser` returns nil and `lib.lua:200` crashes with
+	-- "attempt to index local 'parser' (a nil value)" whenever such a window
+	-- is shown.
 	vim.g.rainbow_delimiters = {
 		blacklist = {
-			"latex",
 			"snacks_notif",
 			"snacks_notif_history",
 			"snacks_terminal",
@@ -380,7 +376,7 @@ now(function() -- markview do lazy loading internally, so we setup it synchronou
 	require("markview").setup({
 		---@diagnostic disable-next-line: missing-fields
 		markdown = { headings = presets.headings.slanted },
-		-- latex = { enable = true }, -- unset it would also disable math in markdown
+		latex = { enable = true },
 	})
 end)
 

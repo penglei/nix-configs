@@ -1,6 +1,5 @@
 -- stylua: ignore start
 local ts_langs = {
-	-- "latex", -- cause parsing markdown embed latex equation failed
 	"regex", "vimdoc", "bash", "c", "cpp", "css", "go", "gomod",
 	"html", "javascript", "json", "lua", "make", "python",
 	"markdown", "markdown_inline", "rust", "typescript", "yaml",
@@ -10,125 +9,65 @@ local ts_langs = {
 }
 -- stylua: ignore end
 
-local treesitter_config = {
-	ensure_installed = ts_langs,
-	highlight = {
-		enable = true,
-		disable = function(ft, bufnr)
-			local maxLines = 10000
-			if vim.tbl_contains({ "gitcommit" }, ft) or (vim.api.nvim_buf_line_count(bufnr) > maxLines and ft ~= "vimdoc") then return true end
+-- nvim-treesitter `main` branch (nvim 0.12+): minimal — only parser install
+-- + query distribution. Highlighting is started per-buffer via core
+-- `vim.treesitter.start()`; textobjects/matchup modules are gone and
+-- configured on their own plugins below.
+require("nvim-treesitter").setup({
+	install_dir = vim.fn.stdpath("data") .. "/site",
+})
 
-			local ok, is_large_file = pcall(vim.api.nvim_buf_get_var, bufnr, "bigfile_disable_treesitter")
-			return ok and is_large_file
-		end,
-		additional_vim_regex_highlighting = false,
-	},
-}
+-- ensure_installed → install() (async; no-op if already installed)
+require("nvim-treesitter").install(ts_langs)
 
-treesitter_config.textobjects = {
-	swap = {
-		enable = true,
-		swap_next = {
-			[",pn"] = "@parameter.inner",
-		},
-		swap_previous = {
-			[",pp"] = "@parameter.inner",
-		},
-	},
-	move = {
-		enable = true,
-		set_jumps = true,
-		-- Object "start" for previous siblings and/or its descendant, or ancestors.
-		goto_previous_start = {
-			["[f"] = "@function.outer",
-			["[F"] = "@function.inner",
-			-- ["[z"] = { query = "@fold", query_group = "folds", desc = "previous fold" },
-		},
-		-- Object "end" for following siblings and/or its descendant, or ancestors.
-		-- This is symmetric to goto_previous_start.
-		goto_next_end = {
-			["]f"] = "@function.outer",
-			["]F"] = "@function.inner",
-		},
+-- highlight: FileType autocmd replacing the old `highlight = { enable, disable }` module.
+local max_lines = 10000
+vim.api.nvim_create_autocmd("FileType", {
+	callback = function(args)
+		local ft, bufnr = args.match, args.buf
+		if ft == "gitcommit" then return end
+		if vim.api.nvim_buf_line_count(bufnr) > max_lines and ft ~= "vimdoc" then return end
+		local ok, is_large_file = pcall(vim.api.nvim_buf_get_var, bufnr, "bigfile_disable_treesitter")
+		if ok and is_large_file then return end
+		pcall(vim.treesitter.start)
+	end,
+})
 
-		-- Object "end" for previous siblings and/or its descendant, or ancestors.
-		-- The "end" of previous siblings is quite confusing, so it is virtually useless.
-		goto_previous_end = {},
-
-		-- Ojbect "end"
-		goto_next_start = {
-			["]nf"] = "@function.outer",
-			["]nF"] = "@function.inner",
-			-- ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
-		},
-	},
+-- nvim-treesitter-textobjects `main` branch: standalone (no nvim-treesitter
+-- module dep). setup() takes only select/move options; keymaps are manual.
+require("nvim-treesitter-textobjects").setup({
 	select = {
-		enable = true,
-
-		-- Automatically jump forward to textobj, similar to targets.vim
 		lookahead = true,
-
-		keymaps = {
-			-- You can use the capture groups defined in textobjects.scm
-			["aF"] = "@function.outer",
-			["iF"] = "@function.inner",
-			["af"] = "@call.outer",
-			["if"] = "@call.inner",
-			["ap"] = "@parameter.outer",
-			["ip"] = "@parameter.inner",
-			-- You can also use captures from other query groups like `locals.scm`
-			["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
-			["ac"] = "@comment.outer", -- only support one line (include line following content)
-
-			-- ["ac"] = "@class.outer",
-			-- You can optionally set descriptions to the mappings (used in the desc parameter of
-			-- nvim_buf_set_keymap) which plugins like which-key display
-			-- ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-		},
-
-		-- You can choose the select mode (default is charwise 'v')
-		--
-		-- Can also be a function which gets passed a table with the keys
-		-- * query_string: eg '@function.inner'
-		-- * method: eg 'v' or 'o'
-		-- and should return the mode ('v', 'V', or '<c-v>') or a table
-		-- mapping query_strings to modes.
-		selection_modes = {
-			-- ["@parameter.outer"] = "v", -- force select "parameter" as charwise
-			-- ["@function.outer"] = "V", -- force select whole "function" as linewise
-		},
-		-- selection_modes = function(sel)
-		-- 	-- local query_string = sel.query_string
-		-- 	-- vim.notify(vim.inspect(vim.fn.mode()))
-		-- 	-- vim.notify(("query_string: %s, method: %s"):format(query_string, sel.method))
-		-- 	-- return "v"
-		-- end,
-
-		-- If you set this to `true` (default is `false`) then any textobject is
-		-- extended to include preceding or succeeding whitespace. Succeeding
-		-- whitespace has priority in order to act similarly to eg the built-in
-		-- `ap`.
-		--
-		-- Can also be a function which gets passed a table with the keys
-		-- * query_string: eg '@function.inner'
-		-- * selection_mode: eg 'v'
-		-- and should return true or false
+		selection_modes = {},
 		include_surrounding_whitespace = false,
 	},
-	matchup = { enable = true },
-	refactor = {
-		highlight_definitions = {
-			enable = true,
-			-- Set to false if you have an `updatetime` of ~100.
-			clear_on_cursor_move = true,
-		},
-		highlight_current_scope = { enable = true },
-	},
-}
+	move = { set_jumps = true },
+})
+local tso_select = require("nvim-treesitter-textobjects.select")
+local tso_swap = require("nvim-treesitter-textobjects.swap")
+local tso_move = require("nvim-treesitter-textobjects.move")
 
-require("nvim-treesitter.install").prefer_git = true
----@diagnostic disable-next-line: missing-fields
-require("nvim-treesitter.configs").setup(treesitter_config)
+-- select keymaps (was: select.keymaps = {...})
+vim.keymap.set({ "x", "o" }, "aF", function() tso_select.select_textobject("@function.outer", "textobjects") end, { desc = "Select around function" })
+vim.keymap.set({ "x", "o" }, "iF", function() tso_select.select_textobject("@function.inner", "textobjects") end, { desc = "Select inside function" })
+vim.keymap.set({ "x", "o" }, "af", function() tso_select.select_textobject("@call.outer", "textobjects") end, { desc = "Select around call" })
+vim.keymap.set({ "x", "o" }, "if", function() tso_select.select_textobject("@call.inner", "textobjects") end, { desc = "Select inside call" })
+vim.keymap.set({ "x", "o" }, "ap", function() tso_select.select_textobject("@parameter.outer", "textobjects") end, { desc = "Select around parameter" })
+vim.keymap.set({ "x", "o" }, "ip", function() tso_select.select_textobject("@parameter.inner", "textobjects") end, { desc = "Select inside parameter" })
+vim.keymap.set({ "x", "o" }, "as", function() tso_select.select_textobject("@local.scope", "locals") end, { desc = "Select language scope" })
+vim.keymap.set({ "x", "o" }, "ac", function() tso_select.select_textobject("@comment.outer", "textobjects") end, { desc = "Select around comment" })
+
+-- swap keymaps (was: swap.swap_next / swap_previous)
+vim.keymap.set("n", ",pn", function() tso_swap.swap_next("@parameter.inner") end, { desc = "Swap with next parameter" })
+vim.keymap.set("n", ",pp", function() tso_swap.swap_previous("@parameter.inner") end, { desc = "Swap with previous parameter" })
+
+-- move keymaps (was: move.goto_previous_start / goto_next_end / goto_next_start)
+vim.keymap.set({ "n", "x", "o" }, "[f", function() tso_move.goto_previous_start("@function.outer", "textobjects") end, { desc = "Previous function start" })
+vim.keymap.set({ "n", "x", "o" }, "[F", function() tso_move.goto_previous_start("@function.inner", "textobjects") end, { desc = "Previous function inner start" })
+vim.keymap.set({ "n", "x", "o" }, "]f", function() tso_move.goto_next_end("@function.outer", "textobjects") end, { desc = "Next function end" })
+vim.keymap.set({ "n", "x", "o" }, "]F", function() tso_move.goto_next_end("@function.inner", "textobjects") end, { desc = "Next function inner end" })
+vim.keymap.set({ "n", "x", "o" }, "]nf", function() tso_move.goto_next_start("@function.outer", "textobjects") end, { desc = "Next function start" })
+vim.keymap.set({ "n", "x", "o" }, "]nF", function() tso_move.goto_next_start("@function.inner", "textobjects") end, { desc = "Next function inner start" })
 
 require("nvim-ts-autotag").setup() -- Use treesitter to autoclose and autorename html tag
 require("mini.pairs").setup() -- autoclose pairs
@@ -200,7 +139,11 @@ require("mini.move").setup({
 
 -------------------- goto block outer --------------------
 
-require("treesitter-outer").setup({
+-- treesitter-outer: upstream plugin is dead (last commit 2024-06) and hard-
+-- requires removed nvim-treesitter.parsers/query modules. We keep the plugin
+-- on runtimepath for its query files (queries/<lang>/treesitter-outer.scm)
+-- but use this core-API reimplementation instead of its broken init.lua.
+require("config.editing.treesitter_outer").setup({
 	-- -- g[, g[ has bound to surround, but I don't employ them.
 	prev_outer_key = "g[", -- "g<",
 	next_outer_key = "g]", -- "g>",
