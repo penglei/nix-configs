@@ -94,10 +94,12 @@
       graphviz
       # presentation
 
-      mpv
+      #mpv
+      # unar # yazi lsar plugin requires it
+
       tart # vm hypervisor
       yazi # terminal file explorer
-      unar # yazi lsar plugin requires it
+
       chafa # converts image data suitable for display in a terminal
 
       netnewswire
@@ -106,7 +108,7 @@
       preview_open # script wrapper for Preview.app
       #koodo-reader
       skimpdf
-      sioyek
+      # sioyek  # Qt implemented
       #adobe-reader
 
       #bitwarden-desktop
@@ -143,10 +145,10 @@
       nil # nil-language-server
 
       yaml-language-server
-      nodePackages.bash-language-server
-      nodePackages.typescript-language-server
-      nodePackages.vscode-langservers-extracted # HTML/CSS/JSON/ESLint language servers extracted from
-      nodePackages.prettier
+      bash-language-server
+      typescript-language-server
+      vscode-langservers-extracted # HTML/CSS/JSON/ESLint language servers extracted from
+      prettier
       prettierd
       yamlfmt
       shfmt

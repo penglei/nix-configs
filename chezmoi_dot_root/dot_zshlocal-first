@@ -1,19 +1,32 @@
 #zmodload zsh/zprof
 
 fpath+=~/.zfunc
-path+="$HOME/Library/Application Support/edgedb/bin"
-path+="$HOME/.moon/bin"
-path+="$HOME/.npm-global/bin"
-path+="/opt/ocaml/bin"
-path+="/opt/lima/bin"
-path+="/opt/zulujdk/current/bin"
-path+="/opt/zig/current"
-path+="/opt/github/current/bin"
+export PATH="$HOME/Library/Application Support/edgedb/bin:$PATH"
+export PATH="$HOME/.moon/bin:$PATH"
+export PATH="$HOME/.npm-global/bin:$PATH"
+export PATH="/opt/ocaml/bin:$PATH"
+export PATH="/opt/lima/bin:$PATH"
+export PATH="/opt/zig/current:$PATH"
+export PATH="/opt/github/current/bin:$PATH"
 
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="/opt/temporal/bin:$PATH"
 
 export JAVA_HOME=/opt/zulujdk/current/zulu-17.jdk/Contents/Home
+export PATH="/opt/zulujdk/current/bin:$PATH"
+
+export PATH="$HOME/.local/bin:$HOME/Library/Python/3.9/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.dotnet/tools:$PATH"
+export DOTNET_ROOT="/opt/dotnet-sdk/current"
+export PATH="/opt/dotnet-sdk/current:$PATH"
+export PATH="/opt/go/current/bin:$PATH"
+export PATH="$HOME/.krew/bin:$PATH"
+
+alias cs=csharprepl
+
 
 eval "$(opam env)"
 

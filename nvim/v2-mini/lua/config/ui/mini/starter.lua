@@ -114,22 +114,25 @@ function M.init()
 				local ok = M.check_to_mapping()
 				if ok then return end
 
-				-- vim.notify("new timer", vim.log.levels.INFO)
-				local timer = vim.loop.new_timer()
-				local count = 0 -- max count
-				timer:start(
-					0,
-					1000,
-					vim.schedule_wrap(function()
-						-- vim.notify("timer running", vim.log.levels.INFO)
-						if count > 5 or M.check_to_mapping() then
-							timer:stop()
-							timer:close()
-						else
-							count = count + 1
-						end
-					end)
-				)
+			-- vim.notify("new timer", vim.log.levels.INFO)
+			local timer = vim.loop.new_timer()
+			local count = 0 -- max count
+			local closed = false -- 防止 timer:close() 被重复调用（schedule_wrap 回调可能多次排队）
+			timer:start(
+				0,
+				1000,
+				vim.schedule_wrap(function()
+					-- vim.notify("timer running", vim.log.levels.INFO)
+					if closed then return end
+					if count > 5 or M.check_to_mapping() then
+						timer:stop()
+						timer:close()
+						closed = true
+					else
+						count = count + 1
+					end
+				end)
+			)
 			end, 300) -- 延迟300ms
 		end,
 	})

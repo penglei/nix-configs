@@ -1,6 +1,9 @@
 final: prev:
-let pkgs = final;
-in with pkgs; {
+let
+  pkgs = final;
+in
+with pkgs;
+{
   # apple_sdk_extend.frameworks = let
   #   apple_sdk_maker = callPackage ./darwin/framework.nix {
   #     inherit buildPackages;
@@ -14,8 +17,7 @@ in with pkgs; {
   kubectl-kubecm = callPackage ./kubectl/kubecm.nix { };
   kubectl-nodeshell = callPackage ./kubectl/nodeshell.nix { };
 
-  utm = (prev.utm.overrideAttrs
-    (import ./darwin/utm.nix { inherit fetchurl makeWrapper; }).override);
+  utm = (prev.utm.overrideAttrs (import ./darwin/utm.nix { inherit fetchurl makeWrapper; }).override);
 
   netnewswire = callPackage ./darwin/netnewswire.nix { };
   rectangle = callPackage ./darwin/rectangle.nix { };
@@ -46,11 +48,7 @@ in with pkgs; {
   #bitwarden-desktop = callPackage ./darwin/bitwarden-desktop.nix { };
   #spacelauncher = callPackage ./darwin/spacelauncher.nix { };
 
-  # sketchybar = callPackage ./darwin/sketchybar.nix {
-  #   inherit (darwin.apple_sdk.frameworks)
-  #     Carbon Cocoa CoreWLAN DisplayServices SkyLight;
-  #   inherit (apple_sdk_extend.frameworks) MediaRemote;
-  # };
+  # sketchybar = callPackage ./darwin/sketchybar.nix { };
 
   presentation = callPackage ./darwin/presentation.nix { };
   adobe-reader = callPackage ./darwin/adobe-reader.nix { };

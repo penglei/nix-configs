@@ -1,4 +1,4 @@
-# { config, lib, ... }:
+{ pkgs, ... }:
 
 {
   imports = [ ];
@@ -8,31 +8,16 @@
     VISUAL = "nvim";
   };
 
-  programs.neovim = {
-    enable = true;
+  # Install the neovim binary via home.packages instead of programs.neovim.
+  # programs.neovim auto-generates ~/.config/nvim/init.lua (a stub that only
+  # disables providers), which clobbers the real init.lua managed in
+  # nvim/v2-mini (symlinked into ~/.config/nvim). Using home.packages keeps hm
+  # out of ~/.config/nvim entirely.
+  home.packages = [ pkgs.neovim ];
 
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-
-    #extraConfig =
-    #  let
-    #    inherit (import ./util.nix) mkLuaFile;
-
-    #    bindings = pkgs.substituteAll {
-    #      src = ./scripts/bindings.lua;
-    #      findAndReplace = ./scripts/find-and-replace.lua;
-    #    };
-
-    #    autocmds = pkgs.substituteAll {
-    #      src = ./scripts/autocmds.lua;
-    #      git = "${pkgs.git}/bin/git";
-    #    };
-    #  in
-    #  (mkLuaFile ./scripts/options.lua) +
-    #  (mkLuaFile ./scripts/options.lua) +
-    #  (mkLuaFile bindings) +
-    #  (mkLuaFile autocmds);
+  home.shellAliases = {
+    vi = "nvim";
+    vim = "nvim";
+    vimdiff = "nvim -d";
   };
 }
-

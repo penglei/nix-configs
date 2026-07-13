@@ -24,8 +24,8 @@ in {
   programs.fzf = {
     enable = false;
     defaultOptions = defaultOptions;
-    historyWidgetOptions = [ "--sort" "--exact" ];
-    changeDirWidgetOptions = [ "--preview 'tree -C {} | head -200'" ];
+    historyWidget.options = [ "--sort" "--exact" ];
+    changeDirWidget.options = [ "--preview 'tree -C {} | head -200'" ];
   };
 }
 
