@@ -22,6 +22,11 @@ function render_kitty_tabs()
   fi
 
   curr_tab_index=$(jq '.curr_tab_index' < ~/.local/state/kitty/data.json)
+
+  # 查询已存在的 kitty_tab.* items，做增量更新而非全量重建（避免闪烁）
+  local existing
+  existing=$(sketchybar --query bar 2>/dev/null | jq -r '.items[] | select(startswith("kitty_tab."))')
+
   # for i in {1..$curr_num_tabs}; do
   for i in $(seq 1 "$curr_num_tabs"); do
 
@@ -34,7 +39,12 @@ function render_kitty_tabs()
 
     local tab_name=kitty_tab.$i
     tab_names+=($tab_name)
-    set_args+=(--add item $tab_name left --set $tab_name)
+
+    # 仅在不存在时 add，已存在的直接 --set，避免销毁重建导致闪烁
+    if ! grep -qx "$tab_name" <<< "$existing"; then
+      set_args+=(--add item $tab_name left)
+    fi
+    set_args+=(--set $tab_name)
 
     if [ "$i" == 1 ];then
       set_args+=(icon.padding_left=10)
@@ -67,6 +77,14 @@ function render_kitty_tabs()
     #     icon=${icon} "${set_args[@]}"
   done
 
+  # 移除超出 curr_num_tabs 的多余 item
+  for name in $existing; do
+    local idx=${name#kitty_tab.}
+    if [ "$idx" -gt "$curr_num_tabs" ] 2>/dev/null; then
+      set_args+=(--remove $name)
+    fi
+  done
+
   sketchybar "${set_args[@]}"
 
   # sketchybar --add bracket kitty_tabs                           \
@@ -83,8 +101,5 @@ function clear_kitty_tabs() {
 }
 
 
-# TODO: diff to update instead of re-rendering all
-# sketchybar --query bar | jq -r '.items[]'
-
-clear_kitty_tabs
+# 增量更新：add 缺失 / set 已有 / remove 多余，不再 clear+re-add
 render_kitty_tabs
