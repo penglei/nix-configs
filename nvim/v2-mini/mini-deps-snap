@@ -46,7 +46,7 @@ return {
   ["promise-async"] = "119e8961014c9bfaf1487bf3c2a393d254f337e2",
   ["rainbow-delimiters.nvim"] = "a798325b7f36acc62741d1029930a7b96d4dd4bf",
   ["screenkey.nvim"] = "740e238d1f143cb5f3a9d932f9c5142d3581b986",
-  ["snacks.nvim"] = "c6dbf1fa947574e4fa31d455598f93772b00873e",
+  ["snacks.nvim"] = "9642046fcec68219ee309a9aa2638c64e804753d",
   ["snipe.nvim"] = "d2d196c335919767803f905d573ce66340e33ee6",
   ["tabtree.nvim"] = "7254d5486a4b12153c4e084dbd350e20ebefb461",
   ["tiny-code-action.nvim"] = "0d040ed81f7953118b81cd12681fcdfcac069803",
