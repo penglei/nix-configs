@@ -26,6 +26,11 @@ vim.diagnostic.config({
 	virtual_text = false,
 })
 
+-- Work around nvim 0.12.4 underline handler crash on stale diagnostics
+-- (e.g. when opening a file via snacks picker that LSP sent publishDiagnostics
+-- for while the buffer was still unloaded). See lua/config/ui/diagnostic_underline.lua.
+require("config.ui.diagnostic_underline")
+
 require("inline_git_blame").setup({
 	-- excluded_filetypes will be extended from default
 	excluded_filetypes = { "NvimTree", "neo-tree", "TelescopePrompt", "help" },
