@@ -185,7 +185,6 @@
       #for neovim Snacks image
       imagemagick
       ghostscript
-      markdown-oxide
       mermaid-cli
       pngpaste
       tectonic

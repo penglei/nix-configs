@@ -165,7 +165,11 @@ setup("purescriptls", {
 })
 
 -- setup("marksman")
-setup("markdown_oxide")
+-- Disabled: markdown_oxide misanalyzes fenced code blocks — it flags
+-- `[...](...)`-style code as a broken link (Info diagnostic → underline) and
+-- marks it as a comment (semantic token → gray), and pollutes outline.nvim
+-- with embedded-language symbols. markview + treesitter are enough.
+-- setup("markdown_oxide")
 
 setup("jdtls")
 
