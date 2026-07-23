@@ -34,7 +34,13 @@ vim.api.nvim_create_autocmd("FileType", {
 	callback = function(event) vim.api.nvim_buf_set_keymap(event.buf, "n", "<Esc>", [[<C-\><C-n>:q!<CR>]], { noremap = true, silent = true }) end,
 })
 
-local neotest_golang_opts = {} -- Specify custom configuration
+local neotest_golang_opts = {
+	-- Lazy-require the go module so build tags stay in sync with gopls.
+	-- Functions are evaluated at test-run time, not at setup time,
+	-- so the load order (neotest before lang/go) doesn't matter.
+	go_test_args = function() return require("config.lang.go").get_test_args() end,
+	go_list_args = function() return require("config.lang.go").get_list_args() end,
+}
 ---@diagnostic disable-next-line: missing-fields
 require("neotest").setup({
 	adapters = {

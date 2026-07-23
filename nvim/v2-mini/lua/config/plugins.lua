@@ -361,6 +361,9 @@ later(function()
 	add({ source = "moonbit-community/moonbit.nvim" })
 	require("config.lang.moonbit")
 end)
+later(function()
+	require("config.lang.go")
+end)
 
 later(function()
 	vim.g.cornelis_use_global_binary = 1 -- disable buildding to install
