@@ -5,6 +5,19 @@
 
 vim.lsp.inlay_hint.enable(true)
 
+-- Restart LSP server(s). Optional name arg: :LspRestart gopls
+vim.api.nvim_create_user_command("LspRestart", function(args)
+	local name = args.args ~= "" and args.args or nil
+	for _, client in ipairs(vim.lsp.get_clients({ name = name })) do
+		client:stop()
+	end
+	vim.defer_fn(function()
+		if vim.bo.filetype ~= "" then
+			vim.api.nvim_exec_autocmds("FileType", { buffer = 0 })
+		end
+	end, 100)
+end, { nargs = "?", desc = "Restart LSP server(s)" })
+
 -- `vim.lsp.config` only updates the config; `vim.lsp.enable` is what actually
 -- auto-starts the server. Always call both so servers with custom opts attach.
 local setup = function(name, opts)

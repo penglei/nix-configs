@@ -35,30 +35,33 @@ local function state_desc()
 	return table.concat(parts, ", ")
 end
 
---- Apply current state to all running gopls clients via workspace/didChangeConfiguration.
---- No LSP restart needed — gopls re-indexes in the background.
-function M.apply()
-	local clients = vim.lsp.get_clients({ name = "gopls" })
-	if #clients == 0 then
-		vim.notify("gopls not attached — settings will apply on next start", vim.log.levels.WARN)
-		return
+--- Build the gopls settings object from current state.
+--- gopls uses FLAT keys: buildFlags, env — NOT "build.buildFlags" or build = { ... }
+local function build_settings()
+	local gopls = { semanticTokens = true }
+	-- env: only include when non-empty. An empty Lua {} serializes as JSON []
+	-- (array), but gopls expects an object — this crashes gopls.
+	if state.goos or state.goarch then
+		gopls.env = {}
+		if state.goos then gopls.env.GOOS = state.goos end
+		if state.goarch then gopls.env.GOARCH = state.goarch end
 	end
-	for _, client in ipairs(clients) do
-		local settings = vim.deepcopy(client.config.settings or {})
-		settings.gopls = settings.gopls or {}
-		settings.gopls.build = settings.gopls.build or {}
-		-- env: empty table = no overrides (gopls uses real platform)
-		settings.gopls.build.env = {}
-		if state.goos then settings.gopls.build.env.GOOS = state.goos end
-		if state.goarch then settings.gopls.build.env.GOARCH = state.goarch end
-		-- buildFlags
-		if state.tags and state.tags ~= "" then
-			settings.gopls.build.buildFlags = { "-tags=" .. state.tags }
-		else
-			settings.gopls.build.buildFlags = nil
-		end
+	if state.tags and state.tags ~= "" then
+		gopls.buildFlags = { "-tags=" .. state.tags }
+	end
+	return { gopls = gopls }
+end
+
+--- Apply current state to gopls: update registered config + notify running
+--- clients + re-trigger LSP attachment for the current buffer.
+function M.apply()
+	local settings = build_settings()
+	-- Update the registered config so new gopls clients use the new settings.
+	vim.lsp.config("gopls", { settings = settings })
+	-- Notify running clients (gopls re-indexes with the new build flags).
+	for _, client in ipairs(vim.lsp.get_clients({ name = "gopls" })) do
 		client.config.settings = settings
-		client.notify("workspace/didChangeConfiguration", { settings = settings })
+		client:notify("workspace/didChangeConfiguration", { settings = settings })
 	end
 end
 
