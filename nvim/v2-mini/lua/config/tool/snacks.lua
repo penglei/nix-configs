@@ -21,6 +21,52 @@ local function parse_path_and_params(src)
 	return path, params
 end
 
+--- Build a custom preview-toggle action that shows the preview at `width`
+--- (a fraction of the picker width). Behaviour:
+---   * hidden  -> show at `width`
+---   * shown at `width`   -> hide
+---   * shown at other width -> switch to `width`
+local function preview_toggle_at(width)
+	return function(picker)
+		local layout = picker.layout
+		local function find_preview(box)
+			if box.win == "preview" then return box end
+			for _, child in ipairs(box) do
+				local found = find_preview(child)
+				if found then return found end
+			end
+		end
+		local box = find_preview(layout.opts.layout)
+		local hidden = layout:is_hidden("preview")
+		if not hidden and box and box.width == width then
+			picker:toggle("preview", { enable = false })
+		else
+			if box then box.width = width end
+			if hidden then
+				picker:toggle("preview", { enable = true })
+			else
+				layout:update()
+			end
+		end
+	end
+end
+
+--- Grep-style pickers: the result list already shows the matched line,
+--- so preview is hidden by default. When toggled on, Tab uses 80% width
+--- (the grep summary is too brief; you want to focus on the file content).
+--- Shift-Tab uses 50% for a quick glance that keeps more of the list visible.
+local grep_preview = {
+	layout = { hidden = { "preview" } },
+	win = {
+		input = {
+			keys = {
+				["<Tab>"] = { "toggle_preview_wide", mode = { "i", "n" } },
+				["<S-Tab>"] = { "toggle_preview_half", mode = { "i", "n" } },
+			},
+		},
+	},
+}
+
 require("snacks").setup({
 	notifier = { enabled = true },
 	input = { enabled = true },
@@ -103,11 +149,43 @@ require("snacks").setup({
 		},
 	},
 	picker = {
+		actions = {
+			-- Tab / Shift-Tab use these instead of the built-in toggle_preview
+			-- so we can control the preview window width.
+			toggle_preview_half = preview_toggle_at(0.5),
+			toggle_preview_wide = preview_toggle_at(0.8),
+		},
 		win = {
 			input = {
 				keys = {
-					["<S-Tab>"] = { "list_up", mode = { "i", "n" } },
-					["<Tab>"] = { "list_down", mode = { "i", "n" } },
+					-- emacs-style cursor movement in the input box
+					["<C-a>"] = { "<Home>", mode = { "i" }, expr = true, desc = "cursor to line start" },
+					["<C-e>"] = { "<End>", mode = { "i" }, expr = true, desc = "cursor to line end" },
+					["<C-b>"] = { "<Left>", mode = { "i" }, expr = true, desc = "cursor back" },
+					["<C-f>"] = { "<Right>", mode = { "i" }, expr = true, desc = "cursor forward" },
+					["<M-b>"] = { "<C-Left>", mode = { "i" }, expr = true, desc = "cursor word back" },
+					["<M-f>"] = { "<C-Right>", mode = { "i" }, expr = true, desc = "cursor word forward" },
+					-- C-u: emacs-style in insert mode (delete to line start),
+					-- but list_scroll_up in normal mode (snacks default).
+					-- Emacs keys are insert-only; normal/visual keep vim/snacks behavior.
+					["<C-u>"] = {
+						function(self)
+							if vim.fn.mode() == "i" then
+								vim.api.nvim_feedkeys(
+									vim.api.nvim_replace_termcodes("<C-u>", true, false, true),
+									"n",
+									false
+								)
+							else
+								self:action("list_scroll_up")()
+							end
+						end,
+						mode = { "i", "n" },
+						desc = "C-u: delete to line start (i) / scroll list up (n)",
+					},
+					-- Tab: preview at 50% (default width). Shift-Tab: preview at 80%.
+					["<S-Tab>"] = { "toggle_preview_wide", mode = { "i", "n" } },
+					["<Tab>"] = { "toggle_preview_half", mode = { "i", "n" } },
 				},
 			},
 		},
@@ -115,6 +193,20 @@ require("snacks").setup({
 			cycle = true,
 			--- Use the default layout or vertical if the window is too narrow
 			preset = function() return vim.o.columns >= 120 and "default" or "ivy_split" end,
+		},
+		sources = {
+			-- smart = <leader>f: hide preview by default so the filename list gets
+			-- the full width. Press <Tab> to toggle the preview on.
+			smart = { layout = { hidden = { "preview" } } },
+			-- grep = <leader>/, grep_word = <leader>w: see `grep_preview` above.
+			-- <leader>/ uses Snacks.picker.resume({ source = "grep" }) so the
+			-- search string, cursor position, and scroll are all restored.
+			grep = grep_preview,
+			grep_word = grep_preview,
+			-- recent = <leader>r: only show files under the current working
+			-- directory, so current-project files aren't drowned out by
+			-- oldfiles from other projects.
+			recent = { filter = { cwd = true } },
 		},
 	},
 })

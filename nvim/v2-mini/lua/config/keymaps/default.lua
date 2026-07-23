@@ -71,7 +71,7 @@ local keymaps = {
 	-- ["n|<leader>y"] = map_cmd("<CMD>lua require('yazi').yazi()<CR>"):desc("open mini files navigator"),
 
 	-- ["xn|<leader>g"] = map_cb("Pick grep_live"):desc("Mini: Pick grep words"),
-	["n|<leader>/"] = map_cb(function() Snacks.picker.grep() end):desc("Snacks picker: grep words"),
+	["n|<leader>/"] = map_cb(function() Snacks.picker.resume({ source = "grep" }) end):desc("Snacks picker: grep (resume)"),
 	-- ["n|<leader>f"] = map_cu("Pick files"):desc("Mini: Pick file"),
 	["n|<leader>f"] = map_cb(function() Snacks.picker.smart() end):desc("Smart Find Files"),
 	-- ["n|<leader>b"] = map_cu("Pick buffers"):desc("Mini: Pick buffer"),
