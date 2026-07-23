@@ -207,6 +207,38 @@ require("snacks").setup({
 			-- directory, so current-project files aren't drowned out by
 			-- oldfiles from other projects.
 			recent = { filter = { cwd = true } },
+			-- notifications: Enter opens the full message in a buffer so the
+			-- user can read and yank the error text (the picker preview is
+			-- read-only and doesn't allow copying).
+			notifications = {
+				confirm = function(picker, item)
+					local notif = item.item
+					picker:close()
+					vim.schedule(function()
+						local lines = {
+							"# " .. (notif.title or "Notification"),
+							"",
+							"**Level:** " .. notif.level,
+							"**Time:** " .. os.date("%Y-%m-%d %H:%M:%S", notif.added / 1e9),
+							"",
+							"---",
+							"",
+						}
+						vim.list_extend(lines, notif.msg and vim.split(notif.msg, "\n") or { "(empty)" })
+						vim.cmd("split")
+						local buf = vim.api.nvim_create_buf(false, true)
+						vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+						-- pcall: name may already exist if the same notification
+						-- is opened twice — the buffer works fine without a name.
+						pcall(vim.api.nvim_buf_set_name, buf, "Notification:" .. (notif.title or tostring(notif.id)))
+						vim.bo[buf].filetype = "markdown"
+						vim.bo[buf].modifiable = false
+						vim.bo[buf].buftype = "nofile"
+						vim.keymap.set("n", "q", "<CMD>close<CR>", { buffer = buf, silent = true, nowait = true })
+						vim.api.nvim_win_set_buf(0, buf)
+					end)
+				end,
+			},
 		},
 	},
 })
