@@ -83,7 +83,7 @@ end
 --- Returns a sorted list of unique word tokens found in build constraints.
 local function scan_build_tags()
 	local output = vim.fn.systemlist({
-		"rg", "-o", "//go:build\\s+\\K.*", "--no-filename", "-g", "*.go",
+		"rg", "//go:build", "--no-filename", "--no-line-number", "-g", "*.go",
 	})
 	if vim.v.shell_error ~= 0 then
 		return {}
@@ -91,7 +91,9 @@ local function scan_build_tags()
 	local seen = {}
 	local tags = {}
 	for _, line in ipairs(output) do
-		for word in line:gmatch("[%w_]+") do
+		-- Strip the "//go:build " prefix, then extract word tokens
+		local constraint = line:gsub("^//go:build%s+", "")
+		for word in constraint:gmatch("[%w_]+") do
 			if not seen[word] then
 				seen[word] = true
 				tags[#tags + 1] = word
