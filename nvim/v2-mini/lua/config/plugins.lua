@@ -385,11 +385,11 @@ end)
 -- 	require("math-conceal").setup()
 -- end)
 
-later(function()
-	add({ source = "epwalsh/obsidian.nvim", depends = { "nvim-lua/plenary.nvim" } })
-	-- add({ source = "MeanderingProgrammer/render-markdown.nvim" }) -- there exists many conflict with obsidian.nvim
-	require("config.tool.obsidian")
-end)
+-- later(function()
+-- 	add({ source = "epwalsh/obsidian.nvim", depends = { "nvim-lua/plenary.nvim" } })
+-- 	-- add({ source = "MeanderingProgrammer/render-markdown.nvim" }) -- there exists many conflict with obsidian.nvim
+-- 	require("config.tool.obsidian")
+-- end)
 
 later(function() add({ source = "gpanders/nvim-parinfer" }) end)
 
