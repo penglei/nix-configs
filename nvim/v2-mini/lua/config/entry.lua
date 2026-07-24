@@ -37,6 +37,18 @@ autocmd("BufWritePre", {
 	end,
 })
 
+-- markview 的 table renderer 在 wrap 开启且表格宽度 ≥ 窗口宽度×0.9 时会跳过渲染
+-- （上游注释 `BUG, wrap breaks table rendering`）。markdown 表格不适合 wrap 阅读，关掉。
+-- 必须在 entry 早期同步注册：mini.deps `later()` 加载的 filetypes.lua 会错过命令行
+-- 直接打开 .md 时的 FileType 事件，导致 autocmd 不触发。
+autocmd("FileType", {
+	pattern = "markdown",
+	group = bufferSettingAugroup,
+	callback = function()
+		vim.wo.wrap = false
+	end,
+})
+
 -- create a command  BufDelete to delete current buffer without closing window
 
 ----------------- default key mapping -----------------
