@@ -76,6 +76,7 @@ later(function()
 	})
 
 	require("config.keymaps.toggle")
+	require("config.tool.whichkey") -- 提供 :WkDebug 用户命令
 end)
 
 later(function()
