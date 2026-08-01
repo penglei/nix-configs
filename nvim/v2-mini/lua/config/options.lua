@@ -16,6 +16,8 @@ vim.opt.wildignore = {
 }
 -- stylua: ignore end
 
+vim.opt.exrc = true
+
 -- vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 -- vim.opt.foldtext = "v:lua.vim.treesitter.foldtext()"
 
