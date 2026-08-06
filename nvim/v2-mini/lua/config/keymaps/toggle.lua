@@ -58,6 +58,18 @@ Snacks.toggle
 	})
 	:map("<leader>uv")
 
+-- markdown 专用 wrap 开关：用独立 id 避免和 <leader>uw 的 "wrap" id 冲突。
+-- 用 vim.wo（窗口局部），与 entry.lua 里 FileType markdown 时设置的 vim.wo.wrap = false 对齐。
+-- 注意：wrap=true 会让 markview 跳过宽表格渲染（上游 BUG），按需切换。
+Snacks.toggle
+	.new({
+		id = "markdown_wrap",
+		name = "Markdown Wrap",
+		get = function() return vim.wo.wrap end,
+		set = function(state) vim.wo.wrap = state end,
+	})
+	:map("<leader>sw")
+
 Snacks.toggle
 	.new({
 		id = "render_image",
