@@ -17,9 +17,6 @@ mk.map_combo(mode, "jk", "<BS><BS><Esc>k")
 -- To not have to worry about the order of keys, also map "kj"
 mk.map_combo(mode, "kj", "<BS><BS><Esc>k")
 
--- Escape into Normal mode from Terminal mode
-mk.map_combo("t", "jk", "<BS><BS><C-\\><C-n>")
-mk.map_combo("t", "kj", "<BS><BS><C-\\><C-n>")
 vim.keymap.set("n", "v", "mvv", { noremap = true })
 vim.keymap.set("n", "gb", function() require("snipe").open_buffer_menu() end, { noremap = true, desc = "Open Snipe buffer menu" })
 
