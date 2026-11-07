@@ -1,0 +1,4 @@
+# Skip buggy built-in marketplace orphan sweep at CLI startup (removes internal
+# marketplace before product config loads; fails lintbot/qeri repair pass).
+# Re-register manually by launching once with: CODEBUDDY_SKIP_BUILTIN_MARKETPLACE= codebuddy
+export CODEBUDDY_SKIP_BUILTIN_MARKETPLACE=1
