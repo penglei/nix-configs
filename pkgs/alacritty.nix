@@ -18,7 +18,7 @@ let
     xorg.libXrandr
     xorg.libXxf86vm
     xorg.libxcb
-  ] ++ lib.optionals stdenv.isLinux [ libxkbcommon wayland ];
+  ] ++ lib.optionals stdenv.hostPlatform.isLinux [ libxkbcommon wayland ];
 in rustPlatform.buildRustPackage rec {
   pname = "alacritty";
   version = "0.12.0-dev";
@@ -35,7 +35,7 @@ in rustPlatform.buildRustPackage rec {
   nativeBuildInputs =
     [ cmake installShellFiles makeWrapper ncurses pkg-config python3 ];
 
-  buildInputs = rpathLibs ++ lib.optionals stdenv.isDarwin [
+  buildInputs = rpathLibs ++ lib.optionals stdenv.hostPlatform.isDarwin [
     AppKit
     CoreGraphics
     CoreServices
@@ -54,7 +54,7 @@ in rustPlatform.buildRustPackage rec {
 
   checkFlags = [ "--skip=term::test::mock_term" ]; # broken on aarch64
 
-  postInstall = (if stdenv.isDarwin then ''
+  postInstall = (if stdenv.hostPlatform.isDarwin then ''
     mkdir $out/Applications
     cp -r extra/osx/Alacritty.app $out/Applications
     ln -s $out/bin $out/Applications/Alacritty.app/Contents/MacOS

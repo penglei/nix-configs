@@ -70,7 +70,7 @@
       mynixcleaner
 
     ]
-    ++ lib.optionals stdenvNoCC.isDarwin [
+    ++ lib.optionals stdenvNoCC.hostPlatform.isDarwin [
       bashInteractive
       git-cliff
       lazygit
@@ -202,8 +202,14 @@
       tree-sitter
       postgresql
       imagemagick
+
+      mitmproxy
+      mycli
+      mysql84
+      pv
+      toxiproxy
     ]
-    ++ lib.optionals stdenvNoCC.isLinux [
+    ++ lib.optionals stdenvNoCC.hostPlatform.isLinux [
       m4
       libtool
       autoconf

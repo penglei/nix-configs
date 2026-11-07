@@ -190,7 +190,7 @@ in {
       '') cfg.sshKeys;
     })
 
-    (mkIf (pkgs.stdenv.isDarwin) {
+    (mkIf (pkgs.stdenv.hostPlatform.isDarwin) {
       launchd.agents.gpg-agent-startup = {
         enable = true;
         config = {

@@ -12,7 +12,7 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-iJLL2FTSa/ur5jwc9PgZThJhnyRxUf225DeWFcQHQQU=";
   };
 
-  buildInputs = [ ] ++ lib.optionals stdenv.isDarwin [ libiconv ];
+  buildInputs = [ ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ libiconv ];
 
   meta = with lib; {
     description = "Rust implementation of the Starlark language";
