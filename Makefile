@@ -11,6 +11,9 @@ pin-registry:
 		nix registry pin home-manager github:nix-community/home-manager/$$(cat flake.lock|jq -r '.nodes["home-manager"].locked.rev'); \
 	fi
 
+upgrade-nix:
+	@./scripts/upgrade-nix.sh
+
 update-sops:
 	sops updatekeys secrets/basic.yaml 
 	sops updatekeys secrets/secrets.yaml
