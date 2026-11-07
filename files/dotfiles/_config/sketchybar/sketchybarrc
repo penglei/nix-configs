@@ -52,6 +52,8 @@ sketchybar --default updates=when_shown                    \
 
 SPACE_ICONS=("Ⅰ" "Ⅱ" "Ⅲ" "Ⅳ" "Ⅴ" "Ⅵ" "Ⅶ" "Ⅷ" "Ⅸ" "Ⅹ")
 
+# The default Nerd Font has no U+2160-2169 glyphs; CoreText would otherwise
+# fall back to Monaco for Ⅰ/Ⅴ/Ⅹ and Helvetica for the rest, mixing two typefaces.
 for i in "${!SPACE_ICONS[@]}"
 do
   sindex=$(($i+1))
@@ -59,6 +61,7 @@ do
              --set space.$sindex                                 \
                       associated_space=$sindex                   \
                       icon=${SPACE_ICONS[i]}                     \
+                      icon.font="JuliaMono:Bold:17.0"            \
                       icon.padding_left=8                        \
                       icon.padding_right=8                       \
                       background.padding_left=5                  \
