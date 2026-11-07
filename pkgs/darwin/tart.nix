@@ -2,12 +2,11 @@
 
 stdenvNoCC.mkDerivation {
   pname = "tart";
-  version = "2.24.0";
+  version = "2.41.1";
 
   src = fetchzip {
-    url =
-      "https://github.com/cirruslabs/tart/releases/download/2.24.0/tart.tar.gz";
-    sha256 = "sha256-qwROunVH21J5pXLAuaQLA9f75DCFPOICQKXLQIuNGD8=";
+    url = "https://github.com/openai/tart/releases/download/2.41.1/tart.tar.gz";
+    sha256 = "sha256-5NVUIhtOy6mhP21fuL+L16bcNfbs+Fmn+eItgMrXR18=";
     stripRoot = false;
   };
 
@@ -19,4 +18,3 @@ stdenvNoCC.mkDerivation {
     runHook postInstall
   '';
 }
-
