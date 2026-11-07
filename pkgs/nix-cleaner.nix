@@ -13,18 +13,27 @@ writeShellApplication {
       nix profile wipe-history --profile "/nix/var/nix/profiles/per-user/''${USER}/home-manager"
     fi
 
-    #nix-env --delete-generations old
-    if [[ -L /nix/var/nix/profiles/default ]]; then
-      echo nix profile wipe-history --profile /nix/var/nix/profiles/default 
-    fi
+    # System/root profiles are owned by root and use the legacy nix-env
+    # format, which `nix profile wipe-history` cannot handle.
+    if command -v sudo > /dev/null 2>&1; then
+      for profile in \
+        /nix/var/nix/profiles/system \
+        /nix/var/nix/profiles/default \
+        /nix/var/nix/profiles/per-user/root/profile
+      do
+        if [[ -L "$profile" ]]; then
+          sudo nix-env -p "$profile" --delete-generations old
+        fi
+      done
 
-    if [[ -L /nix/var/nix/profiles/system ]]; then
-      echo nix profile wipe-history --profile /nix/var/nix/profiles/system
-      #sudo nix-env -p /nix/var/nix/profiles/system --delete-generations old
-    fi
+      sudo nix-collect-garbage
 
-    if [[ -L /nix/var/nix/profiles/per-user/root/profile ]]; then
-      echo nix profile wipe-history --profile /nix/var/nix/profiles/per-user/root/profile
+      # /boot keeps the kernels of deleted generations until the bootloader
+      # entries are regenerated. Use the current system's script so this also
+      # works on flake-based hosts without knowing the flake ref.
+      if [[ -e /etc/NIXOS ]] && [[ -x /run/current-system/bin/switch-to-configuration ]]; then
+        sudo /run/current-system/bin/switch-to-configuration boot
+      fi
     fi
   '';
 }
