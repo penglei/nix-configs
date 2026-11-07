@@ -1,6 +1,9 @@
 { pkgs, config, ... }:
 
-let yabai = "${pkgs.yabai}/bin/yabai";
+let
+  yabai = "${pkgs.yabai}/bin/yabai";
+  # must match the NOPASSWD entry in /etc/sudoers.d (store paths change on every update)
+  yabai_sudo = "${config.home.homeDirectory}/.nix-profile/bin/yabai";
 in {
   # https://ss64.com/osx/launchctl.html
   launchd.agents.yabai = {
@@ -30,7 +33,7 @@ in {
   };
 
   home.file."${config.xdg.configHome}/yabai/yabairc".text =
-    (import ./rc/yabairc.nix) { inherit yabai; };
+    (import ./rc/yabairc.nix) { inherit yabai yabai_sudo; };
   home.file."${config.xdg.configHome}/yabai/event.sh".source =
     ../../files/dotfiles/_config/yabai/events.sh;
   home.file."${config.xdg.configHome}/yabai/focus_space_window.sh".source =

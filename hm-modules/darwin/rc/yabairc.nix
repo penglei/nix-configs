@@ -1,4 +1,4 @@
-{ yabai, ... }:
+{ yabai, yabai_sudo, ... }:
 
 ''
   #!/usr/bin/env sh
@@ -13,8 +13,8 @@
   #
   # see this wiki page for information:
   #  - https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
-  sudo ${yabai} --load-sa
-  yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+  sudo ${yabai_sudo} --load-sa
+  yabai -m signal --add event=dock_did_restart action="sudo ${yabai_sudo} --load-sa"
 
   #需要先手动创建足够的namespace(多次执行 yabai -m space --create)
 

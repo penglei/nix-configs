@@ -60,7 +60,19 @@ with pkgs;
   # yabai = darwin.apple_sdk.callPackage ./darwin/yabai.nix {
   #   inherit (apple_sdk.frameworks) SkyLight Cocoa Carbon ScriptingBridge;
   # };
-  yabai = callPackage ./darwin/yabai.nix { };
+  # yabai = callPackage ./darwin/yabai.nix { };
+  # Upstream has no macOS 27 (Golden Gate) support yet; use AhsanFazal's fork
+  # (scripting-addition offsets/patterns for 27.x, see koekeishiya/yabai#2802).
+  yabai = prev.yabai.overrideAttrs (old: {
+    version = "7.1.25-macos27-unstable-2026-10-31";
+    src = fetchFromGitHub {
+      owner = "AhsanFazal";
+      repo = "yabai";
+      rev = "ad8d5adfdc39c76399599ae79a264f2525f6ca5e";
+      hash = "sha256-berfA3vYih1YuCCSBEvpocCn2EPj+ZpftPmsE65ILWo=";
+    };
+    doInstallCheck = false;
+  });
 
   shiori = callPackage ./shiori.nix { };
   passage = callPackage ./passage.nix { };
