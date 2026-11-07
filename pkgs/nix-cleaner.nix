@@ -15,6 +15,8 @@ writeShellApplication {
 
     # System/root profiles are owned by root and use the legacy nix-env
     # format, which `nix profile wipe-history` cannot handle.
+    # sudo 默认保留用户的 HOME，root 下 nix 会警告 "$HOME is not owned by you"。
+    # -H 直接设为 /var/root（nix 本来也会回退到这里），行为等价但无警告。
     if command -v sudo > /dev/null 2>&1; then
       for profile in \
         /nix/var/nix/profiles/system \
@@ -22,17 +24,17 @@ writeShellApplication {
         /nix/var/nix/profiles/per-user/root/profile
       do
         if [[ -L "$profile" ]]; then
-          sudo nix-env -p "$profile" --delete-generations old
+          sudo -H nix-env -p "$profile" --delete-generations old
         fi
       done
 
-      sudo nix-collect-garbage
+      sudo -H nix-collect-garbage
 
       # /boot keeps the kernels of deleted generations until the bootloader
       # entries are regenerated. Use the current system's script so this also
       # works on flake-based hosts without knowing the flake ref.
       if [[ -e /etc/NIXOS ]] && [[ -x /run/current-system/bin/switch-to-configuration ]]; then
-        sudo /run/current-system/bin/switch-to-configuration boot
+        sudo -H /run/current-system/bin/switch-to-configuration boot
       fi
     fi
   '';
