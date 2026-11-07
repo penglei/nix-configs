@@ -23,6 +23,9 @@
 
     attic.url = "github:zhaofengli/attic";
     attic.inputs.nixpkgs.follows = "nixospkgs";
+
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixospkgs";
   };
 
   outputs =
@@ -36,6 +39,7 @@
       microvm,
       deploy-rs,
       attic,
+      disko,
       ...
     }:
     let
@@ -249,7 +253,7 @@
                 });
             in
             nixos-creator config
-          ) (import ./machines.nix { inherit profiles microvm attic; });
+          ) (import ./machines.nix { inherit profiles microvm attic disko; });
         in
         machines;
     };

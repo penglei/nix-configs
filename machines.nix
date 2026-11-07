@@ -1,4 +1,4 @@
-{ profiles, microvm, attic, ... }:
+{ profiles, microvm, attic, disko, ... }:
 
 {
   # slim = {
@@ -36,7 +36,11 @@
   tart-vm = {
     username = "penglei";
     system = "aarch64-linux";
-    modules = [ ./secrets ./nixos/tart-vm ];
+    modules = [
+      ./secrets
+      disko.nixosModules.disko
+      ./nixos/tart-vm
+    ];
   };
 
   router = {
