@@ -107,7 +107,7 @@
 
       preview_open # script wrapper for Preview.app
       #koodo-reader
-      skimpdf
+      #skimpdf
       # sioyek  # Qt implemented
       #adobe-reader
 
