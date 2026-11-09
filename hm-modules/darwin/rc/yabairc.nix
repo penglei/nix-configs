@@ -35,8 +35,8 @@
   fi
 
   #${yabai} -m rule --add app="^mpv$" manage=off sticky=on opacity=1.0 grid=8:8:6:0:2:2
-  ${yabai} -m rule --add app="^TencentMeeting$" space=work
-  ${yabai} -m rule --add app="^WeCom$" space=work
+  ${yabai} -m rule --add app="^(TencentMeeting|腾讯会议)$" space=work
+  ${yabai} -m rule --add app="^WeCom$" manage=on space=work
   ${yabai} -m rule --add app="^AFFiNE|Logseq|Notes$" space=task
   ${yabai} -m rule --add app="^(Skim|Koodo Reader|EuDic)$" space=viewer
   ${yabai} -m rule --add app="^(Google Chrome|Safari|Firefox)" space=web
