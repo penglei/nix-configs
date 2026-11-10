@@ -80,12 +80,30 @@
       ({ pkgs, ... }: {
         home.packages = with pkgs; [
           kubectl
-          k9s
+          #k9s
           #kustomize
           #krew
           kubectl-kubectx
           kubectl-kubecm
           kubectl-nodeshell
+
+          bc
+          bison
+          clang_22
+          envsubst
+          flamegraph
+          flex
+          graphviz
+          kubernetes-helm
+          lld
+          lldb_22
+          llvm_22
+          nodejs
+          perf
+          postgresql
+          procs
+          tree-sitter
+          yazi
         ];
       })
     ];
