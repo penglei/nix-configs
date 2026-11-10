@@ -1,5 +1,39 @@
 { profiles, microvm, attic, disko, ... }:
 
+let
+  devHmModules = profiles.hm.linux.modules ++ [
+    ./hm-modules/lldb.nix
+    ({ pkgs, ... }: {
+      home.packages = with pkgs; [
+        kubectl
+        #k9s
+        #kustomize
+        #krew
+        kubectl-kubectx
+        kubectl-kubecm
+        kubectl-nodeshell
+
+        bc
+        bison
+        clang_22
+        envsubst
+        flamegraph
+        flex
+        graphviz
+        kubernetes-helm
+        lld
+        lldb_22
+        llvm_22
+        nodejs
+        perf
+        postgresql
+        procs
+        tree-sitter
+        yazi
+      ];
+    })
+  ];
+in
 {
   # slim = {
   #   hostname = "nixos";
@@ -75,43 +109,29 @@
 
   cloud-dev = {
     username = "penglei";
-    hm-modules = profiles.hm.linux.modules ++ [
-      ./hm-modules/lldb.nix
-      ({ pkgs, ... }: {
-        home.packages = with pkgs; [
-          kubectl
-          #k9s
-          #kustomize
-          #krew
-          kubectl-kubectx
-          kubectl-kubecm
-          kubectl-nodeshell
-
-          bc
-          bison
-          clang_22
-          envsubst
-          flamegraph
-          flex
-          graphviz
-          kubernetes-helm
-          lld
-          lldb_22
-          llvm_22
-          nodejs
-          perf
-          postgresql
-          procs
-          tree-sitter
-          yazi
-        ];
-      })
-    ];
+    hm-modules = devHmModules;
 
     modules = [
       ./nixos/cloud
 
       ./nixos/cloud-dev.nix
+    ];
+  };
+
+  vmm-dev = {
+    username = "penglei";
+    hm-modules = devHmModules;
+
+    modules = [
+      ./nixos/cloud
+
+      ./nixos/cloud-dev.nix
+
+      # Same dev machine, but installed from a kexec environment with disko:
+      # the installer formats both disks and labels them nixos/data.
+      ./nixos/vmm-dev
+      disko.nixosModules.disko
+      ./nixos/vmm-dev/disko-config.nix
     ];
   };
 }
