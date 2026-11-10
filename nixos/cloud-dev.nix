@@ -6,7 +6,10 @@
 }:
 {
 
-  imports = [ ./modules/keeping.nix ];
+  imports = [
+    ./modules/keeping.nix
+    ./modules/tat-agent.nix
+  ];
   fileSystems."/data" = {
     device = "/dev/disk/by-label/data";
     fsType = "btrfs";
@@ -37,6 +40,21 @@
 
   #This is important for vscode server
   programs.nix-ld.enable = true;
+
+  # Without swap a runaway process (e.g. codelldb) makes the kernel thrash on
+  # file-backed pages instead of OOM-killing: the box hangs with OOMKills=0.
+  # zram gives oomd a swap signal; pressure rules kill the offending cgroup early.
+  zramSwap = {
+    enable = true;
+    memoryPercent = 25;
+  };
+  systemd.oomd = {
+    enableRootSlice = true;
+    enableSystemSlice = true;
+    enableUserSlices = true;
+  };
+  # Kill the largest swap consumer before zram fills up (Fedora default).
+  systemd.slices."-".sliceConfig.ManagedOOMSwap = "kill";
 
   services.timesyncd.enable = true;
 
