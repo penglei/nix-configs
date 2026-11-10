@@ -76,6 +76,7 @@
   cloud-dev = {
     username = "penglei";
     hm-modules = profiles.hm.linux.modules ++ [
+      ./hm-modules/lldb.nix
       ({ pkgs, ... }: {
         home.packages = with pkgs; [
           kubectl
