@@ -4,6 +4,10 @@ Host cloud-dev
     #RemoteForward /run/user/penglei/gnupg/S.gpg-agent ~/.gnupg/S.gpg-agent.extra
     #ProxyCommand ssh -W %h:%p khaos-automaton
 
+Host vmm-dev
+    Hostname 21.6.124.175
+    Port 36000
+
 Host khaos-automaton
     Hostname 9.134.52.172
     Port 36000
